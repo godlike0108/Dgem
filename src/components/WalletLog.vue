@@ -1,10 +1,12 @@
 <template lang="html">
   <div>
-    <Select v-model="currOperatableId" style="width:200px" placeholder="請選擇物品 Id" @on-change="changeType()">
-        <Option v-for="item in ids" :value="item.id" :key="item.id">{{ item.title }}</Option>
+    <Select class="select-point-type" :class="selectIcon" v-model="currOperatableId" style="width:200px" placeholder="請選擇物品 Id" @on-change="changeType()">
+        <Option :class="`gem${item.id-1}`" v-for="item in ids" :value="item.id" :key="item.id">
+          {{ item.title }}
+        </Option>
     </Select>
     <Page :total="paging.total" :page-size="paging.pre_page" simple size="small" @on-change="changePage($event)"></Page>
-    <Table stripe :columns="columns1" :data="eventsLog"></Table>
+    <Table stripe :columns="columns1" :data="walletLog"></Table>
   </div>
 </template>
 
@@ -73,8 +75,13 @@ export default {
     }
   },
   computed: {
-    eventsLog () {
-      return this.$store.getters.eventsLog.data.map(item => {
+    // select icon change
+    selectIcon () {
+      return `gem${this.selectedGem}`
+    },
+    // change to wallet log
+    walletLog () {
+      return this.$store.getters.walletLog.data.map(item => {
         item.action = item.sub_type_string || this.actionType[item.type]
         item.item = `${this.$store.getters.gems[item.result_data.gem]}`
         item.amount = item.result_data.amount
@@ -85,7 +92,7 @@ export default {
       })
     },
     paging () {
-      return this.$store.getters.paging('user', 'eventsLog')
+      return this.$store.getters.paging('wallet', 'walletLog')
     },
     ids () {
       return this.$store.getters.wallet.map(item => {
@@ -113,7 +120,7 @@ export default {
       if (this.currOperatableId) {
         searchParams.append('operatable_id', this.currOperatableId)
       }
-      await this.$store.dispatch('EventsLog', { nextIndex, searchParams })
+      await this.$store.dispatch('WalletLog', { nextIndex, searchParams })
     },
     async changeType () {
       const searchParams = new URLSearchParams()
@@ -122,11 +129,36 @@ export default {
         searchParams.append('operatable_id', this.currOperatableId)
       }
       const nextIndex = '1'// this.$store.getters.paging('user', 'eventsLog').curr_page
-      await this.$store.dispatch('EventsLog', { nextIndex, searchParams })
+      await this.$store.dispatch('WalletLog', { nextIndex, searchParams })
     },
   },
 }
 </script>
 
 <style lang="css">
+.select-point-type .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item {
+  padding-left: 40px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.select-point-type.gem0 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem0 {
+  background-image: url('/static/images/icon_gem0.svg');
+}
+
+.select-point-type.gem1 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem1 {
+  background-image: url('/static/images/icon_gem1.svg');
+}
+
+.select-point-type.gem2 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem2 {
+  background-image: url('/static/images/icon_gem2.svg');
+}
+
+.select-point-type.gem3 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem3 {
+  background-image: url('/static/images/icon_gem3.svg');
+}
+
+.select-point-type.gem4 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem4 {
+  background-image: url('/static/images/icon_gem4.svg');
+}
 </style>

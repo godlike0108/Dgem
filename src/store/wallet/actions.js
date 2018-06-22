@@ -11,4 +11,13 @@ export default {
       data,
     })
   },
+  // separate wallet log from event log
+  async WalletLog ({ dispatch, commit, getters }, { nextIndex, searchParams }) {
+    nextIndex = nextIndex || 1
+    const myId = getters.myId
+    searchParams = searchParams || new URLSearchParams()
+    searchParams.append('page', `${nextIndex}`)
+    const json = await dispatch('GET', `/api/users/${myId}/operation-histories?${searchParams.toString()}`)
+    commit('walletLog', json)
+  },
 }

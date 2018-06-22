@@ -157,7 +157,7 @@ route.beforeEach(async (to, from, next) => {
         searchParams.append('operatable_id', route.app.$store.getters.wallet.filter((item) => {
           return item.gem === 4
         }).shift().id)
-        await route.app.$store.dispatch('EventsLog', { nextIndex: 1, searchParams })
+        await route.app.$store.dispatch('WalletLog', { nextIndex: 1, searchParams })
         break
     }
   }

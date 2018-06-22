@@ -121,7 +121,7 @@ export default {
     eventsLog () {
       return this.$store.getters.eventsLog.data.map(item => {
         item.action = `${this.actionType[item.type]}`
-        item.item = `${this.operatable_type[`${item.operatable_type}`].label}`
+        item.item = `${this.operatable_type[item.operatable_type].label}`
         item.operator_name = item.operator.name
         item.user_name = item.user.name
         // item.remain = item.result_data.remain

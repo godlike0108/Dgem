@@ -211,13 +211,6 @@ route.beforeEach(async (to, from, next) => {
     route.app.$store.dispatch(`WalletPage`)
   }
   next()
-
-  // if (from.name === 'Login') {
-  //   await route.app.$store.dispatch('whoAmI')
-  //   route.app.$store.dispatch(`allChildAccount`)
-  //   route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-  //   route.app.$store.dispatch(`WalletPage`)
-  // }
 })
 
 export default route

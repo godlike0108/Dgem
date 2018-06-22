@@ -25,6 +25,14 @@ export default {
     localStore.set('dgemToken', response.data)
     commit('token', response.data)
   },
+  Logout ({commit}) {
+    let payload = {
+      access_token: '',
+      token_type: '',
+    }
+    // clear token
+    commit('token', payload)
+  },
   async LoginQRcode ({ dispatch, commit, getters }) {
     const headers = {
       'Content-Type': 'application/json',

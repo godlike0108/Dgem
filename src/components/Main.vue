@@ -30,6 +30,14 @@
   vertical-align: middle;
   font-size: 22px;
 }
+
+.logout-button {
+  margin: 0 10px;
+}
+
+.user-name {
+  vertical-align: middle;
+}
 </style>
 <template>
     <div class="layout">
@@ -77,7 +85,8 @@
             </Sider>
             <Layout>
                 <Header class="layout-header-bar">
-                  <span>{{ userHeadUpDisplay }}</span>
+                  <span class="user-name">{{ userHeadUpDisplay }}</span>
+                  <Button class="logout-button" @click="logOut()" type="primary">登出</Button>
                 </Header>
                 <Content :style="{padding: '20px', minHeight: '220px'}">
                   <keep-alive>
@@ -89,6 +98,7 @@
     </div>
 </template>
 <script>
+import localStore from 'store'
 export default {
   data () {
     return {
@@ -108,6 +118,16 @@ export default {
     },
     userHeadUpDisplay () {
       return `${this.$store.getters.self.name}`
+    },
+  },
+  methods: {
+    logOut () {
+      // clear state token
+      this.$store.dispatch('Logout')
+      // clear local storage
+      localStore.remove('dgemToken')
+      // redirect to login page
+      this.$router.push('/Login')
     },
   },
 }

@@ -46,56 +46,128 @@ var route = new Router({
           path: 'UserProfile',
           name: 'UserProfile',
           component: UserProfile,
+          beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
+            next()
+          },
         },
         {
           path: 'Dragon',
           name: 'Dragon',
           component: Dragon,
+          beforeEnter: async (to, from, next) => {
+            if (!route.app.$store.getters.self.is_child_account) {
+              await route.app.$store.dispatch('whoAmI')
+              route.app.$store.dispatch(`allChildAccount`)
+              await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
+            }
+            route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+            route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
         },
         {
           path: 'Tree',
           name: 'Tree',
           component: Tree,
+          beforeEnter: async (to, from, next) => {
+            if (!route.app.$store.getters.self.is_child_account) {
+              await route.app.$store.dispatch('whoAmI')
+              route.app.$store.dispatch(`allChildAccount`)
+              await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
+            }
+            route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+            route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
         },
         {
           path: 'Activating',
           name: 'Activating',
           component: Activating,
+          beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch('goToActiveTreePage', { nextIndex: 1 })
+            next()
+          },
         },
         {
           path: 'ChildAccount',
           name: 'ChildAccount',
           component: ChildAccount,
+          beforeEnter: async (to, from, next) => {
+            if (!route.app.$store.getters.self.is_child_account) {
+              await route.app.$store.dispatch('whoAmI')
+              route.app.$store.dispatch(`allChildAccount`)
+              await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
+            }
+            route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+            route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
         },
         {
           path: 'Wallet',
           name: 'Wallet',
           component: Wallet,
+          beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
         },
         {
           path: 'TransferUSD',
           name: 'TransferUSD',
           component: TransferUSD,
+          beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
         },
         {
           path: 'BuyDragon',
           name: 'BuyDragon',
           component: BuyDragon,
+          beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch(`goToAllDragonPage`, { nextIndex: 1 })
+            route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
         },
         {
           path: 'Group',
           name: 'Group',
           component: Group,
+          beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+            next()
+          },
         },
         {
           path: 'EventsLog',
           name: 'EventsLog',
           component: EventsLog,
+          beforeEnter: async (to, from, next) => {
+            let searchParams = new URLSearchParams()
+            searchParams.append('operatable_type', `2`) // dragon
+            searchParams.append('type[]', `0`)
+            searchParams.append('type[]', `2`)
+            await route.app.$store.dispatch('EventsLog', { nextIndex: 1, searchParams })
+            next()
+          },
         },
         {
           path: 'WalletLog',
           name: 'WalletLog',
           component: WalletLog,
+          beforeEnter: async (to, from, next) => {
+            let searchParams = new URLSearchParams()
+            searchParams.append('operatable_type', `1`) // wallet
+            searchParams.append('operatable_id', route.app.$store.getters.wallet.filter((item) => {
+              return item.gem === 4
+            }).shift().id)
+            await route.app.$store.dispatch('WalletLog', { nextIndex: 1, searchParams })
+            next()
+          },
         },
       ],
     },
@@ -105,6 +177,7 @@ var route = new Router({
 route.beforeEach(async (to, from, next) => {
   if (from.name === null && to.name !== 'Login' && (route.app.$store === undefined || route.app.$store.getters.token.length === 0)) {
     route.push('/Login')
+    return
   }
 
   if (from.name === 'Login') {
@@ -112,54 +185,6 @@ route.beforeEach(async (to, from, next) => {
     route.app.$store.dispatch(`allChildAccount`)
     route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
     route.app.$store.dispatch(`WalletPage`)
-  }
-
-  if (route.app.$store !== undefined) {
-    const searchParams = new URLSearchParams()
-    switch (to.name) {
-      case 'UserProfile':
-        await route.app.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
-        break
-      case 'Activating':
-        route.app.$store.dispatch('goToActiveTreePage', { nextIndex: 1 })
-        break
-      case 'BuyDragon':
-        await route.app.$store.dispatch(`goToAllDragonPage`, { nextIndex: 1 })
-        route.app.$store.dispatch(`WalletPage`)
-        break
-      case 'Tree':
-      case 'Dragon':
-      case 'ChildAccount':
-        if (!route.app.$store.getters.self.is_child_account) {
-          await route.app.$store.dispatch('whoAmI')
-          route.app.$store.dispatch(`allChildAccount`)
-          await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
-        }
-        route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-        route.app.$store.dispatch(`WalletPage`)
-        break
-      case 'Group':
-        await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-        break
-      case 'Wallet':
-      case 'TransferUSD':
-        await route.app.$store.dispatch(`WalletPage`)
-        break
-      case 'EventsLog':
-        searchParams.append('operatable_type', `2`) // dragon
-        searchParams.append('type[]', `0`)
-        searchParams.append('type[]', `2`)
-        await route.app.$store.dispatch('EventsLog', { nextIndex: 1, searchParams })
-        break
-      case 'WalletLog':
-        await route.app.$store.dispatch(`WalletPage`)
-        searchParams.append('operatable_type', `1`) // wallet
-        searchParams.append('operatable_id', route.app.$store.getters.wallet.filter((item) => {
-          return item.gem === 4
-        }).shift().id)
-        await route.app.$store.dispatch('WalletLog', { nextIndex: 1, searchParams })
-        break
-    }
   }
   next()
 })

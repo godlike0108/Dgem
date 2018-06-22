@@ -1,4 +1,5 @@
 import axios from 'axios'
+import localStore from 'store'
 export default {
   async CreateUser ({ dispatch, getters }, data) {
     const headers = {
@@ -20,6 +21,8 @@ export default {
     }
 
     const response = await axios.post(`${getters.host}/oauth/token`, data, { headers })
+    // store token into local
+    localStore.set('dgemToken', response.data)
     commit('token', response.data)
   },
   async LoginQRcode ({ dispatch, commit, getters }) {

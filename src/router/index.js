@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import localStore from 'store'
 import Main from '@/components/Main'
 // import Home from '@/components/Home'
 import notStart from '@/components/notStart'
@@ -36,6 +37,9 @@ var route = new Router({
       name: 'Main',
       component: Main,
       redirect: '/Main/UserProfile',
+      beforeEach: (to, from, next) => {
+        console.log('here')
+      },
       children: [
         {
           path: 'notStart',
@@ -47,6 +51,12 @@ var route = new Router({
           name: 'UserProfile',
           component: UserProfile,
           beforeEnter: async (to, from, next) => {
+            if (from.name === 'Login') {
+              await route.app.$store.dispatch('whoAmI')
+              route.app.$store.dispatch(`allChildAccount`)
+              route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+              route.app.$store.dispatch(`WalletPage`)
+            }
             await route.app.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
             next()
           },
@@ -56,6 +66,7 @@ var route = new Router({
           name: 'Dragon',
           component: Dragon,
           beforeEnter: async (to, from, next) => {
+            console.log('fuck')
             if (!route.app.$store.getters.self.is_child_account) {
               await route.app.$store.dispatch('whoAmI')
               route.app.$store.dispatch(`allChildAccount`)
@@ -175,18 +186,38 @@ var route = new Router({
 })
 
 route.beforeEach(async (to, from, next) => {
-  if (from.name === null && to.name !== 'Login' && (route.app.$store === undefined || route.app.$store.getters.token.length === 0)) {
+  // if (from.name === null && to.name !== 'Login' && (route.app.$store === undefined || route.app.$store.getters.token.length === 0)) {
+  //   route.push('/Login')
+  //   return
+  // }
+
+  if (to.name === 'Login') {
+    console.log('Go to login page.')
+    next()
+    return
+  }
+
+  if (!localStore.get('dgemToken')) {
+    console.log('Please Login first.')
     route.push('/Login')
     return
   }
 
-  if (from.name === 'Login') {
+  if (from.name !== 'Login') {
+    route.app.$store.commit('token', localStore.get('dgemToken'))
     await route.app.$store.dispatch('whoAmI')
     route.app.$store.dispatch(`allChildAccount`)
     route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
     route.app.$store.dispatch(`WalletPage`)
   }
   next()
+
+  // if (from.name === 'Login') {
+  //   await route.app.$store.dispatch('whoAmI')
+  //   route.app.$store.dispatch(`allChildAccount`)
+  //   route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+  //   route.app.$store.dispatch(`WalletPage`)
+  // }
 })
 
 export default route

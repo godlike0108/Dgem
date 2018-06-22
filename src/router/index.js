@@ -25,7 +25,13 @@ var route = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/Login',
+      beforeEnter: (to, from, next) => {
+        if (localStore.get('dgemToken')) {
+          route.push('/Main')
+        } else {
+          route.push('/Login')
+        }
+      },
     },
     {
       path: '/Login',
@@ -37,9 +43,6 @@ var route = new Router({
       name: 'Main',
       component: Main,
       redirect: '/Main/UserProfile',
-      beforeEach: (to, from, next) => {
-        console.log('here')
-      },
       children: [
         {
           path: 'notStart',
@@ -192,23 +195,21 @@ route.beforeEach(async (to, from, next) => {
   // }
 
   if (to.name === 'Login') {
-    console.log('Go to login page.')
     next()
     return
   }
 
   if (!localStore.get('dgemToken')) {
-    console.log('Please Login first.')
     route.push('/Login')
     return
   }
 
-  if (from.name !== 'Login') {
+  if (from.name !== 'Login' || to.name !== '/') {
     route.app.$store.commit('token', localStore.get('dgemToken'))
     await route.app.$store.dispatch('whoAmI')
-    route.app.$store.dispatch(`allChildAccount`)
-    route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-    route.app.$store.dispatch(`WalletPage`)
+    await route.app.$store.dispatch(`allChildAccount`)
+    await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+    await route.app.$store.dispatch(`WalletPage`)
   }
   next()
 })

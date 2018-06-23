@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
-    <h4>目前美金額度</h4>
-    <span class="currUSD">{{ currUSD }}</span>元
+    <h4>目前夢寶積分</h4>
+    <span class="currUSD">{{ currUSD }}</span>點
   </div>
 </template>
 <script>

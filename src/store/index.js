@@ -41,7 +41,7 @@ export default new Vuex.Store({
       '多喜寶石',
       '多福寶石',
       '多財寶石',
-      '美金',
+      '夢寶積分',
     ],
     qrcode: (state) => state.qrCode.qrcode_url,
     qrcodeUser: (state) => state.qrCode,

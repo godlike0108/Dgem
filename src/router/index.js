@@ -69,7 +69,6 @@ var route = new Router({
           name: 'Dragon',
           component: Dragon,
           beforeEnter: async (to, from, next) => {
-            console.log('fuck')
             if (!route.app.$store.getters.self.is_child_account) {
               await route.app.$store.dispatch('whoAmI')
               route.app.$store.dispatch(`allChildAccount`)

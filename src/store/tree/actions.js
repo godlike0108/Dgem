@@ -11,6 +11,11 @@ export default {
       data,
     })
   },
+  async setAvailTreeType ({ getters, dispatch, commit }) {
+    const myId = getters.myId
+    const json = await dispatch('GET', `/api/users/${myId}/available-tree-types`)
+    commit('setAvailTreeType', json)
+  },
   async goToTreePage ({ dispatch, commit, getters }, { nextIndex }) {
     nextIndex = nextIndex || 1
     const myId = getters.myId

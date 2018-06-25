@@ -4,10 +4,12 @@ export default {
   state: {
     tree: {},
     activeTree: {},
+    availTreeType: [],
   },
   getters: {
     tree: (state) => state.tree.data,
     activeTree: (state) => state.activeTree.data,
+    availTreeType: (state) => state.availTreeType,
   },
   mutations: {
     setTreeList (state, json) {
@@ -15,6 +17,9 @@ export default {
     },
     setActiveTreeList (state, json) {
       state.activeTree = json
+    },
+    setAvailTreeType (state, json) {
+      state.availTreeType = json
     },
   },
   actions,

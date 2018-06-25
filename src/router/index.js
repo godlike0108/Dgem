@@ -89,6 +89,7 @@ var route = new Router({
               route.app.$store.dispatch(`allChildAccount`)
               await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
             }
+            route.app.$store.dispatch('setAvailTreeType')
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
             next()

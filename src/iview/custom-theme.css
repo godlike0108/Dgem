@@ -99,7 +99,7 @@ thead {
   color: #666;
 }
 
-.userProfile .readyOnly > input {
+.userProfile .readOnly > input {
   background-color: transparent;
   border: none;
   color: #fff;

@@ -3,16 +3,37 @@
     <h1>個人資料</h1>
     <Form>
       <FormItem label="修改䁥稱" inline>
-        <i-switch v-model="isReadyOnly" @on-change="change()">
+        <i-switch v-model="nickName.canModify" @on-change="change()">
           <span slot="open">開</span>
           <span slot="close">關</span>
         </i-switch>
       </FormItem>
-     <FormItem>
-       <Input v-model="userName" :readonly="!isReadyOnly" :class="mode" placeholder="Enter something..." style="width: 300px"></Input>
-       <Button v-show="isReadyOnly" @click="modifyUserName()" type="primary">決定䁥稱</Button>
-     </FormItem>
-   </Form>
+      <FormItem>
+       <Input v-model="userName" :readonly="!nickName.canModify" :class="mode" placeholder="Enter something..." style="width: 300px"></Input>
+       <Button v-show="nickName.canModify" @click="modifyUserName()" type="primary">決定䁥稱</Button>
+      </FormItem>
+      <FormItem label="修改錢包密碼" inline>
+        <i-switch v-model="walletPassword.isOpen">
+          <span slot="open">開</span>
+          <span slot="close">關</span>
+        </i-switch>
+      </FormItem>
+     </Form>
+
+      <Form v-if="walletPasswordMode" ref="UpdateWalletPwd" :model="UpdateWalletPwd" :rules="UpdateWalletPwdRule" label-position="top" style="max-width: 300px;">
+        <FormItem label="請輸入錢包密碼" prop="password">
+          <Input type="password" v-model="UpdateWalletPwd.password"></Input>
+        </FormItem>
+        <FormItem label="請輸入新錢包密碼" prop="newPassword">
+          <Input type="password" v-model="UpdateWalletPwd.newPassword"></Input>
+        </FormItem>
+        <FormItem label="請再次確認新錢包密碼" prop="newPasswordCheck">
+          <Input type="password" v-model="UpdateWalletPwd.newPasswordCheck"></Input>
+        </FormItem>
+        <FormItem class="sumitArea">
+          <Button type="primary" @click="updateWalletPwd()">修改密碼</Button>
+        </FormItem>
+      </Form>
 
     <h2>夢寶龍 × {{ this.$store.getters.paging('dragon', 'activeDragon').total }}</h2>
     <Page :total="pagingDragon.total" :page-size="pagingDragon.pre_page" simple size="small" @on-change="changeDragonPage($event)"></Page>
@@ -23,8 +44,48 @@
 <script>
 export default {
   data () {
+    const validatePass = (rule, value, callback) => {
+      if (value === '' || value.length < 6) {
+        callback(new Error('填入密碼，符合長度 6 個字元以上'))
+      } else {
+        if (this.UpdateWalletPwd.newPasswordCheck !== '') {
+          this.$refs.UpdateWalletPwd.validateField('newPasswordCheck')
+        }
+        callback()
+      }
+    }
+    const validatePassCheck = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('請再次確認新錢包密碼'))
+      } else if (value !== this.UpdateWalletPwd.newPassword) {
+        callback(new Error('兩邊不一樣，請再確認'))
+      } else {
+        callback()
+      }
+    }
     return {
-      isReadyOnly: false,
+      UpdateWalletPwd: {
+        password: '',
+        newPassword: '',
+        newPasswordCheck: '',
+      },
+      UpdateWalletPwdRule: {
+        password: [
+          { required: true, validator: validatePass, trigger: 'blur' },
+        ],
+        newPassword: [
+          { required: true, validator: validatePass, trigger: 'blur' },
+        ],
+        newPasswordCheck: [
+          { required: true, validator: validatePassCheck, trigger: 'blur' },
+        ],
+      },
+      nickName: {
+        canModify: false,
+      },
+      walletPassword: {
+        isOpen: false,
+      },
       columnsDragon: [
         {
           title: '夢寶龍的擁有者',
@@ -62,8 +123,11 @@ export default {
     },
     mode () {
       return {
-        readyOnly: !this.isReadyOnly,
+        readOnly: !this.nickName.canModify,
       }
+    },
+    walletPasswordMode () {
+      return this.walletPassword.isOpen
     },
     userName: {
       get: function () {
@@ -79,14 +143,37 @@ export default {
       await this.$store.dispatch('goToActiveDragonPage', { nextIndex })
     },
     async change () {
-      if (!this.isReadyOnly) {
+      if (!this.nickName.canModify) {
         await this.$store.dispatch('whoAmI')
       }
     },
     async modifyUserName () {
       await this.$store.dispatch('modifyMyName')
       this.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
-      this.isReadyOnly = false
+      this.canModify = false
+    },
+    updateWalletPwd () {
+      this.$refs['UpdateWalletPwd'].validate(async (valid) => {
+        if (valid) {
+          const data = {
+            wallet_password: this.UpdateWalletPwd.password,
+            new_wallet_password: this.UpdateWalletPwd.newPassword,
+          }
+          let response = await this.$store.dispatch('UpdateWalletPwd', {data})
+          if (response === 'success') {
+            this.$Message.success('密碼修改成功')
+            this.reset()
+            this.walletPassword.isOpen = false
+          } else {
+            this.$Message.error('密碼錯誤')
+          }
+        } else {
+          this.$Message.error('修改錢包密碼失敗')
+        }
+      })
+    },
+    reset () {
+      this.$refs['UpdateWalletPwd'].resetFields()
     },
   },
 }

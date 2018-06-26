@@ -20,4 +20,15 @@ export default {
     const json = await dispatch('GET', `/api/users/${myId}/operation-histories?${searchParams.toString()}`)
     commit('walletLog', json)
   },
+  // update wallet pwd
+  async UpdateWalletPwd ({ dispatch, getters }, { data }) {
+    const myId = getters.myId
+    const path = `/api/users/${myId}`
+    try {
+      await dispatch('PUT', {path, data})
+      return 'success'
+    } catch (e) {
+      return 'fail'
+    }
+  },
 }

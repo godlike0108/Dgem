@@ -30,6 +30,12 @@
         <FormItem label="請再次填入密碼" prop="passwordCheck">
           <Input type="password" v-model="SignUp.passwordCheck"></Input>
         </FormItem>
+        <FormItem label="請填入錢包密碼" prop="walletPassword">
+          <Input type="password" v-model="SignUp.walletPassword"></Input>
+        </FormItem>
+        <FormItem label="請再次填入錢包密碼" prop="walletPasswordCheck">
+          <Input type="password" v-model="SignUp.walletPasswordCheck"></Input>
+        </FormItem>
         <FormItem label="請填入上線 ID" prop="upline_id">
           <Input v-model="SignUp.upline_id"></Input>
         </FormItem>
@@ -50,7 +56,7 @@ export default {
   },
   data () {
     const validatePass = (rule, value, callback) => {
-      if (value === '') {
+      if (value === '' || value.length < 6) {
         callback(new Error('填入密碼，符合長度 6 個字元以上'))
       } else {
         if (this.SignUp.passwordCheck !== '') {
@@ -68,7 +74,25 @@ export default {
         callback()
       }
     }
-
+    const validateWalletPass = (rule, value, callback) => {
+      if (value === '' || value.length < 6) {
+        callback(new Error('填入密碼，符合長度 6 個字元以上'))
+      } else {
+        if (this.SignUp.passwordCheck !== '') {
+          this.$refs.SignUp.validateField('walletPasswordCheck')
+        }
+        callback()
+      }
+    }
+    const validateWalletPassCheck = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('再填入一樣的密碼'))
+      } else if (value !== this.SignUp.walletPassword) {
+        callback(new Error('兩邊不一樣，請再確認'))
+      } else {
+        callback()
+      }
+    }
     const validateUplineId = (rule, value, callback) => {
       if (value < 1) {
         callback(new Error('填入上線的 ID 號碼'))
@@ -101,6 +125,8 @@ export default {
         email: '',
         password: '',
         passwordCheck: '',
+        walletPassword: '',
+        walletPasswordCheck: '',
         upline_id: 0,
       },
       SignUpRule: {
@@ -116,6 +142,12 @@ export default {
         ],
         passwordCheck: [
           { required: true, validator: validatePassCheck, trigger: 'blur' },
+        ],
+        walletPassword: [
+          { required: true, validator: validateWalletPass, trigger: 'blur' },
+        ],
+        walletPasswordCheck: [
+          { required: true, validator: validateWalletPassCheck, trigger: 'blur' },
         ],
         upline_id: [
           { required: true, type: 'number', validator: validateUplineId, trigger: 'blur' },
@@ -149,6 +181,7 @@ export default {
             email: this.SignUp.email,
             name: this.SignUp.name,
             password: this.SignUp.password,
+            wallet_password: this.SignUp.walletPassword,
             upline_id: this.SignUp.upline_id,
           }
           await this.$store.dispatch('CreateUser', data)

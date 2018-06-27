@@ -46,6 +46,8 @@ export default {
     }
 
     const response = await axios.post(`${getters.host}/oauth/token`, data, { headers })
+    // store token into local
+    localStore.set('dgemToken', response.data)
     commit('token', response.data)
   },
   async CreateQRcode ({ commit, getters }) {

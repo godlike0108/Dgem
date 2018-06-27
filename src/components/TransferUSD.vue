@@ -6,7 +6,7 @@
     </div>
     <CurrUsdWallet></CurrUsdWallet>
     <div class="form">
-      <h4>我的夢寶積分</h4>
+      <h4>轉出數量</h4>
       <Input class="input-amount" v-model="amount" placeholder="0" style="width: 300px" clearable></Input>
     </div>
     <div class="form">
@@ -25,7 +25,7 @@ export default {
   },
   data () {
     return {
-      id: 0,
+      id: '',
       amount: 0,
       busy: false,
     }

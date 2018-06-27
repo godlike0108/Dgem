@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <h4>目前夢寶積分</h4>
+    <h4>我的夢寶積分</h4>
     <span class="currUSD">{{ currUSD }}</span>點
   </div>
 </template>

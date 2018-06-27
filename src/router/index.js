@@ -69,13 +69,15 @@ var route = new Router({
           name: 'Dragon',
           component: Dragon,
           beforeEnter: async (to, from, next) => {
-            if (!route.app.$store.getters.self.is_child_account) {
-              await route.app.$store.dispatch('whoAmI')
-              route.app.$store.dispatch(`allChildAccount`)
-              await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
+            if (route.app.$store.getters.self.is_child_account) {
+              // redirect if directly enter url
+              route.push('/Main/ChildAccount')
+              return
             }
+
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
+            route.app.$store.dispatch('goToDragonPage', { nextIndex: 1 })
             next()
           },
         },
@@ -84,14 +86,15 @@ var route = new Router({
           name: 'Tree',
           component: Tree,
           beforeEnter: async (to, from, next) => {
-            if (!route.app.$store.getters.self.is_child_account) {
-              await route.app.$store.dispatch('whoAmI')
-              route.app.$store.dispatch(`allChildAccount`)
-              await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
+            if (route.app.$store.getters.self.is_child_account) {
+              // redirect if directly enter url
+              route.push('/Main/ChildAccount')
+              return
             }
             route.app.$store.dispatch('setAvailTreeType')
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
+            route.app.$store.dispatch('goToTreePage', { nextIndex: 1 })
             next()
           },
         },
@@ -133,6 +136,12 @@ var route = new Router({
           name: 'TransferUSD',
           component: TransferUSD,
           beforeEnter: async (to, from, next) => {
+            if (route.app.$store.getters.self.is_child_account) {
+              // redirect if directly enter url
+              route.push('/Main/ChildAccount')
+              return
+            }
+
             await route.app.$store.dispatch(`WalletPage`)
             next()
           },
@@ -204,7 +213,8 @@ route.beforeEach(async (to, from, next) => {
     return
   }
 
-  if (from.name !== 'Login' || to.name !== '/') {
+  // if come from outside with token, init user
+  if (!from.name) {
     route.app.$store.commit('token', localStore.get('dgemToken'))
     await route.app.$store.dispatch('whoAmI')
     await route.app.$store.dispatch(`allChildAccount`)

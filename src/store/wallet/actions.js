@@ -36,4 +36,9 @@ export default {
     let walletTransferMap = await dispatch('GET', `/api/wallet-transfer-map`)
     commit('setWalletTransferMap', walletTransferMap)
   },
+  // get wallet transfer rate
+  async WalletTransferRate ({dispatch, commit}) {
+    let walletTransferRate = await dispatch('GET', `/api/wallet-transfer-rate`)
+    commit('setWalletTransferRate', walletTransferRate)
+  },
 }

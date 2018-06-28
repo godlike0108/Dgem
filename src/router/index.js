@@ -158,6 +158,7 @@ var route = new Router({
             }
 
             await route.app.$store.dispatch(`WalletTransferMap`)
+            await route.app.$store.dispatch(`WalletTransferRate`)
             next()
           },
         },

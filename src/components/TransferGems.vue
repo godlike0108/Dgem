@@ -8,7 +8,7 @@
         <Option v-for="gem in gemList" :value="gem.value" :key="gem.value">{{ gem.name }}</Option>
     </Select>
   </FormItem>
-  <FormItem :label="`兌換比例: ${ratio.label}`">
+  <FormItem :label="`兌換比例: ${transferRate}`">
     <Row>
       <Col span="11">
         <FormItem prop="fromValue">
@@ -45,10 +45,6 @@ export default {
       walletName: '七彩寶石',
       walletValue: 100,
       selectedGem: 0,
-      ratio: {
-        label: '1:5',
-        value: 5,
-      },
       listLookUp: {
         '0': '七彩寶石',
         '1': '多喜寶石',
@@ -75,22 +71,29 @@ export default {
     },
   },
   computed: {
+    // get current wallet index
+    pageGem () {
+      return this.$route.params.gem
+    },
     // get map list from wallet transfer map
     gemList () {
-      return this.$store.getters.walletTransferMap[this.$route.params.gem].map(gem => {
+      return this.$store.getters.walletTransferMap[this.pageGem].map(gem => {
         return {
           name: this.listLookUp[gem],
           value: gem,
         }
       })
     },
+    transferRate () {
+      let pickedRate = `${this.pageGem}_${this.selectedGem}`
+      return this.$store.getters.walletTransferRate[pickedRate]
+    },
     fromValue: {
       get () {
-        console.log(this)
         return this.transferGems.fromValue
       },
       set (value) {
-        this.transferGems.toValue = value * this.ratio.value
+        this.transferGems.toValue = Number((value * this.transferRate).toFixed(1))
       },
     },
     toValue: {
@@ -98,7 +101,7 @@ export default {
         return this.transferGems.toValue
       },
       set (value) {
-        this.transferGems.fromValue = value / this.ratio.value
+        this.transferGems.fromValue = Number((value / this.transferRate).toFixed(1))
       },
     },
   },

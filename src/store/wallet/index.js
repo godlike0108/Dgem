@@ -7,6 +7,8 @@ export default {
     walletLog: {},
     // transfer map
     walletTransferMap: {},
+    // transfer rate
+    walletTransferRate: {},
   },
   getters: {
     wallet: (state) => {
@@ -23,6 +25,7 @@ export default {
       }
     },
     walletTransferMap: (state) => state.walletTransferMap,
+    walletTransferRate: (state) => state.walletTransferRate,
   },
   mutations: {
     setWallet (state, json) {
@@ -31,6 +34,7 @@ export default {
     // separate wallet log from event log
     walletLog: (state, json) => { state.walletLog = json },
     setWalletTransferMap: (state, json) => { state.walletTransferMap = json },
+    setWalletTransferRate: (state, json) => { state.walletTransferRate = json },
   },
   actions,
 }

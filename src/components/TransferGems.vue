@@ -1,7 +1,7 @@
 <template>
 <div>
 <h4>我的{{walletName}}</h4>
-<span class="wallet-value">{{walletValue | valueUnit}}</span>
+<span class="wallet-value">{{currentGem | valueUnit}}</span>
 <Form ref="transferGems" :model="transferGems" :rules="transferRule" label-position="top" style="max-width:300px">
   <FormItem label="轉換種類">
     <Select v-model="selectedGem" style="width:200px" placeholder="請選擇轉換種類">
@@ -57,7 +57,6 @@ export default {
     return {
       mainGemValue: 0,
       walletName: '',
-      walletValue: 100,
       selectedGem: 0,
       listLookUp: {
         '0': '七彩寶石',
@@ -88,6 +87,10 @@ export default {
     // get current wallet index
     pageGem () {
       return this.mainGemValue
+    },
+    // current gem
+    currentGem () {
+      return this.$store.getters.wallet.find(wallet => wallet.gem === Number(this.mainGemValue)).amount
     },
     // get map list from wallet transfer map
     gemList () {

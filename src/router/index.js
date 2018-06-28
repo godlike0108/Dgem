@@ -9,9 +9,9 @@ import Tree from '@/components/Tree'
 import Activating from '@/components/Activating'
 import ChildAccount from '@/components/ChildAccount'
 import Wallet from '@/components/Wallet'
-import BuyDragon from '@/components/BuyDragon'
 import Group from '@/components/Group'
 import TransferUSD from '@/components/TransferUSD'
+import TransferGems from '@/components/TransferGems'
 // import QRcodeLogin from '@/components/QRcodeLogin'
 import Login from '@/components/Login'
 import UserProfile from '@/components/UserProfile'
@@ -147,12 +147,17 @@ var route = new Router({
           },
         },
         {
-          path: 'BuyDragon',
-          name: 'BuyDragon',
-          component: BuyDragon,
+          path: 'TransferGems',
+          name: 'TransferGems',
+          component: TransferGems,
           beforeEnter: async (to, from, next) => {
-            await route.app.$store.dispatch(`goToAllDragonPage`, { nextIndex: 1 })
-            route.app.$store.dispatch(`WalletPage`)
+            if (route.app.$store.getters.self.is_child_account) {
+              // redirect if directly enter url
+              route.push('/Main/ChildAccount')
+              return
+            }
+
+            await route.app.$store.dispatch(`WalletPage`)
             next()
           },
         },

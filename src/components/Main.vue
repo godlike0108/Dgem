@@ -67,18 +67,28 @@
                   </Submenu>
                   <Submenu name="4">
                       <template slot="title">
-                          <Icon type="social-usd"></Icon>
+                          <Icon type="bag"></Icon>
                           寶石卡片管理
                       </template>
-                      <router-link to="Wallet"><MenuItem name="4-3">寶石庫存</MenuItem></router-link>
-                      <!-- <router-link to="notStart"><MenuItem v-show="isFunctionEnabel" name="4-1">外部轉帳</MenuItem></router-link>
-                      <router-link to="notStart"><MenuItem v-show="isFunctionEnabel" name="4-2">平台轉帳</MenuItem></router-link> -->
-                      <router-link to="WalletLog"><MenuItem name="4-4">進出明細</MenuItem></router-link>
-                      <router-link to="TransferUSD"><MenuItem v-show="isFunctionEnabel" name="4-5">夢寶積分轉出</MenuItem></router-link>
+                      <router-link to="Wallet"><MenuItem name="4-1">寶石庫存</MenuItem></router-link>
+                      <router-link to="WalletLog"><MenuItem name="4-2">進出明細</MenuItem></router-link>
+                      <Submenu name="4-3">
+                          <template slot="title">
+                          寶石轉換
+                          </template>
+                          <router-link to="TransferGems"><MenuItem name="4-3-1">七彩寶石轉換</MenuItem></router-link>
+                          <router-link to="TransferGems"><MenuItem name="4-3-2">多喜寶石轉換</MenuItem></router-link>
+                          <router-link to="TransferGems"><MenuItem v-show="isFunctionEnabel" name="4-3-3">多福寶石轉換</MenuItem></router-link>
+                          <router-link to="TransferGems"><MenuItem v-show="isFunctionEnabel" name="4-3-4">多財寶石轉換</MenuItem></router-link>
+                      </Submenu>
                   </Submenu>
                   <router-link to="Group"><MenuItem name="5-1">
                     <Icon type="person-stalker"></Icon>
                     家族開採狀況
+                  </MenuItem></router-link>
+                  <router-link to="TransferUSD"><MenuItem v-show="isFunctionEnabel" name="6-1">
+                    <Icon type="social-usd"></Icon>
+                    夢寶積分轉出
                   </MenuItem></router-link>
                 </Menu>
                 <div slot="trigger"></div>

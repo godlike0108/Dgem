@@ -49,10 +49,10 @@
                           <Icon type="person"></Icon>
                           個人中心
                       </template>
-                      <router-link to="userProfile"><MenuItem name="2-1">基本資料</MenuItem></router-link>
-                      <router-link to="ChildAccount"><MenuItem name="2-2">子母帳號</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/userProfile`}"><MenuItem name="2-1">基本資料</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/ChildAccount`}"><MenuItem name="2-2">子母帳號</MenuItem></router-link>
                       <!-- <router-link to="notStart"><MenuItem v-show="isFunctionEnabel" name="2-3">更換手機</MenuItem></router-link> -->
-                      <router-link to="notStart"><MenuItem v-show="false" name="2-4">夢想卡解涷</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/notStart`}"><MenuItem v-show="false" name="2-4">夢想卡解涷</MenuItem></router-link>
                   </Submenu>
                   <Submenu name="3">
                       <template slot="title">
@@ -60,33 +60,33 @@
                           夢寶龍樹種區
                       </template>
                       <!-- <router-link to="BuyDragon"><MenuItem v-show="isFunctionEnabel" name="3-1">夢寶龍購買</MenuItem></router-link> -->
-                      <router-link to="Dragon"><MenuItem v-show="isFunctionEnabel" name="3-2">夢寶龍激活</MenuItem></router-link>
-                      <router-link to="Tree"><MenuItem v-show="isFunctionEnabel" name="3-3">夢寶樹激活</MenuItem></router-link>
-                      <router-link to="EventsLog"><MenuItem name="3-4">操作明細查詢</MenuItem></router-link>
-                      <router-link to="Activating"><MenuItem name="3-5">開採狀況</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/Dragon`}"><MenuItem v-show="isFunctionEnabel" name="3-2">夢寶龍激活</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/Tree`}"><MenuItem v-show="isFunctionEnabel" name="3-3">夢寶樹激活</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/EventsLog`}"><MenuItem name="3-4">操作明細查詢</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/Activating`}"><MenuItem name="3-5">開採狀況</MenuItem></router-link>
                   </Submenu>
                   <Submenu name="4">
                       <template slot="title">
                           <Icon type="bag"></Icon>
                           寶石卡片管理
                       </template>
-                      <router-link to="Wallet"><MenuItem name="4-1">寶石庫存</MenuItem></router-link>
-                      <router-link to="WalletLog"><MenuItem name="4-2">進出明細</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/Wallet`}"><MenuItem name="4-1">寶石庫存</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/WalletLog`}"><MenuItem name="4-2">進出明細</MenuItem></router-link>
                       <Submenu name="4-3">
                           <template slot="title">
                           寶石轉換
                           </template>
-                          <router-link to="TransferGems/0"><MenuItem name="4-3-1">七彩寶石轉換</MenuItem></router-link>
-                          <router-link to="TransferGems/1"><MenuItem name="4-3-2">多喜寶石轉換</MenuItem></router-link>
-                          <router-link to="TransferGems/2"><MenuItem v-show="isFunctionEnabel" name="4-3-3">多福寶石轉換</MenuItem></router-link>
-                          <router-link to="TransferGems/3"><MenuItem v-show="isFunctionEnabel" name="4-3-4">多財寶石轉換</MenuItem></router-link>
+                          <router-link :to="{path: '/Main/TransferGems/0'}"><MenuItem name="4-3-1">七彩寶石轉換</MenuItem></router-link>
+                          <router-link :to="{path: '/Main/notStart'}"><MenuItem name="4-3-2">多喜寶石轉換</MenuItem></router-link>
+                          <router-link :to="{path: '/Main/notStart'}"><MenuItem v-show="isFunctionEnabel" name="4-3-3">多福寶石轉換</MenuItem></router-link>
+                          <router-link :to="{path: '/Main/TransferGems/3'}"><MenuItem v-show="isFunctionEnabel" name="4-3-4">多財寶石轉換</MenuItem></router-link>
                       </Submenu>
                   </Submenu>
-                  <router-link to="Group"><MenuItem name="5-1">
+                  <router-link :to="{path: `/Main/Group`}"><MenuItem name="5-1">
                     <Icon type="person-stalker"></Icon>
                     家族開採狀況
                   </MenuItem></router-link>
-                  <router-link to="TransferUSD"><MenuItem v-show="isFunctionEnabel" name="6-1">
+                  <router-link :to="{path: `/Main/TransferUSD`}"><MenuItem v-show="isFunctionEnabel" name="6-1">
                     <Icon type="social-usd"></Icon>
                     夢寶積分轉出
                   </MenuItem></router-link>

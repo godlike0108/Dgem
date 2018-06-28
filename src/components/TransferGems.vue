@@ -39,10 +39,24 @@ export default {
   name: 'TransferGems',
   mounted () {
     this.selectedGem = this.gemList[0].value
+    // for first in page
+    this.mainGemValue = this.$route.params.gem
+    this.walletName = this.listLookUp[this.pageGem]
+  },
+  watch: {
+    '$route' (to, from) {
+      if (!this.$route.params.hasOwnProperty('gem')) {
+        return
+      }
+      // react to route changes...
+      this.mainGemValue = this.$route.params.gem
+      this.walletName = this.listLookUp[this.pageGem]
+    },
   },
   data () {
     return {
-      walletName: '七彩寶石',
+      mainGemValue: 0,
+      walletName: '',
       walletValue: 100,
       selectedGem: 0,
       listLookUp: {
@@ -73,11 +87,11 @@ export default {
   computed: {
     // get current wallet index
     pageGem () {
-      return this.$route.params.gem
+      return this.mainGemValue
     },
     // get map list from wallet transfer map
     gemList () {
-      return this.$store.getters.walletTransferMap[this.pageGem].map(gem => {
+      return this.$store.getters.walletTransferMap[this.mainGemValue].map(gem => {
         return {
           name: this.listLookUp[gem],
           value: gem,

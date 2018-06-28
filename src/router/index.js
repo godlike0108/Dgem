@@ -156,7 +156,6 @@ var route = new Router({
               route.push('/Main/ChildAccount')
               return
             }
-
             await route.app.$store.dispatch(`WalletTransferMap`)
             await route.app.$store.dispatch(`WalletTransferRate`)
             next()

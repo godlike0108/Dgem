@@ -147,7 +147,7 @@ var route = new Router({
           },
         },
         {
-          path: 'TransferGems',
+          path: 'TransferGems/:gem',
           name: 'TransferGems',
           component: TransferGems,
           beforeEnter: async (to, from, next) => {
@@ -157,7 +157,7 @@ var route = new Router({
               return
             }
 
-            await route.app.$store.dispatch(`WalletPage`)
+            await route.app.$store.dispatch(`WalletTransferMap`)
             next()
           },
         },

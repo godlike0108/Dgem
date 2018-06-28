@@ -31,4 +31,9 @@ export default {
       return 'fail'
     }
   },
+  // get wallet transfer map
+  async WalletTransferMap ({dispatch, commit}) {
+    let walletTransferMap = await dispatch('GET', `/api/wallet-transfer-map`)
+    commit('setWalletTransferMap', walletTransferMap)
+  },
 }

@@ -5,6 +5,8 @@ export default {
     wallet: {},
     // separate wallet log from event log
     walletLog: {},
+    // transfer map
+    walletTransferMap: {},
   },
   getters: {
     wallet: (state) => {
@@ -20,6 +22,7 @@ export default {
         return 0
       }
     },
+    walletTransferMap: (state) => state.walletTransferMap,
   },
   mutations: {
     setWallet (state, json) {
@@ -27,6 +30,7 @@ export default {
     },
     // separate wallet log from event log
     walletLog: (state, json) => { state.walletLog = json },
+    setWalletTransferMap: (state, json) => { state.walletTransferMap = json },
   },
   actions,
 }

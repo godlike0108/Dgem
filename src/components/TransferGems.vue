@@ -74,7 +74,10 @@ export default {
         toValue: 0,
       },
       transferRule: {
-
+        fromValue: [
+          { required: true, type: 'number', trigger: 'blur', message: '請輸入數字' },
+          { type: 'number', min: 1, trigger: 'blur', message: '轉換數量必須大於1' },
+        ],
       },
     }
   },
@@ -110,6 +113,7 @@ export default {
         return this.transferGems.fromValue
       },
       set (value) {
+        this.transferGems.fromValue = Number(value)
         this.transferGems.toValue = Number((value * this.transferRate).toFixed(1))
       },
     },
@@ -118,6 +122,7 @@ export default {
         return this.transferGems.toValue
       },
       set (value) {
+        this.transferGems.toValue = Number(value)
         this.transferGems.fromValue = Number((value / this.transferRate).toFixed(1))
       },
     },

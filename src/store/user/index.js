@@ -11,6 +11,7 @@ export default {
   getters: {
     myId: (state) => state.mySelf.id,
     myName: (state) => state.mySelf.name,
+    emailVerified: (state) => state.mySelf.email_verified,
     eventsLog: (state) => state.eventsLog,
     childAccount: (state) => state.childAccount.data,
     self: (state) => state.mySelf,

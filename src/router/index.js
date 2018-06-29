@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import localStore from 'store'
 import Main from '@/components/Main'
-// import Home from '@/components/Home'
+import Unverified from '@/components/Unverified'
 import notStart from '@/components/notStart'
 import Dragon from '@/components/Dragon'
 import Tree from '@/components/Tree'
@@ -48,6 +48,11 @@ var route = new Router({
           path: 'notStart',
           name: 'notStart',
           component: notStart,
+        },
+        {
+          path: 'Unverified',
+          name: 'Unverified',
+          component: Unverified,
         },
         {
           path: 'UserProfile',
@@ -219,10 +224,15 @@ route.beforeEach(async (to, from, next) => {
     return
   }
 
+  route.app.$store.commit('token', localStore.get('dgemToken'))
+  await route.app.$store.dispatch('whoAmI')
+  if (!route.app.$store.getters.emailVerified) {
+    route.push('/Unverified')
+    return
+  }
+
   // if come from outside with token, init user
   if (!from.name) {
-    route.app.$store.commit('token', localStore.get('dgemToken'))
-    await route.app.$store.dispatch('whoAmI')
     await route.app.$store.dispatch(`allChildAccount`)
     await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
     await route.app.$store.dispatch(`WalletPage`)

@@ -1,10 +1,10 @@
 <template>
 <div>
 <h4>我的{{walletName}}</h4>
-<span class="wallet-value">{{currentGem | valueUnit}}</span>
+<p><span class="wallet-value">{{currentGem}}</span>點</p>
 <Form ref="transferGems" :model="transferGems" :rules="transferRule" label-position="top" style="max-width:300px">
-  <FormItem label="轉換種類">
-    <Select v-model="selectedGem" style="width:200px" placeholder="請選擇轉換種類">
+  <FormItem label="轉換種類" prop="selectedGem">
+    <Select v-model="transferGems.selectedGem" style="width:200px" placeholder="請選擇轉換種類">
         <Option v-for="gem in gemList" :value="gem.value" :key="gem.value">{{ gem.name }}</Option>
     </Select>
   </FormItem>
@@ -20,7 +20,7 @@
       <Col span="11">
         <FormItem prop="toValue">
           <InputNumber :min="0" v-model="toValue"></InputNumber>
-          <span>{{listLookUp[selectedGem]}}</span>
+          <span>{{listLookUp[transferGems.selectedGem]}}</span>
         </FormItem>
       </Col>
     </Row>
@@ -40,7 +40,7 @@ export default {
 
   name: 'TransferGems',
   mounted () {
-    this.selectedGem = this.gemList[0].value
+    this.transferGems.selectedGem = this.gemList[0].value
     // for first in page
     this.mainGemValue = this.$route.params.gem
     this.walletName = this.listLookUp[this.pageGem]
@@ -53,6 +53,7 @@ export default {
       // react to route changes...
       this.mainGemValue = this.$route.params.gem
       this.walletName = this.listLookUp[this.pageGem]
+      this.handleReset('transferGems')
     },
   },
   data () {
@@ -62,11 +63,19 @@ export default {
       }
       callback()
     }
+    const validateFromValue = (rule, value, callback) => {
+      if (value <= 0) {
+        callback(new Error('轉換數量必須大於 0'))
+      }
+      if (value % this.fromLimit !== 0) {
+        callback(new Error(`轉換數量必須是 ${this.fromLimit} 的倍數`))
+      }
+      callback()
+    }
 
     return {
       mainGemValue: 0,
       walletName: '',
-      selectedGem: 0,
       listLookUp: {
         '0': '七彩寶石',
         '1': '多喜寶石',
@@ -79,14 +88,17 @@ export default {
         '8': '圓夢積分',
       },
       transferGems: {
+        selectedGem: null,
         fromValue: 0,
         toValue: 0,
         password: '',
       },
       transferRule: {
+        selectedGem: [
+          { required: true, type: 'number', trigger: 'blur', message: '請選擇轉換寶石種類' },
+        ],
         fromValue: [
-          { required: true, type: 'number', trigger: 'blur', message: '請輸入數字' },
-          { type: 'number', min: 1, trigger: 'blur', message: '轉換數量必須大於1' },
+          { required: true, type: 'number', validator: validateFromValue, trigger: 'blur' },
         ],
         password: [
           { required: true, validator: validatePass, trigger: 'blur' },
@@ -94,11 +106,11 @@ export default {
       },
     }
   },
-  filters: {
-    valueUnit (value) {
-      return `${value} 點`
-    },
-  },
+  // filters: {
+  //   valueUnit (value) {
+  //     return `${value} 點`
+  //   },
+  // },
   computed: {
     // get current wallet index
     pageGem () {
@@ -118,8 +130,8 @@ export default {
       })
     },
     transferRate () {
-      let pickedRate = `${this.pageGem}_${this.selectedGem}`
-      return this.$store.getters.walletTransferRate[pickedRate]
+      let pickedRate = `${this.pageGem}:${this.transferGems.selectedGem}`
+      return this.$store.getters.walletTransferRate[pickedRate] || '請選擇兌換幣種'
     },
     fromValue: {
       get () {
@@ -127,7 +139,7 @@ export default {
       },
       set (value) {
         this.transferGems.fromValue = Number(value)
-        this.transferGems.toValue = Number((value * this.transferRate).toFixed(1))
+        this.transferGems.toValue = Number((value * this.toFromRatio).toFixed(1))
       },
     },
     toValue: {
@@ -136,8 +148,17 @@ export default {
       },
       set (value) {
         this.transferGems.toValue = Number(value)
-        this.transferGems.fromValue = Number((value / this.transferRate).toFixed(1))
+        this.transferGems.fromValue = Number((value / this.toFromRatio).toFixed(1))
       },
+    },
+    fromLimit () {
+      return this.transferRate.charAt(0)
+    },
+    toLimit () {
+      return this.transferRate.charAt(2)
+    },
+    toFromRatio () {
+      return this.toLimit / this.fromLimit
     },
   },
   methods: {
@@ -146,7 +167,7 @@ export default {
         if (valid) {
           let mainGemValue = this.mainGemValue
           let data = {
-            to_gem: this.selectedGem,
+            to_gem: this.transferGems.selectedGem,
             amount: this.transferGems.fromValue,
             wallet_password: this.transferGems.password,
           }
@@ -165,3 +186,8 @@ export default {
   },
 }
 </script>
+<style lang="css">
+.wallet-value {
+  font-size: 2em;
+}
+</style>

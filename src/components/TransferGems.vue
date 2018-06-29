@@ -32,14 +32,22 @@
     <Button type="primary" @click="handleSubmit('transferGems')">申請轉換</Button>
   </FormItem>
 </Form>
+<h4>寶石轉換申請狀態</h4>
+ <Table :columns="transferApplyCols" :data="walletTransferList"></Table>
 </div>
 </template>
 
 <script>
+// this is for fetch data to store before Route enter
+import store from '../store'
 export default {
-
   name: 'TransferGems',
-  mounted () {
+  beforeRouteEnter: async (to, from, next) => {
+    let mainGemValue = to.params.gem
+    await store.dispatch(`GetWalletTransferList`, {mainGemValue})
+    next()
+  },
+  created () {
     this.transferGems.selectedGem = this.gemList[0].value
     // for first in page
     this.mainGemValue = this.$route.params.gem
@@ -53,6 +61,8 @@ export default {
       // react to route changes...
       this.mainGemValue = this.$route.params.gem
       this.walletName = this.listLookUp[this.pageGem]
+      let mainGemValue = this.mainGemValue
+      this.$store.dispatch(`GetWalletTransferList`, {mainGemValue})
       this.handleReset('transferGems')
     },
   },
@@ -104,6 +114,32 @@ export default {
           { required: true, validator: validatePass, trigger: 'blur' },
         ],
       },
+      transferApplyCols: [
+        {
+          title: '來源寶石',
+          key: `from_gem`,
+        },
+        {
+          title: '轉換寶石',
+          key: 'to_gem',
+        },
+        {
+          title: '匯率',
+          key: 'rate',
+        },
+        {
+          title: '數量',
+          key: 'amount',
+        },
+        {
+          title: '目前狀態',
+          key: 'status',
+        },
+        {
+          title: '建立時間',
+          key: 'updated_at',
+        },
+      ],
     }
   },
   // filters: {
@@ -159,6 +195,15 @@ export default {
     },
     toFromRatio () {
       return this.toLimit / this.fromLimit
+    },
+    // for table
+    walletTransferList () {
+      let list = this.$store.getters.walletTransferList.data
+      list.map(data => {
+        data.from_gem = this.listLookUp[data.from_wallet.gem]
+        data.to_gem = this.listLookUp[data.to_wallet.gem]
+      })
+      return list
     },
   },
   methods: {

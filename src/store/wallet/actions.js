@@ -48,4 +48,9 @@ export default {
       data,
     })
   },
+  // apply wallet transfer
+  async GetWalletTransferList ({dispatch, commit}, {mainGemValue}) {
+    const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications`)
+    commit('setWalletTransferList', json)
+  },
 }

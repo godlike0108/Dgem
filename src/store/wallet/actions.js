@@ -41,4 +41,11 @@ export default {
     let walletTransferRate = await dispatch('GET', `/api/wallet-transfer-rate`)
     commit('setWalletTransferRate', walletTransferRate)
   },
+  // apply wallet transfer
+  async ApplyWalletTransfer ({dispatch, commit}, {mainGemValue, data}) {
+    await dispatch('POST', {
+      path: `/api/gems/${mainGemValue}/wallet-transfer-applications`,
+      data,
+    })
+  },
 }

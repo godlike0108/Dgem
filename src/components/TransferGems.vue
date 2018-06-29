@@ -25,9 +25,11 @@
       </Col>
     </Row>
   </FormItem>
+  <FormItem label="請輸入錢包密碼" prop="password">
+    <Input type="password" v-model="transferGems.password"></Input>
+  </FormItem>
   <FormItem>
-    <Button type="primary" @click="handleSubmit('transferGems')">Submit</Button>
-    <Button type="ghost" @click="handleReset('transferGems')" style="margin-left: 8px">Reset</Button>
+    <Button type="primary" @click="handleSubmit('transferGems')">申請轉換</Button>
   </FormItem>
 </Form>
 </div>
@@ -54,6 +56,13 @@ export default {
     },
   },
   data () {
+    const validatePass = (rule, value, callback) => {
+      if (value === '' || value.length < 6) {
+        callback(new Error('填入密碼，符合長度 6 個字元以上'))
+      }
+      callback()
+    }
+
     return {
       mainGemValue: 0,
       walletName: '',
@@ -72,11 +81,15 @@ export default {
       transferGems: {
         fromValue: 0,
         toValue: 0,
+        password: '',
       },
       transferRule: {
         fromValue: [
           { required: true, type: 'number', trigger: 'blur', message: '請輸入數字' },
           { type: 'number', min: 1, trigger: 'blur', message: '轉換數量必須大於1' },
+        ],
+        password: [
+          { required: true, validator: validatePass, trigger: 'blur' },
         ],
       },
     }
@@ -129,11 +142,20 @@ export default {
   },
   methods: {
     handleSubmit (name) {
-      this.$refs[name].validate((valid) => {
+      this.$refs[name].validate(async (valid) => {
         if (valid) {
-          this.$Message.success('Success!')
+          let mainGemValue = this.mainGemValue
+          let data = {
+            to_gem: this.selectedGem,
+            amount: this.transferGems.fromValue,
+            wallet_password: this.transferGems.password,
+          }
+          await this.$store.dispatch('ApplyWalletTransfer', {mainGemValue, data})
+          await this.$store.dispatch(`WalletPage`)
+          this.$Message.success('申請成功！請等待審核通知')
+          this.handleReset('transferGems')
         } else {
-          this.$Message.error('Fail!')
+          this.$Message.error('申請失敗，請確實填寫資料')
         }
       })
     },

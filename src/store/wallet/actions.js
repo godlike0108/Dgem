@@ -49,8 +49,11 @@ export default {
     })
   },
   // apply wallet transfer
-  async GetWalletTransferList ({dispatch, commit}, {mainGemValue}) {
-    const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications`)
+  async GetWalletTransferList ({dispatch, commit}, {mainGemValue, nextIndex, searchParams}) {
+    nextIndex = nextIndex || 1
+    searchParams = searchParams || new URLSearchParams()
+    searchParams.append('page', `${nextIndex}`)
+    const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications?${searchParams.toString()}`)
     commit('setWalletTransferList', json)
   },
 }

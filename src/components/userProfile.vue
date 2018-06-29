@@ -12,7 +12,7 @@
        <Input v-model="userName" :readonly="!nickName.canModify" :class="mode" placeholder="Enter something..." style="width: 300px"></Input>
        <Button v-show="nickName.canModify" @click="modifyUserName()" type="primary">決定䁥稱</Button>
       </FormItem>
-      <FormItem label="修改錢包密碼" inline>
+      <FormItem label="修改二級密碼" inline>
         <i-switch v-model="walletPassword.isOpen">
           <span slot="open">開</span>
           <span slot="close">關</span>
@@ -21,13 +21,13 @@
      </Form>
 
       <Form v-if="walletPasswordMode" ref="UpdateWalletPwd" :model="UpdateWalletPwd" :rules="UpdateWalletPwdRule" label-position="top" style="max-width: 300px;">
-        <FormItem label="請輸入錢包密碼" prop="password">
+        <FormItem label="請輸入二級密碼" prop="password">
           <Input type="password" v-model="UpdateWalletPwd.password"></Input>
         </FormItem>
-        <FormItem label="請輸入新錢包密碼" prop="newPassword">
+        <FormItem label="請輸入新二級密碼" prop="newPassword">
           <Input type="password" v-model="UpdateWalletPwd.newPassword"></Input>
         </FormItem>
-        <FormItem label="請再次確認新錢包密碼" prop="newPasswordCheck">
+        <FormItem label="請再次確認新二級密碼" prop="newPasswordCheck">
           <Input type="password" v-model="UpdateWalletPwd.newPasswordCheck"></Input>
         </FormItem>
         <FormItem class="sumitArea">
@@ -56,7 +56,7 @@ export default {
     }
     const validatePassCheck = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('請再次確認新錢包密碼'))
+        callback(new Error('請再次確認新二級密碼'))
       } else if (value !== this.UpdateWalletPwd.newPassword) {
         callback(new Error('兩邊不一樣，請再確認'))
       } else {
@@ -168,7 +168,7 @@ export default {
             this.$Message.error('密碼錯誤')
           }
         } else {
-          this.$Message.error('修改錢包密碼失敗')
+          this.$Message.error('修改二級密碼失敗')
         }
       })
     },

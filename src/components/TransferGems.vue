@@ -25,7 +25,7 @@
       </Col>
     </Row>
   </FormItem>
-  <FormItem label="請輸入錢包密碼" prop="password">
+  <FormItem label="請輸入二級密碼" prop="password">
     <Input type="password" v-model="transferGems.password"></Input>
   </FormItem>
   <FormItem>
@@ -33,6 +33,7 @@
   </FormItem>
 </Form>
 <h4>寶石轉換申請狀態</h4>
+<Page :total="paging.total" :page-size="paging.pre_page" simple size="small" @on-change="changePage($event)"></Page>
  <Table :columns="transferApplyCols" :data="walletTransferList"></Table>
 </div>
 </template>
@@ -96,6 +97,9 @@ export default {
         '6': '財神幣',
         '7': '美金',
         '8': '圓夢積分',
+      },
+      statusLookUp: {
+        '0': '審核中',
       },
       transferGems: {
         selectedGem: null,
@@ -202,8 +206,12 @@ export default {
       list.map(data => {
         data.from_gem = this.listLookUp[data.from_wallet.gem]
         data.to_gem = this.listLookUp[data.to_wallet.gem]
+        data.status = this.statusLookUp[data.status]
       })
       return list
+    },
+    paging () {
+      return this.$store.getters.paging('wallet', 'walletTransferList')
     },
   },
   methods: {
@@ -218,6 +226,7 @@ export default {
           }
           await this.$store.dispatch('ApplyWalletTransfer', {mainGemValue, data})
           await this.$store.dispatch(`WalletPage`)
+          await store.dispatch(`GetWalletTransferList`, {mainGemValue})
           this.$Message.success('申請成功！請等待審核通知')
           this.handleReset('transferGems')
         } else {
@@ -227,6 +236,11 @@ export default {
     },
     handleReset (name) {
       this.$refs[name].resetFields()
+    },
+    async changePage (nextIndex) {
+      let mainGemValue = this.mainGemValue
+      const searchParams = new URLSearchParams()
+      await this.$store.dispatch('GetWalletTransferList', { mainGemValue, nextIndex, searchParams })
     },
   },
 }

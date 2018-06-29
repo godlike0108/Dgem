@@ -30,10 +30,10 @@
         <FormItem label="請再次填入密碼" prop="passwordCheck">
           <Input type="password" v-model="SignUp.passwordCheck"></Input>
         </FormItem>
-        <FormItem label="請填入錢包密碼" prop="walletPassword">
+        <FormItem label="請填入二級密碼" prop="walletPassword">
           <Input type="password" v-model="SignUp.walletPassword"></Input>
         </FormItem>
-        <FormItem label="請再次填入錢包密碼" prop="walletPasswordCheck">
+        <FormItem label="請再次填入二級密碼" prop="walletPasswordCheck">
           <Input type="password" v-model="SignUp.walletPasswordCheck"></Input>
         </FormItem>
         <FormItem label="請填入上線 ID" prop="upline_id">

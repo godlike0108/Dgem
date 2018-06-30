@@ -4,7 +4,7 @@
       <Option v-for="(value, key) in operatable_type" :value="key" :key="key">{{ value.label }}</Option>
     </Select>
     <!-- <Button type="primary" @click="search()">查詢</Button> -->
-    <Page :total="paging.total" :page-size="paging.pre_page" simple size="small" @on-change="changePage($event)"></Page>
+    <Page :total="paging.total" :page-size="paging.pre_page" simple @on-change="changePage($event)"></Page>
     <Table stripe :columns="columns1" :data="eventsLog"></Table>
   </div>
 </template>
@@ -140,6 +140,7 @@ export default {
   methods: {
     async changePage (nextIndex) {
       const searchParams = new URLSearchParams()
+      searchParams.append('operatable_type', this.currOperatable)
       searchParams.append('type[]', `0`)
       searchParams.append('type[]', `2`)
       await this.$store.dispatch('EventsLog', { nextIndex, searchParams })

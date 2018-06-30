@@ -53,6 +53,7 @@ export default {
   },
   created () {
     this.transferGems.selectedGem = this.gemList[0].value
+    this.setWalletAddress(this.transferGems.selectedGem)
     // for first in page
     this.mainGemValue = this.$route.params.gem
     this.walletName = this.listLookUp[this.pageGem]

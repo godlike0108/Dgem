@@ -56,6 +56,10 @@ export default {
     const allTreeStatus = await dispatch('allTreeStatus', { id: json.id })
     commit('IAm', Object.assign({}, json, allTreeStatus))
   },
+  async getOnlyMe ({ dispatch, commit }) {
+    const json = await dispatch('GET', `/api/users/me`)
+    commit('IAm', Object.assign({}, json))
+  },
   async modifyMyName ({ dispatch, commit, getters }) {
     const myId = getters.myId
     const json = await dispatch('PUT', {

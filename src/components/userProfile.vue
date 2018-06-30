@@ -35,6 +35,7 @@
         <Button type="primary" @click="updateWalletPwd()">修改密碼</Button>
       </FormItem>
     </Form>
+
     <Form>
       <FormItem label="設定錢包位址" inline>
         <i-switch v-model="setWalletAddress.isOpen">
@@ -52,7 +53,7 @@
           </Col>
           <Col span="1">&nbsp;</Col>
           <Col span="3">
-            <Button type="primary" @click="updateWalletPwd()">儲存</Button>
+            <Button type="primary" @click="updateWalletAddr(wallet.id)">儲存</Button>
           </Col>
         </Row>
       </FormItem>
@@ -127,17 +128,23 @@ export default {
       addrRuleGroup: {
         '5': {
           address: [
-            { required: true, validator: validatePass, trigger: 'blur' },
+            { required: true, trigger: 'blur', message: '請輸入錢包地址' },
           ],
         },
         '6': {
-
+          address: [
+            { required: true, trigger: 'blur', message: '請輸入錢包地址' },
+          ],
         },
         '7': {
-
+          address: [
+            { required: true, trigger: 'blur', message: '請輸入錢包地址' },
+          ],
         },
         '8': {
-
+          address: [
+            { required: true, trigger: 'blur', message: '請輸入錢包地址' },
+          ],
         },
       },
       nickName: {
@@ -235,6 +242,16 @@ export default {
           }
         } else {
           this.$Message.error('修改二級密碼失敗')
+        }
+      })
+    },
+    updateWalletAddr (id) {
+      this.$refs[`UpdateGem${id}Addr`][0].validate(async (valid) => {
+        if (valid) {
+          this.$Message.success('設定錢包位址成功')
+          this.$refs[`UpdateGem${id}Addr`][0].resetFields()
+        } else {
+          this.$Message.error('設定錢包位址失敗')
         }
       })
     },

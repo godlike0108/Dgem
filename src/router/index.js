@@ -209,30 +209,34 @@ var route = new Router({
 })
 
 route.beforeEach(async (to, from, next) => {
-  // if (from.name === null && to.name !== 'Login' && (route.app.$store === undefined || route.app.$store.getters.token.length === 0)) {
-  //   route.push('/Login')
-  //   return
-  // }
-
   if (to.name === 'Login') {
     next()
     return
   }
 
-  if (!localStore.get('dgemToken')) {
+  if (!from.name && to.name === 'Unverified') {
     route.push('/Login')
     return
-  }
-
-  route.app.$store.commit('token', localStore.get('dgemToken'))
-  await route.app.$store.dispatch('whoAmI')
-  if (!route.app.$store.getters.emailVerified) {
-    route.push('/Unverified')
+  } else if (to.name === 'Unverified') {
+    next()
     return
   }
 
-  // if come from outside with token, init user
+  if (!route.app.$store.getters.isLogin && !localStore.get('dgemToken')) {
+    route.push('/Login')
+    return
+  } else if (!route.app.$store.getters.isLogin) {
+    route.app.$store.commit('token', localStore.get('dgemToken'))
+  }
+
+  await route.app.$store.dispatch('getOnlyMe')
+  if (!route.app.$store.getters.emailVerified) {
+    route.push('/Main/Unverified')
+    return
+  }
+
   if (!from.name) {
+    await route.app.$store.dispatch('whoAmI')
     await route.app.$store.dispatch(`allChildAccount`)
     await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
     await route.app.$store.dispatch(`WalletPage`)

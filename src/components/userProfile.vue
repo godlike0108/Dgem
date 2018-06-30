@@ -12,28 +12,52 @@
        <Input v-model="userName" :readonly="!nickName.canModify" :class="mode" placeholder="Enter something..." style="width: 300px"></Input>
        <Button v-show="nickName.canModify" @click="modifyUserName()" type="primary">決定䁥稱</Button>
       </FormItem>
+    </Form>
+    <Form>
       <FormItem label="修改二級密碼" inline>
         <i-switch v-model="walletPassword.isOpen">
           <span slot="open">開</span>
           <span slot="close">關</span>
         </i-switch>
       </FormItem>
-     </Form>
-
-      <Form v-if="walletPasswordMode" ref="UpdateWalletPwd" :model="UpdateWalletPwd" :rules="UpdateWalletPwdRule" label-position="top" style="max-width: 300px;">
-        <FormItem label="請輸入二級密碼" prop="password">
-          <Input type="password" v-model="UpdateWalletPwd.password"></Input>
-        </FormItem>
-        <FormItem label="請輸入新二級密碼" prop="newPassword">
-          <Input type="password" v-model="UpdateWalletPwd.newPassword"></Input>
-        </FormItem>
-        <FormItem label="請再次確認新二級密碼" prop="newPasswordCheck">
-          <Input type="password" v-model="UpdateWalletPwd.newPasswordCheck"></Input>
-        </FormItem>
-        <FormItem class="sumitArea">
-          <Button type="primary" @click="updateWalletPwd()">修改密碼</Button>
-        </FormItem>
-      </Form>
+    </Form>
+    <Form v-if="walletPasswordMode" ref="UpdateWalletPwd" :model="UpdateWalletPwd" :rules="UpdateWalletPwdRule" label-position="top" style="max-width: 300px;">
+      <FormItem label="請輸入二級密碼" prop="password">
+        <Input type="password" v-model="UpdateWalletPwd.password"></Input>
+      </FormItem>
+      <FormItem label="請輸入新二級密碼" prop="newPassword">
+        <Input type="password" v-model="UpdateWalletPwd.newPassword"></Input>
+      </FormItem>
+      <FormItem label="請再次確認新二級密碼" prop="newPasswordCheck">
+        <Input type="password" v-model="UpdateWalletPwd.newPasswordCheck"></Input>
+      </FormItem>
+      <FormItem class="sumitArea">
+        <Button type="primary" @click="updateWalletPwd()">修改密碼</Button>
+      </FormItem>
+    </Form>
+    <Form>
+      <FormItem label="設定錢包位址" inline>
+        <i-switch v-model="setWalletAddress.isOpen">
+          <span slot="open">開</span>
+          <span slot="close">關</span>
+        </i-switch>
+      </FormItem>
+    </Form>
+    <template v-if="walletAddressMode">
+    <Form v-for="(wallet, key) in wallet" :key="key" :ref="`UpdateGem${wallet.id}Addr`" :model="addrGroup[wallet.id]" :rules="addrRuleGroup[wallet.id]" style="max-width: 500px;" :label-width="80">
+      <FormItem :label="`${wallet.name}`" prop="address">
+        <Row>
+          <Col span="20">
+            <Input type="text" v-model="addrGroup[wallet.id].address" :placeholder="`請輸入${wallet.name}錢包位址`"></Input>
+          </Col>
+          <Col span="1">&nbsp;</Col>
+          <Col span="3">
+            <Button type="primary" @click="updateWalletPwd()">儲存</Button>
+          </Col>
+        </Row>
+      </FormItem>
+    </Form>
+    </template>
 
     <h2>夢寶龍 × {{ this.$store.getters.paging('dragon', 'activeDragon').total }}</h2>
     <Page :total="pagingDragon.total" :page-size="pagingDragon.pre_page" simple size="small" @on-change="changeDragonPage($event)"></Page>
@@ -80,10 +104,49 @@ export default {
           { required: true, validator: validatePassCheck, trigger: 'blur' },
         ],
       },
+      wallet: [
+        {id: 5, name: '碳幣'},
+        {id: 6, name: '財神幣'},
+        {id: 7, name: '美金'},
+        {id: 8, name: '圓夢積分'},
+      ],
+      addrGroup: {
+        '5': {
+          address: '',
+        },
+        '6': {
+          address: '',
+        },
+        '7': {
+          address: '',
+        },
+        '8': {
+          address: '',
+        },
+      },
+      addrRuleGroup: {
+        '5': {
+          address: [
+            { required: true, validator: validatePass, trigger: 'blur' },
+          ],
+        },
+        '6': {
+
+        },
+        '7': {
+
+        },
+        '8': {
+
+        },
+      },
       nickName: {
         canModify: false,
       },
       walletPassword: {
+        isOpen: false,
+      },
+      setWalletAddress: {
         isOpen: false,
       },
       columnsDragon: [
@@ -128,6 +191,9 @@ export default {
     },
     walletPasswordMode () {
       return this.walletPassword.isOpen
+    },
+    walletAddressMode () {
+      return this.setWalletAddress.isOpen
     },
     userName: {
       get: function () {

@@ -38,10 +38,12 @@ export default {
   computed: {
     wallet () {
       if (this.$store.getters.isExist('wallet', 'wallet')) {
-        return this.$store.getters.wallet.map((item) => {
+        let newWallet = this.$store.getters.wallet.map((item) => {
           item.gem_name = this.$store.getters.gems[item.gem]
           return item
         })
+        newWallet.splice(this.$store.getters.gems.length)
+        return newWallet
       } else {
         return []
       }

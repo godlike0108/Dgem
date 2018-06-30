@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
     <h1>子帳號</h1>
-    <Button type="primary" @click="recall()">一鍵召回</Button><br/>
+    <Button type="primary" style="margin-bottom: 1rem" @click="recall()">一鍵召回</Button><br/>
     <label for="motherId">指定帳號 ID: </label><Input id="motherId" v-model="motherId" placeholder="0" style="width: 120px"></Input>
     <Button type="error" @click="addChildAccount()" :disabled="isChildAccount">增加子帳號</Button>
     <Page :total="paging.total" :page-size="paging.pre_page" simple size="small" @on-change="changePage($event)"></Page>

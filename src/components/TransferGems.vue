@@ -4,7 +4,7 @@
 <p><span class="wallet-value">{{currentGem}}</span>點</p>
 <Form ref="transferGems" :model="transferGems" :rules="transferRule" label-position="top" style="max-width:300px">
   <FormItem label="轉換種類" prop="selectedGem">
-    <Select v-model="transferGems.selectedGem" style="width:200px" placeholder="請選擇轉換種類" @on-change="setWalletAddress()">
+    <Select v-model="transferGems.selectedGem" style="width:200px" placeholder="請選擇轉換種類" @on-change="setWalletAddress($event)">
         <Option v-for="gem in gemList" :value="gem.value" :key="gem.value">{{ gem.name }}</Option>
     </Select>
   </FormItem>
@@ -222,8 +222,8 @@ export default {
     },
   },
   methods: {
-    setWalletAddress () {
-      this.transferGems.walletAddress = this.$store.getters.wallet[this.transferGems.selectedGem].external_address
+    setWalletAddress ($event) {
+      this.transferGems.walletAddress = this.$store.getters.wallet[$event].external_address
     },
     handleSubmit (name) {
       this.$refs[name].validate(async (valid) => {

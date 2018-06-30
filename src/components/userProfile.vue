@@ -245,11 +245,19 @@ export default {
         }
       })
     },
-    updateWalletAddr (id) {
-      this.$refs[`UpdateGem${id}Addr`][0].validate(async (valid) => {
+    updateWalletAddr (walletIndex) {
+      this.$refs[`UpdateGem${walletIndex}Addr`][0].validate(async (valid) => {
         if (valid) {
-          this.$Message.success('設定錢包位址成功')
-          this.$refs[`UpdateGem${id}Addr`][0].resetFields()
+          const data = {
+            external_address: this.addrGroup[walletIndex].address,
+          }
+          let response = await this.$store.dispatch('UpdateWalletAddr', {walletIndex, data})
+          if (response === 'success') {
+            this.$Message.success('設定錢包位址成功')
+            this.$refs[`UpdateGem${walletIndex}Addr`][0].resetFields()
+          } else {
+            this.$Message.error('無此錢包位址')
+          }
         } else {
           this.$Message.error('設定錢包位址失敗')
         }

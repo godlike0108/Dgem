@@ -31,6 +31,18 @@ export default {
       return 'fail'
     }
   },
+  // update wallet pwd
+  async UpdateWalletAddr ({ dispatch, getters }, { walletIndex, data }) {
+    const myId = getters.myId
+    const walletId = getters.wallet[walletIndex].id
+    const path = `/api/users/${myId}/wallets/${walletId}`
+    try {
+      await dispatch('PUT', {path, data})
+      return 'success'
+    } catch (e) {
+      return 'fail'
+    }
+  },
   // get wallet transfer map
   async WalletTransferMap ({dispatch, commit}) {
     let walletTransferMap = await dispatch('GET', `/api/wallet-transfer-map`)

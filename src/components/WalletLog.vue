@@ -95,10 +95,12 @@ export default {
       return this.$store.getters.paging('wallet', 'walletLog')
     },
     ids () {
-      return this.$store.getters.wallet.map(item => {
+      let newIds = this.$store.getters.wallet.map(item => {
         item.title = `${this.$store.getters.gems[item.gem]}`
         return item
       })
+      newIds.splice(this.$store.getters.gems.length)
+      return newIds
     },
     currOperatableId: {
       get () {

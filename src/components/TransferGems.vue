@@ -4,9 +4,12 @@
 <p><span class="wallet-value">{{currentGem}}</span>點</p>
 <Form ref="transferGems" :model="transferGems" :rules="transferRule" label-position="top" style="max-width:300px">
   <FormItem label="轉換種類" prop="selectedGem">
-    <Select v-model="transferGems.selectedGem" style="width:200px" placeholder="請選擇轉換種類">
+    <Select v-model="transferGems.selectedGem" style="width:200px" placeholder="請選擇轉換種類" @on-change="setWalletAddress()">
         <Option v-for="gem in gemList" :value="gem.value" :key="gem.value">{{ gem.name }}</Option>
     </Select>
+  </FormItem>
+  <FormItem label="錢包位置" prop="walletAddress">
+    <Input type="text" readonly v-model="transferGems.walletAddress"></Input>
   </FormItem>
   <FormItem :label="`兌換比例: ${transferRate}`">
     <Row>
@@ -103,6 +106,7 @@ export default {
       },
       transferGems: {
         selectedGem: null,
+        walletAddress: '',
         fromValue: 0,
         toValue: 0,
         password: '',
@@ -169,6 +173,9 @@ export default {
         }
       })
     },
+    walletAddress () {
+      return this.transferGems.waleltAddress
+    },
     transferRate () {
       let pickedRate = `${this.pageGem}:${this.transferGems.selectedGem}`
       return this.$store.getters.walletTransferRate[pickedRate] || '請選擇兌換幣種'
@@ -215,6 +222,9 @@ export default {
     },
   },
   methods: {
+    setWalletAddress () {
+      this.transferGems.walletAddress = this.$store.getters.wallet[this.transferGems.selectedGem].external_address
+    },
     handleSubmit (name) {
       this.$refs[name].validate(async (valid) => {
         if (valid) {

@@ -15,10 +15,19 @@ export default {
   },
   data () {
     return {
+      dragonType: {
+        '0': '夢寶龍',
+        '1': '小夢寶龍',
+      },
       columns1: [
         {
           title: 'ID',
           key: 'id',
+          width: 100,
+        },
+        {
+          title: '夢寶龍種類',
+          key: 'dragon_type',
           width: 100,
         },
         {
@@ -31,11 +40,6 @@ export default {
           key: 'user_name',
           minWidth: 150,
         },
-        // {
-        //   title: '是否激活',
-        //   key: 'activated',
-        //   minWidth: 100,
-        // },
         {
           title: '選擇激活對象',
           key: 'operate',
@@ -108,6 +112,7 @@ export default {
       if (this.$store.getters.isExist('dragon', 'dragon')) {
         return this.$store.getters.dragon.map((item) => {
           item.owner_name = (item.owner && item.owner.name) || '未指定'
+          item.dragon_type = this.dragonType[item.type]
           item.user_name = (item.user && item.user.name) || '未指定'
           item.operate = { id: '', name: '選一個對象' }
           return item

@@ -122,7 +122,11 @@ export default {
       return this.$store.getters.eventsLog.data.map(item => {
         item.action = `${this.actionType[item.type]}`
         item.item = `${this.operatable_type[item.operatable_type].label}`
-        item.operator_name = item.operator.name
+        if (item.operatable_type === 2 && item.result_data.type === 1) {
+          item.item = '小夢寶龍'
+        }
+        item.operator_name = Object.assign({name: '系統'}, item.operator).name
+        // item.operator_name = item.operator.name || '系統'
         item.user_name = item.user.name
         // item.remain = item.result_data.remain
         // item.capacity = item.result_data.capacity

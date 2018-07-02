@@ -209,12 +209,10 @@ var route = new Router({
 })
 
 route.beforeEach(async (to, from, next) => {
-  console.log('BeforeEach is Running')
   if (to.name === 'Login') {
     next()
     return
   }
-  console.log('突破第一層')
   if (!from.name && to.name === 'Unverified') {
     next({path: '/Main/Unverified'})
     return
@@ -222,7 +220,6 @@ route.beforeEach(async (to, from, next) => {
     next()
     return
   }
-  console.log('突破第二層')
 
   if (!route.app.$store.getters.isLogin && !localStore.get('dgemToken')) {
     next({path: '/Login'})
@@ -230,14 +227,12 @@ route.beforeEach(async (to, from, next) => {
   } else if (!route.app.$store.getters.isLogin) {
     route.app.$store.commit('token', localStore.get('dgemToken'))
   }
-  console.log('突破第三層')
 
   await route.app.$store.dispatch('getOnlyMe')
   if (!route.app.$store.getters.emailVerified) {
     next({path: '/Main/Unverified'})
     return
   }
-  console.log('突破第四層')
 
   if (!from.name) {
     await route.app.$store.dispatch('whoAmI')
@@ -246,7 +241,6 @@ route.beforeEach(async (to, from, next) => {
     await route.app.$store.dispatch(`WalletPage`)
   }
   next()
-  console.log('突破最終層')
 })
 
 export default route

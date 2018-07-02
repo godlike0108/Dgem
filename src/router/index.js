@@ -25,13 +25,14 @@ var route = new Router({
   routes: [
     {
       path: '/',
-      beforeEnter: (to, from, next) => {
-        if (localStore.get('dgemToken')) {
-          route.push('/Main')
-        } else {
-          route.push('/Login')
-        }
-      },
+      redirect: '/Login',
+      // beforeEnter: (to, from, next) => {
+      //   if (localStore.get('dgemToken')) {
+      //     route.push('/Main')
+      //   } else {
+      //     route.push('/Login')
+      //   }
+      // },
     },
     {
       path: '/Login',
@@ -210,7 +211,11 @@ var route = new Router({
 
 route.beforeEach(async (to, from, next) => {
   if (to.name === 'Login') {
-    next()
+    if (localStore.get('dgemToken')) {
+      route.push('/Main')
+    } else {
+      next()
+    }
     return
   }
 

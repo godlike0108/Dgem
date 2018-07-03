@@ -2,7 +2,6 @@
   <div>
     <CurrUsdWallet></CurrUsdWallet>
     <Button type="error" @click="buy()">買一隻全新夢寶龍</Button>
-    <Page :total="paging.total" :page-size="paging.pre_page" simple size="small" @on-change="changePage($event)"></Page>
     <Table stripe :columns="columns1" :data="dragon"></Table>
   </div>
 </template>
@@ -108,17 +107,11 @@ export default {
         return item
       })
     },
-    paging () {
-      return this.$store.getters.paging('dragon', 'dragon')
-    },
     dropdownItems () {
       return this.$store.getters.allUsers
     },
   },
   methods: {
-    async changePage (nextIndex) {
-      await this.$store.dispatch('goToDragonPage', { nextIndex })
-    },
     async buy () {
       const data = {
         'owner_id': this.$store.getters.myId,

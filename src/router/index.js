@@ -76,13 +76,13 @@ var route = new Router({
           beforeEnter: async (to, from, next) => {
             if (route.app.$store.getters.self.is_child_account) {
               // redirect if directly enter url
-              route.push('/Main/ChildAccount')
+              next({path: '/Main/ChildAccount'})
               return
             }
 
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
-            route.app.$store.dispatch('goToDragonPage', { nextIndex: 1 })
+            await route.app.$store.dispatch('ListDragonSummary')
             next()
           },
         },
@@ -93,7 +93,7 @@ var route = new Router({
           beforeEnter: async (to, from, next) => {
             if (route.app.$store.getters.self.is_child_account) {
               // redirect if directly enter url
-              route.push('/Main/ChildAccount')
+              next({path: '/Main/ChildAccount'})
               return
             }
             route.app.$store.dispatch('setAvailTreeType')
@@ -143,7 +143,7 @@ var route = new Router({
           beforeEnter: async (to, from, next) => {
             if (route.app.$store.getters.self.is_child_account) {
               // redirect if directly enter url
-              route.push('/Main/ChildAccount')
+              next({path: '/Main/ChildAccount'})
               return
             }
 

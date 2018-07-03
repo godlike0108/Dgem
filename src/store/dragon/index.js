@@ -8,7 +8,7 @@ export default {
   },
   getters: {
     allDragon: (state) => state.allDragon.data,
-    dragon: (state) => state.dragon.data,
+    dragon: (state) => state.dragon,
     activeDragon: (state) => state.activeDragon.data,
   },
   mutations: {

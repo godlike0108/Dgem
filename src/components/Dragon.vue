@@ -21,64 +21,57 @@ export default {
       },
       columns1: [
         {
-          title: 'ID',
-          key: 'id',
-          width: 100,
-        },
-        {
           title: '夢寶龍種類',
           key: 'dragon_type',
           width: 100,
         },
         {
-          title: '夢寶龍的擁有者',
-          key: 'owner_name',
-          minWidth: 150,
-        },
-        {
-          title: '夢寶龍激活對象',
-          key: 'user_name',
-          minWidth: 150,
+          title: '夢寶龍數量',
+          key: 'amount',
+          width: 100,
         },
         {
           title: '選擇激活對象',
           key: 'operate',
           width: 200,
           render: (h, params) => {
-            return h('div', [
-              h('Dropdown', {
-                props: {
-                  trigger: 'click',
-                },
-                class: 'defaultStyle',
-                on: {
-                  'on-click': (value) => {
-                    params.row.operate = this.dropdownItems.filter(item => item.id === value).shift()
-                  },
-                },
-              }, [
-                h('span', [`${params.row.operate.id} ${params.row.operate.name} `, h('Icon', {
+            if (this.dropdownItems.length === 0) {
+              return h('div', '已無可激活對象')
+            } else {
+              return h('div', [
+                h('Dropdown', {
                   props: {
-                    type: 'arrow-down-b',
+                    trigger: 'click',
                   },
-                  style: {
-                    marginRight: '5px',
+                  class: 'defaultStyle',
+                  on: {
+                    'on-click': (value) => {
+                      params.row.operate = this.dropdownItems.filter(item => item.id === value).shift()
+                    },
                   },
-                })]),
-                h('DropdownMenu', {
-                  slot: 'list',
-                }, this.dropdownItems.sort((a, b) => a.id - b.id)
-                  .map(item => {
-                    return h('DropdownItem', {
-                      props: {
-                        name: item.id,
-                        disabled: params.row.activated,
-                      },
-                    }, `${item.id} ${item.name}`)
-                  }),
-                ),
-              ]),
-            ])
+                }, [
+                  h('span', [`${params.row.operate.id} ${params.row.operate.name} `, h('Icon', {
+                    props: {
+                      type: 'arrow-down-b',
+                    },
+                    style: {
+                      marginRight: '5px',
+                    },
+                  })]),
+                  h('DropdownMenu', {
+                    slot: 'list',
+                  }, this.dropdownItems.sort((a, b) => a.id - b.id)
+                    .map(item => {
+                      return h('DropdownItem', {
+                        props: {
+                          name: item.id,
+                        },
+                      }, `${item.id} ${item.name}`)
+                    }),
+                  ),
+                ]),
+              ])
+            }
           },
         },
         {
@@ -92,11 +85,12 @@ export default {
                 props: {
                   type: 'primary',
                   size: 'small',
-                  disabled: params.row.activated,
+                  disabled: !params.row.operate.id || !params.row.amount,
                 },
                 on: {
                   click: () => {
-                    const idDragon = params.row.id
+                    console.log(params.row)
+                    const idDragon = params.row.next_available_dragon.id
                     this.activate({ data: { 'user_id': params.row.operate.id }, idDragon })
                   },
                 },
@@ -109,17 +103,11 @@ export default {
   },
   computed: {
     dragon () {
-      if (this.$store.getters.isExist('dragon', 'dragon')) {
-        return this.$store.getters.dragon.map((item) => {
-          item.owner_name = (item.owner && item.owner.name) || '未指定'
-          item.dragon_type = this.dragonType[item.type]
-          item.user_name = (item.user && item.user.name) || '未指定'
-          item.operate = { id: '', name: '選一個對象' }
-          return item
-        })
-      } else {
-        return []
-      }
+      return this.$store.getters.dragon.map((item) => {
+        item.dragon_type = this.dragonType[item.type]
+        item.operate = { id: '', name: '選一個對象' }
+        return item
+      })
     },
     paging () {
       return this.$store.getters.paging('dragon', 'dragon')
@@ -143,11 +131,10 @@ export default {
     },
     async activate (payload) {
       try {
-        const nextIndex = this.$store.getters.paging('dragon', 'dragon').curr_page
         await this.$store.dispatch('activateDragon', payload)
-        this.$store.dispatch('goToDragonPage', { nextIndex })
+        this.$store.dispatch('ListDragonSummary')
       } catch (e) {
-        // not do anything
+        console.log(e)
       }
       this.$store.dispatch('userDownLines', { idUser: this.$store.getters.myId })
       this.$store.dispatch(`allChildAccount`)

@@ -72,14 +72,14 @@
                       </template>
                       <router-link :to="{path: `/Main/Wallet`}"><MenuItem name="4-1">寶石庫存</MenuItem></router-link>
                       <router-link :to="{path: `/Main/WalletLog`}"><MenuItem name="4-2">進出明細</MenuItem></router-link>
-                      <Submenu name="4-3">
+                      <Submenu name="4-3" v-show="isFunctionEnabel">
                           <template slot="title">
                           寶石轉換
                           </template>
                           <router-link :to="{path: '/Main/TransferGems/0'}"><MenuItem name="4-3-1">七彩寶石轉換</MenuItem></router-link>
                           <router-link :to="{path: '/Main/notStart'}"><MenuItem name="4-3-2">多喜寶石轉換</MenuItem></router-link>
-                          <router-link :to="{path: '/Main/notStart'}"><MenuItem v-show="isFunctionEnabel" name="4-3-3">多福寶石轉換</MenuItem></router-link>
-                          <router-link :to="{path: '/Main/TransferGems/3'}"><MenuItem v-show="isFunctionEnabel" name="4-3-4">多財寶石轉換</MenuItem></router-link>
+                          <router-link :to="{path: '/Main/notStart'}"><MenuItem name="4-3-3">多福寶石轉換</MenuItem></router-link>
+                          <router-link :to="{path: '/Main/TransferGems/3'}"><MenuItem name="4-3-4">多財寶石轉換</MenuItem></router-link>
                       </Submenu>
                   </Submenu>
                   <router-link :to="{path: `/Main/Group`}"><MenuItem name="5-1">

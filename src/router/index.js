@@ -213,8 +213,9 @@ route.beforeEach(async (to, from, next) => {
     next()
     return
   }
+
   if (!from.name && to.name === 'Unverified') {
-    next({path: '/Main/Unverified'})
+    next({path: '/Login'})
     return
   } else if (to.name === 'Unverified') {
     next()
@@ -228,7 +229,10 @@ route.beforeEach(async (to, from, next) => {
     route.app.$store.commit('token', localStore.get('dgemToken'))
   }
 
-  await route.app.$store.dispatch('getOnlyMe')
+  if (!from.name || from.name === 'Login') {
+    await route.app.$store.dispatch('getOnlyMe')
+  }
+
   if (!route.app.$store.getters.emailVerified) {
     next({path: '/Main/Unverified'})
     return

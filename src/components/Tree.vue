@@ -2,7 +2,6 @@
   <div>
     <CurrUsdWallet></CurrUsdWallet>
     <Button style="margin-right: 10px;" v-for="(type, key) in availTreeType" :key="key" type="error" @click="buy(type)">買一株{{treeName[type]}}</Button>
-    <Page :total="paging.total" :page-size="paging.pre_page" simple size="small" @on-change="changePage($event)"></Page>
     <Table stripe :columns="columns1" :data="tree"></Table>
   </div>
 </template>
@@ -24,23 +23,13 @@ export default {
         {
           title: '夢寶樹種類',
           key: 'tree_name',
-          minWidth: 120,
+          width: 200,
         },
         {
-          title: '夢寶樹的擁有者',
-          key: 'owner_name',
-          minWidth: 120,
+          title: '夢寶樹數量',
+          key: 'amount',
+          width: 100,
         },
-        {
-          title: '夢寶樹激活對象',
-          key: 'user_name',
-          minWidth: 120,
-        },
-        // {
-        //   title: '是否激活',
-        //   key: 'activated',
-        //   minWidth: 50,
-        // },
         {
           title: '選擇激活對象',
           key: 'operate',
@@ -73,7 +62,6 @@ export default {
                     return h('DropdownItem', {
                       props: {
                         name: item.id,
-                        disabled: params.row.activated,
                       },
                     }, `${item.id} ${item.name}`)
                   }),
@@ -93,11 +81,11 @@ export default {
                 props: {
                   type: 'primary',
                   size: 'small',
-                  disabled: params.row.activated,
+                  disabled: !params.row.operate.id || !params.row.amount,
                 },
                 on: {
                   click: () => {
-                    const idTree = params.row.id
+                    const idTree = params.row.next_available_tree.id
                     this.activate({ data: { 'user_id': params.row.operate.id }, idTree })
                   },
                 },
@@ -113,20 +101,11 @@ export default {
       return this.$store.getters.availTreeType
     },
     tree () {
-      if (this.$store.getters.isExist('tree', 'tree')) {
-        return this.$store.getters.tree.map((item) => {
-          item.owner_name = (item.owner && item.owner.name) || '未指定'
-          item.user_name = (item.user && item.user.name) || '未指定'
-          item.operate = { id: '', name: '選一個對象' }
-          item.tree_name = this.treeName[item.type]
-          return item
-        })
-      } else {
-        return []
-      }
-    },
-    paging () {
-      return this.$store.getters.paging('tree', 'tree')
+      return this.$store.getters.tree.map((item) => {
+        item.tree_name = this.treeName[item.type]
+        item.operate = { id: '', name: '選一個對象' }
+        return item
+      })
     },
     dropdownItems () {
       let users = {}
@@ -136,24 +115,19 @@ export default {
     },
   },
   methods: {
-    async changePage (nextIndex) {
-      await this.$store.dispatch('goToTreePage', { nextIndex })
-    },
     async buy (type) {
       const data = {
         'user_id': this.$store.getters.myId,
         'type': type,
       }
-      const nextIndex = this.$store.getters.paging('tree', 'tree').curr_page
       await this.$store.dispatch('buyTree', { data })
       await this.$store.dispatch(`setAvailTreeType`)
       await this.$store.dispatch(`WalletPage`)
-      this.$store.dispatch('goToTreePage', { nextIndex })
+      this.$store.dispatch('ListTreeSummary')
     },
     async activate (payload) {
-      const nextIndex = this.$store.getters.paging('tree', 'tree').curr_page
       await this.$store.dispatch('activateTree', payload)
-      this.$store.dispatch('goToTreePage', { nextIndex })
+      this.$store.dispatch('ListTreeSummary')
     },
   },
 }

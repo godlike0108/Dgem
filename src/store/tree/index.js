@@ -7,7 +7,7 @@ export default {
     availTreeType: [],
   },
   getters: {
-    tree: (state) => state.tree.data,
+    tree: (state) => state.tree,
     activeTree: (state) => state.activeTree.data,
     availTreeType: (state) => state.availTreeType,
   },

@@ -99,7 +99,7 @@ var route = new Router({
             route.app.$store.dispatch('setAvailTreeType')
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
-            route.app.$store.dispatch('goToTreePage', { nextIndex: 1 })
+            await route.app.$store.dispatch('ListTreeSummary')
             next()
           },
         },

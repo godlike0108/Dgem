@@ -16,10 +16,15 @@ export default {
     const json = await dispatch('GET', `/api/users/${myId}/available-tree-types`)
     commit('setAvailTreeType', json)
   },
-  async goToTreePage ({ dispatch, commit, getters }, { nextIndex }) {
-    nextIndex = nextIndex || 1
+  // async goToTreePage ({ dispatch, commit, getters }, { nextIndex }) {
+  //   nextIndex = nextIndex || 1
+  //   const myId = getters.myId
+  //   const json = await dispatch('GET', `/api/users/${myId}/trees?owner_id=${myId}&activated=0&page=${nextIndex}`)
+  //   commit('setTreeList', json)
+  // },
+  async ListTreeSummary ({dispatch, commit, getters}) {
     const myId = getters.myId
-    const json = await dispatch('GET', `/api/users/${myId}/trees?owner_id=${myId}&activated=0&page=${nextIndex}`)
+    const json = await dispatch('GET', `/api/users/${myId}/tree-summary`)
     commit('setTreeList', json)
   },
   async goToActiveTreePage ({ dispatch, commit, getters }, { nextIndex }) {

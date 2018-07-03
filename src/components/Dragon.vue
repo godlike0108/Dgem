@@ -89,7 +89,6 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log(params.row)
                     const idDragon = params.row.next_available_dragon.id
                     this.activate({ data: { 'user_id': params.row.operate.id }, idDragon })
                   },
@@ -124,10 +123,9 @@ export default {
       const data = {
         'owner_id': this.$store.getters.myId,
       }
-      const nextIndex = this.$store.getters.paging('dragon', 'dragon').curr_page
       await this.$store.dispatch('buyDragon', { data })
       await this.$store.dispatch(`WalletPage`)
-      this.$store.dispatch('goToDragonPage', { nextIndex })
+      this.$store.dispatch('ListDragonSummary')
     },
     async activate (payload) {
       try {

@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <div class="form">
+<!--     <div class="form">
       <h4>轉出對象</h4>
       <Input class="input-id" v-model="id" :placeholder="`${myId}`" style="width: 300px" clearable></Input>
     </div>
@@ -13,7 +13,31 @@
       <Alert type="error">接下來的行為，將不可回溯!!</Alert>
     </div>
       <Button type="error" @click="transferTo()">轉出</Button>
-      <Spin v-if="busy">轉出中...</Spin>
+      <Spin v-if="busy">轉出中...</Spin> -->
+
+    <Form ref="TranfserUSD" :model="transferUSD" :rules="transferUSDRule" label-position="top" style="max-width: 300px">
+        <FormItem>
+          <CurrUsdWallet></CurrUsdWallet>
+        </FormItem>
+        <FormItem label="轉出對象" prop="id">
+          <Input class="input-id" v-model="transferUSD.id" :placeholder="`${myId}`" style="width: 300px" clearable></Input>
+        </FormItem>
+        <FormItem label="轉出數量" prop="amount">
+          <Input class="input-amount" v-model="transferUSD.amount" placeholder="0" style="width: 300px" clearable></Input>
+        </FormItem>
+        <FormItem label="請輸入二級密碼" prop="password">
+          <Input type="password" v-model="transferUSD.password"></Input>
+        </FormItem>
+        <FormItem>
+          <Alert type="error">接下來的行為，將不可回溯!!</Alert>
+        </FormItem>
+        <FormItem>
+          <Button type="error" @click="handleSubmit('TranfserUSD')">轉出</Button>
+        </FormItem>
+        <FormItem>
+          <Spin v-if="busy">轉出中...</Spin>
+        </FormItem>
+    </Form>
   </div>
 </template>
 
@@ -24,9 +48,36 @@ export default {
     CurrUsdWallet,
   },
   data () {
+    const validatePass = (rule, value, callback) => {
+      if (value === '' || value.length < 6) {
+        callback(new Error('填入密碼，符合長度 6 個字元以上'))
+      }
+      callback()
+    }
+    const validateAmount = (rule, value, callback) => {
+      if (value <= 0) {
+        callback(new Error('轉換數量必須大於 0'))
+      }
+      callback()
+    }
+
     return {
-      id: '',
-      amount: 0,
+      transferUSD: {
+        id: '',
+        amount: 0,
+        password: '',
+      },
+      transferUSDRule: {
+        id: [
+          { required: true, type: 'string', trigger: 'blur', message: '請填寫 ID' },
+        ],
+        amount: [
+          { required: true, validator: validateAmount, trigger: 'blur' },
+        ],
+        password: [
+          { required: true, validator: validatePass, trigger: 'blur' },
+        ],
+      },
       busy: false,
     }
   },
@@ -48,15 +99,37 @@ export default {
       try {
         this.busy = true
         const data = {
-          'user_id': this.id,
-          'amount': this.amount,
+          'user_id': this.transferUSD.id,
+          'amount': this.transferUSD.amount,
+          'wallet_password': this.transferUSD.password,
         }
         await this.$store.dispatch('TransferUSD', { data })
         await this.$store.dispatch(`WalletPage`)
         this.busy = false
+        return 'success'
       } catch (e) {
+        console.log(e)
         this.busy = false
+        return 'fail'
       }
+    },
+    handleSubmit (name) {
+      this.$refs[name].validate(async (valid) => {
+        if (valid) {
+          let response = await this.transferTo()
+          if (response === 'success') {
+            this.$Message.success('轉出成功！')
+          } else {
+            this.$Message.error('轉出失敗，請確認資料是否確實填寫')
+          }
+        } else {
+          this.$Message.error('轉出失敗，請確認資料是否確實填寫')
+        }
+        this.handleReset('TransferUSD')
+      })
+    },
+    handleReset (name) {
+      this.$refs[name].resetFields()
     },
   },
 }

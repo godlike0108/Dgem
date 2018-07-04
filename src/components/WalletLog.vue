@@ -50,16 +50,16 @@ export default {
           width: 100,
         },
         {
-          title: '餘額',
-          key: 'amount',
-          align: 'right',
-          width: 150,
-        },
-        {
           title: '金額',
           key: 'delta_amount',
           align: 'right',
-          width: 150,
+          width: 120,
+        },
+        {
+          title: '餘額',
+          key: 'amount',
+          align: 'right',
+          width: 120,
         },
         {
           title: '接受人䁥稱',

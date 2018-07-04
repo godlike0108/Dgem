@@ -1,20 +1,5 @@
 <template lang="html">
   <div>
-<!--     <div class="form">
-      <h4>轉出對象</h4>
-      <Input class="input-id" v-model="id" :placeholder="`${myId}`" style="width: 300px" clearable></Input>
-    </div>
-    <CurrUsdWallet></CurrUsdWallet>
-    <div class="form">
-      <h4>轉出數量</h4>
-      <Input class="input-amount" v-model="amount" placeholder="0" style="width: 300px" clearable></Input>
-    </div>
-    <div class="form">
-      <Alert type="error">接下來的行為，將不可回溯!!</Alert>
-    </div>
-      <Button type="error" @click="transferTo()">轉出</Button>
-      <Spin v-if="busy">轉出中...</Spin> -->
-
     <Form ref="TranfserUSD" :model="transferUSD" :rules="transferUSDRule" label-position="top" style="max-width: 300px">
         <FormItem>
           <CurrUsdWallet></CurrUsdWallet>

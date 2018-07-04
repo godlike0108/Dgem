@@ -28,9 +28,9 @@ var route = new Router({
       path: '/',
       beforeEnter: (to, from, next) => {
         if (localStore.get('dgemToken')) {
-          route.push('/Main')
+          next({path: '/Main'})
         } else {
-          route.push('/Login')
+          next({path: '/Login'})
         }
       },
     },
@@ -174,7 +174,7 @@ var route = new Router({
           beforeEnter: async (to, from, next) => {
             if (route.app.$store.getters.self.is_child_account) {
               // redirect if directly enter url
-              route.push('/Main/ChildAccount')
+              next({path: '/Main/ChildAccount'})
               return
             }
             await route.app.$store.dispatch(`WalletPage`)

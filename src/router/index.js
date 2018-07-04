@@ -55,6 +55,11 @@ var route = new Router({
           name: 'Shopping',
           component: Shopping,
           beforeEnter: async (to, from, next) => {
+            if (route.app.$store.getters.self.is_child_account) {
+              // redirect if directly enter url
+              next({path: '/Main/ChildAccount'})
+              return
+            }
             await route.app.$store.dispatch(`WalletPage`)
             next()
           },

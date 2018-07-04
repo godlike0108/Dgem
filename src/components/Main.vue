@@ -77,8 +77,8 @@
                           寶石轉換
                           </template>
                           <router-link :to="{path: '/Main/TransferGems/0'}"><MenuItem name="4-3-1">七彩寶石轉換</MenuItem></router-link>
-                          <router-link :to="{path: '/Main/Shopping'}"><MenuItem name="4-3-2">多喜寶石轉換</MenuItem></router-link>
-                          <router-link :to="{path: '/Main/notStart'}"><MenuItem name="4-3-3">多福寶石轉換</MenuItem></router-link>
+                          <router-link :to="{path: '/Main/notStart'}"><MenuItem name="4-3-2">多喜寶石轉換</MenuItem></router-link>
+                          <router-link :to="{path: '/Main/Shopping'}"><MenuItem name="4-3-3">多福寶石轉換</MenuItem></router-link>
                           <router-link :to="{path: '/Main/TransferGems/3'}"><MenuItem name="4-3-4">多財寶石轉換</MenuItem></router-link>
                       </Submenu>
                   </Submenu>

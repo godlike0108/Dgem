@@ -15,20 +15,30 @@ export default {
   data () {
     return {
       treeName: {
-        '0': '小夢寶樹',
-        '1': '夢寶樹',
-        '2': '大夢寶樹',
+        '0': '夢寶樹（小）',
+        '1': '夢寶樹（中）',
+        '2': '夢寶樹（大）',
+      },
+      treePrice: {
+        '0': '1000',
+        '1': '2000',
+        '2': '3000',
       },
       columns1: [
         {
           title: '夢寶樹種類',
           key: 'tree_name',
-          width: 200,
+          width: 120,
         },
         {
-          title: '夢寶樹數量',
+          title: '夢寶樹價格',
+          key: 'price',
+          width: 120,
+        },
+        {
+          title: '夢寶樹持有數量',
           key: 'amount',
-          width: 100,
+          width: 120,
         },
         {
           title: '選擇激活對象',
@@ -103,6 +113,7 @@ export default {
     tree () {
       return this.$store.getters.tree.map((item) => {
         item.tree_name = this.treeName[item.type]
+        item.price = this.treePrice[item.type]
         item.operate = { id: '', name: '選一個對象' }
         return item
       })

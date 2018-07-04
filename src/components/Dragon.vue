@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
     <CurrUsdWallet></CurrUsdWallet>
-    <Button type="error" @click="buy()">買一隻全新夢寶龍</Button>
+    <Button type="error" @click="buy()">買一隻夢寶龍</Button>
     <Table stripe :columns="columns1" :data="dragon"></Table>
   </div>
 </template>
@@ -18,16 +18,25 @@ export default {
         '0': '夢寶龍',
         '1': '小夢寶龍',
       },
+      dragonPrice: {
+        '0': '100',
+        '1': '',
+      },
       columns1: [
         {
           title: '夢寶龍種類',
           key: 'dragon_type',
-          width: 100,
+          width: 120,
         },
         {
-          title: '夢寶龍數量',
+          title: '夢寶龍價格',
+          key: 'price',
+          width: 120,
+        },
+        {
+          title: '夢寶龍持有數量',
           key: 'amount',
-          width: 100,
+          width: 120,
         },
         {
           title: '選擇激活對象',
@@ -103,6 +112,7 @@ export default {
     dragon () {
       return this.$store.getters.dragon.map((item) => {
         item.dragon_type = this.dragonType[item.type]
+        item.price = this.dragonPrice[item.type]
         item.operate = { id: '', name: '選一個對象' }
         return item
       })

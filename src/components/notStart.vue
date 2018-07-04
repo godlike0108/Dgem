@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="noStart">
     Comming soon...
+    <div class="temp">
+      <img src="static/images/temp.gif">
+    </div>
   </div>
 </template>
 
@@ -22,6 +25,12 @@ export default {
   height: 100%;
   display: inline-block;
   vertical-align: middle;
+}
+
+.temp img{
+  max-width: 800px;
+  min-width: 300px;
+  width: 100%;
 }
 
 </style>

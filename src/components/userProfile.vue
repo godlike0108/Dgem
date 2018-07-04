@@ -106,9 +106,9 @@ export default {
         ],
       },
       wallet: [
-        {id: 5, name: '碳幣'},
-        {id: 6, name: '財神幣'},
-        {id: 7, name: '美金'},
+        {id: 5, name: '碳鏈'},
+        {id: 6, name: '財神鏈'},
+        {id: 7, name: '卡片號碼'},
         {id: 8, name: '圓夢積分'},
       ],
       addrGroup: {

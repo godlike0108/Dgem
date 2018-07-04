@@ -25,11 +25,6 @@ export default {
           key: 'name',
           minWidth: 150,
         },
-        // {
-        //   title: '使用者信箱',
-        //   key: 'email',
-        //   minWidth: 270,
-        // },
         {
           title: this.$store.getters.gems[0],
           key: 'gem0',

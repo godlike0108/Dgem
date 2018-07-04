@@ -7,7 +7,7 @@ export default {
   },
   async goToChildAccountPage ({ dispatch, commit, getters }, { nextIndex }) {
     nextIndex = nextIndex || 1
-    const myId = getters.myId
+    const myId = getters.momId
     const json = await dispatch('GET', `/api/users/${myId}/child-accounts?page=${nextIndex}`)
     json.data = await dispatch('accountAndWallet', { array: json.data })
     commit('setChildAccount', json)
@@ -55,6 +55,10 @@ export default {
     const json = await dispatch('GET', `/api/users/me`)
     const allTreeStatus = await dispatch('allTreeStatus', { id: json.id })
     commit('IAm', Object.assign({}, json, allTreeStatus))
+  },
+  async whoIsMom ({ dispatch, commit }) {
+    const json = await dispatch('GET', `/api/users/me`)
+    commit('setMom', Object.assign({}, json))
   },
   async getOnlyMe ({ dispatch, commit }) {
     const json = await dispatch('GET', `/api/users/me`)

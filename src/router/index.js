@@ -135,6 +135,7 @@ var route = new Router({
             if (!route.app.$store.getters.self.is_child_account) {
               await route.app.$store.dispatch('whoAmI')
               route.app.$store.dispatch(`allChildAccount`)
+              await route.app.$store.dispatch('whoIsMom')
               await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
             }
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
@@ -248,7 +249,7 @@ route.beforeEach(async (to, from, next) => {
     await route.app.$store.dispatch('getOnlyMe')
   }
 
-  if (!route.app.$store.getters.emailVerified) {
+  if (!route.app.$store.getters.emailVerified && !route.app.$store.getters.self.is_child_account) {
     next({path: '/Main/Unverified'})
     return
   }

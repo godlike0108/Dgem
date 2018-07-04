@@ -138,3 +138,21 @@ thead {
   background-image: url('/static/images/icon_gem4.svg');
 }
 
+/* Tabs */
+.ivu-tabs {
+  color: #FFF;
+}
+
+.ivu-tabs-nav .ivu-tabs-tab-active {
+    color: #FF728d;
+}
+
+.ivu-tabs-nav .ivu-tabs-tab:hover {
+    color: #FF728d;
+}
+
+.ivu-tabs-ink-bar {
+  background-color: #FF728d;
+}
+
+

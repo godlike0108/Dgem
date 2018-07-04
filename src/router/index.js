@@ -17,6 +17,7 @@ import Login from '@/components/Login'
 import UserProfile from '@/components/UserProfile'
 import EventsLog from '@/components/EventsLog'
 import WalletLog from '@/components/WalletLog'
+import Shopping from '@/components/Shopping'
 
 Vue.use(Router)
 
@@ -48,6 +49,15 @@ var route = new Router({
           path: 'notStart',
           name: 'notStart',
           component: notStart,
+        },
+        {
+          path: 'Shopping',
+          name: 'Shopping',
+          component: Shopping,
+          beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
         },
         {
           path: 'Unverified',

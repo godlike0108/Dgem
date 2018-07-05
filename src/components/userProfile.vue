@@ -262,7 +262,6 @@ export default {
           let response = await this.$store.dispatch('UpdateWalletAddr', {walletIndex, data})
           if (response === 'success') {
             this.$Message.success('設定錢包位址成功')
-            this.$refs[`UpdateGem${walletIndex}Addr`][0].resetFields()
           } else {
             this.$Message.error('無此錢包位址')
           }

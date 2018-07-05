@@ -68,6 +68,9 @@
 
 <script>
 export default {
+  created () {
+    this.setWalletAddr()
+  },
   data () {
     const validatePass = (rule, value, callback) => {
       if (value === '' || value.length < 6) {
@@ -212,6 +215,11 @@ export default {
     },
   },
   methods: {
+    setWalletAddr () {
+      for (let wallet in this.addrGroup) {
+        this.addrGroup[wallet].address = this.$store.getters.wallet[wallet].external_address
+      }
+    },
     async changeDragonPage (nextIndex) {
       await this.$store.dispatch('goToActiveDragonPage', { nextIndex })
     },

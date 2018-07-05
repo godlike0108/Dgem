@@ -4,7 +4,7 @@
   <p><span class="wallet-value">{{currentGem}}</span>點</p>
   <Form ref="transferCard" :model="transferCard" :rules="transferCardRule" label-position="top" style="max-width:300px">
     <FormItem label="錢包位置" prop="walletAddress">
-      <Input type="text" readonly v-model="transferCard.walletAddress"></Input>
+      <Input type="text" readonly v-model="walletAddress"></Input>
     </FormItem>
     <FormItem :label="`兌換比例: ${transferRate}`">
       <Row>
@@ -59,7 +59,6 @@ export default {
     }
     return {
       transferCard: {
-        walletAddress: '',
         fromValue: 0,
         toValue: 0,
         password: '',
@@ -100,6 +99,9 @@ export default {
     // current gem
     currentGem () {
       return this.$store.getters.wallet.find(wallet => wallet.gem === 0).amount
+    },
+    walletAddress () {
+      return this.$store.getters.wallet['7'].external_address
     },
     transferRate () {
       return '1:1'

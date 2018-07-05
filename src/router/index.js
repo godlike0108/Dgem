@@ -18,6 +18,8 @@ import UserProfile from '@/components/UserProfile'
 import EventsLog from '@/components/EventsLog'
 import WalletLog from '@/components/WalletLog'
 import Shopping from '@/components/Shopping'
+import ApplyCard from '@/components/ApplyCard'
+import TransferCard from '@/components/TransferCard'
 
 Vue.use(Router)
 
@@ -128,6 +130,21 @@ var route = new Router({
           },
         },
         {
+          path: 'ApplyCard',
+          name: 'ApplyCard',
+          component: ApplyCard,
+          beforeEnter: async (to, from, next) => {
+            if (route.app.$store.getters.self.is_child_account) {
+              // redirect if directly enter url
+              next({path: '/Main/ChildAccount'})
+              return
+            }
+
+            await route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
+        },
+        {
           path: 'ChildAccount',
           name: 'ChildAccount',
           component: ChildAccount,
@@ -156,6 +173,21 @@ var route = new Router({
           path: 'TransferUSD',
           name: 'TransferUSD',
           component: TransferUSD,
+          beforeEnter: async (to, from, next) => {
+            if (route.app.$store.getters.self.is_child_account) {
+              // redirect if directly enter url
+              next({path: '/Main/ChildAccount'})
+              return
+            }
+
+            await route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
+        },
+        {
+          path: 'TransferCard',
+          name: 'TransferCard',
+          component: TransferCard,
           beforeEnter: async (to, from, next) => {
             if (route.app.$store.getters.self.is_child_account) {
               // redirect if directly enter url

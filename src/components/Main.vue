@@ -82,11 +82,19 @@
                           <router-link :to="{path: '/Main/TransferGems/3'}"><MenuItem name="4-3-4">多財寶石轉換</MenuItem></router-link>
                       </Submenu>
                   </Submenu>
-                  <router-link :to="{path: `/Main/Group`}"><MenuItem name="5-1">
+                  <Submenu name="5" v-show="isFunctionEnabel">
+                      <template slot="title">
+                          <Icon type="card"></Icon>
+                          卡片管理
+                      </template>
+                      <router-link :to="{path: `/Main/ApplyCard`}"><MenuItem name="5-1">卡片申請</MenuItem></router-link>
+                      <router-link :to="{path: `/Main/TransferCard`}"><MenuItem name="5-2">轉出</MenuItem></router-link>
+                  </Submenu>
+                  <router-link :to="{path: `/Main/Group`}"><MenuItem name="6-1">
                     <Icon type="person-stalker"></Icon>
                     家族開採狀況
                   </MenuItem></router-link>
-                  <router-link :to="{path: `/Main/TransferUSD`}"><MenuItem v-show="isFunctionEnabel" name="6-1">
+                  <router-link :to="{path: `/Main/TransferUSD`}"><MenuItem v-show="isFunctionEnabel" name="7-1">
                     <Icon type="social-usd"></Icon>
                     夢寶積分轉出
                   </MenuItem></router-link>

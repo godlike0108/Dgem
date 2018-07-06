@@ -19,7 +19,7 @@
   background:
   url("../../static/images/gems_decoration_L.png") no-repeat left 110%,
   url("../../static/images/gems_decoration_R.png") no-repeat right bottom,
-  url("../../static/images/bg_lighting.png") no-repeat center bottom;
+  url("../../static/images/bg_dragon.png") no-repeat center bottom;
   background-size: auto, auto, cover;
   color: #f8f8f9;
 }
@@ -119,23 +119,23 @@ thead {
 }
 
 .select-point-type.gem0 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem0 {
-  background-image: url('/static/images/icon_gem0.svg');
+  background-image: url('/static/images/icon_gem0.png');
 }
 
 .select-point-type.gem1 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem1 {
-  background-image: url('/static/images/icon_gem1.svg');
+  background-image: url('/static/images/icon_gem1.png');
 }
 
 .select-point-type.gem2 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem2 {
-  background-image: url('/static/images/icon_gem2.svg');
+  background-image: url('/static/images/icon_gem2.png');
 }
 
 .select-point-type.gem3 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem3 {
-  background-image: url('/static/images/icon_gem3.svg');
+  background-image: url('/static/images/icon_gem3.png');
 }
 
 .select-point-type.gem4 .ivu-select-selection .ivu-select-selected-value, .ivu-select-dropdown-list .ivu-select-item.gem4 {
-  background-image: url('/static/images/icon_gem4.svg');
+  background-image: url('/static/images/icon_gem4.png');
 }
 
 /* Tabs */

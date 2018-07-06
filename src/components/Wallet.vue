@@ -17,10 +17,11 @@ export default {
             return h('div', [
               h('img', {
                 class: {
-                  'gems-shadow': true,
+                  // 'gems-shadow': true,
+                  'gem-icon': true,
                 },
                 domProps: {
-                  src: `static/images/icon_gem${params.index}.svg`,
+                  src: `static/images/icon_gem${params.index}.png`,
                 },
               }),
               h('span', params.row.gem_name),
@@ -55,7 +56,13 @@ export default {
 <style lang="css">
 .gems-shadow {
   -webkit-filter: drop-shadow(10px 10px 7px rgba(0, 0, 0, 0.7));
-  filter: drop-shadow(10px 10px 7px rgba(0, 0, 0, 0.7))
+  filter: drop-shadow(10px 10px 7px rgba(0, 0, 0, 0.7));
+}
+
+.gem-icon {
+  width: 30px;
+  height: auto;
+  margin-right: 10px;
 }
 
 .ivu-table-cell div img, .ivu-table-cell div span {

@@ -31,6 +31,9 @@ export default {
 
   data () {
     return {
+      statusLookUp: {
+        '0': '審核中',
+      },
       applyCard: {
         name: '',
         address: '',
@@ -51,33 +54,43 @@ export default {
         {
           title: '申請編號',
           key: 'id',
+          width: 120,
         },
         {
           title: '暱稱',
           key: 'nickname',
+          width: 120,
         },
         {
           title: '收件人地址',
           key: 'address',
+          width: 240,
         },
         {
           title: '收件人電話',
           key: 'phone',
+          width: 160,
         },
         {
           title: '目前狀態',
           key: 'status',
+          width: 100,
         },
         {
           title: '建立時間',
           key: 'updated_at',
+          width: 120,
         },
       ],
     }
   },
   computed: {
     applyList () {
-      return this.$store.getters.applyList
+      let list = this.$store.getters.applyList
+      return list.map(item => {
+        item.status = this.statusLookUp[item.status]
+        return item
+      })
     },
     paging () {
       return this.$store.getters.paging('wallet', 'applyList')

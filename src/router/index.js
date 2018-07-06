@@ -195,7 +195,7 @@ var route = new Router({
               next({path: '/Main/ChildAccount'})
               return
             }
-
+            await route.app.$store.dispatch(`GetWalletTransferList`, {gem: 0})
             await route.app.$store.dispatch(`WalletPage`)
             next()
           },

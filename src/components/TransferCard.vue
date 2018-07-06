@@ -74,7 +74,7 @@ export default {
       transferApplyCols: [
         {
           title: '申請編號',
-          key: 'to_gem',
+          key: 'id',
         },
         {
           title: '匯率',
@@ -93,6 +93,9 @@ export default {
           key: 'updated_at',
         },
       ],
+      statusLookUp: {
+        '0': '審核中',
+      },
     }
   },
   computed: {
@@ -134,14 +137,29 @@ export default {
       return this.toLimit / this.fromLimit
     },
     transferCardList () {
-      return []
+      let list = this.$store.getters.walletTransferList.data
+      list.map(data => {
+        console.log(data)
+        data.status = this.statusLookUp[data.status]
+      })
+
+      return list
     },
   },
   methods: {
+
     handleSubmit (name) {
-      this.$refs[name].validate((valid) => {
+      this.$refs[name].validate(async (valid) => {
         if (valid) {
+          const data = {
+            to_gem: 5,
+            amount: this.transferCard.fromValue,
+            wallet_password: this.transferCard.password,
+          }
+          const mainGemValue = 0
+          await this.$store.dispatch('ApplyWalletTransfer', {mainGemValue, data})
           this.$Message.success('轉出成功!')
+          this.$store.dispatch(`GetWalletTransferList`, 0)
         } else {
           this.$Message.error('請確實填寫資料!')
         }

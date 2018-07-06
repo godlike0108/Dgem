@@ -139,15 +139,16 @@ export default {
     transferCardList () {
       let list = this.$store.getters.walletTransferList.data
       list.map(data => {
-        console.log(data)
         data.status = this.statusLookUp[data.status]
       })
 
       return list
     },
+    paging () {
+      return this.$store.getters.paging('wallet', 'walletTransferList')
+    },
   },
   methods: {
-
     handleSubmit (name) {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
@@ -167,6 +168,11 @@ export default {
     },
     handleReset (name) {
       this.$refs[name].resetFields()
+    },
+    async changePage (nextIndex) {
+      let mainGemValue = 0
+      const searchParams = new URLSearchParams()
+      await this.$store.dispatch('GetWalletTransferList', { mainGemValue, nextIndex, searchParams })
     },
   },
 }

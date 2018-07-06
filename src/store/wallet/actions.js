@@ -65,6 +65,9 @@ export default {
     nextIndex = nextIndex || 1
     searchParams = searchParams || new URLSearchParams()
     searchParams.append('page', `${nextIndex}`)
+    searchParams.append('to_gem[]', '5')
+    searchParams.append('to_gem[]', '6')
+    searchParams.append('to_gem[]', '8')
     const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications?${searchParams.toString()}`)
     commit('setWalletTransferList', json)
   },
@@ -93,6 +96,7 @@ export default {
     nextIndex = nextIndex || 1
     searchParams = searchParams || new URLSearchParams()
     searchParams.append('page', `${nextIndex}`)
+    searchParams.append('to_gem[]', '7')
     const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications?${searchParams.toString()}`)
     commit('setCardTransferList', json)
   },

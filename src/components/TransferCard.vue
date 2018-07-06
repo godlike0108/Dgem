@@ -58,6 +58,7 @@ export default {
       callback()
     }
     return {
+      toGem: '7',
       transferCard: {
         fromValue: 0,
         toValue: 0,
@@ -104,7 +105,7 @@ export default {
       return this.$store.getters.wallet.find(wallet => wallet.gem === 0).amount
     },
     walletAddress () {
-      return this.$store.getters.wallet['7'].external_address
+      return this.$store.getters.wallet[this.toGem].external_address
     },
     transferRate () {
       return '1:1'
@@ -137,7 +138,8 @@ export default {
       return this.toLimit / this.fromLimit
     },
     transferCardList () {
-      let list = this.$store.getters.walletTransferList.data
+      console.log(this.$store.getters.cardTransferList)
+      let list = this.$store.getters.cardTransferList.data
       list.map(data => {
         data.status = this.statusLookUp[data.status]
       })
@@ -145,7 +147,7 @@ export default {
       return list
     },
     paging () {
-      return this.$store.getters.paging('wallet', 'walletTransferList')
+      return this.$store.getters.paging('wallet', 'cardTransferList')
     },
   },
   methods: {
@@ -153,14 +155,14 @@ export default {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
           const data = {
-            to_gem: 5,
+            to_gem: this.toGem,
             amount: this.transferCard.fromValue,
             wallet_password: this.transferCard.password,
           }
           const mainGemValue = 0
-          await this.$store.dispatch('ApplyWalletTransfer', {mainGemValue, data})
+          await this.$store.dispatch('ApplyCardTransfer', {mainGemValue, data})
           this.$Message.success('轉出成功!')
-          this.$store.dispatch(`GetWalletTransferList`, 0)
+          this.$store.dispatch(`GetCardTransferList`, {mainGemValue})
         } else {
           this.$Message.error('請確實填寫資料!')
         }
@@ -172,7 +174,7 @@ export default {
     async changePage (nextIndex) {
       let mainGemValue = 0
       const searchParams = new URLSearchParams()
-      await this.$store.dispatch('GetWalletTransferList', { mainGemValue, nextIndex, searchParams })
+      await this.$store.dispatch('GetCardTransferList', { mainGemValue, nextIndex, searchParams })
     },
   },
 }

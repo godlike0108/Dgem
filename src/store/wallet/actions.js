@@ -76,9 +76,24 @@ export default {
       data,
     })
   },
+  // apply wallet transfer
+  async ApplyCardTransfer ({dispatch, commit}, {mainGemValue, data}) {
+    await dispatch('POST', {
+      path: `/api/gems/${mainGemValue}/wallet-transfer-applications`,
+      data,
+    })
+  },
   // get card application list
   async GetCardApplyList ({dispatch, commit}, data) {
     const json = await dispatch('GET', `/api/card-applications`)
     commit('setApplyList', json)
+  },
+  // apply wallet transfer
+  async GetCardTransferList ({dispatch, commit}, {mainGemValue, nextIndex, searchParams}) {
+    nextIndex = nextIndex || 1
+    searchParams = searchParams || new URLSearchParams()
+    searchParams.append('page', `${nextIndex}`)
+    const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications?${searchParams.toString()}`)
+    commit('setCardTransferList', json)
   },
 }

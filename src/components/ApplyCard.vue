@@ -19,6 +19,7 @@
   </Form>
 
   <h4>申請狀態</h4>
+  <Page :current="paging.curr_page" :total="paging.total" simple @on-change="changePage($event)"></Page>
   <Table stripe :columns="applyListCol" :data="applyList"></Table>
 </div>
 </template>
@@ -77,6 +78,9 @@ export default {
   computed: {
     applyList () {
       return this.$store.getters.applyList
+    },
+    paging () {
+      return this.$store.getters.paging('wallet', 'applyList')
     },
   },
   methods: {

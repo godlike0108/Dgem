@@ -17,10 +17,10 @@
 
 .ivu-layout-content {
   background:
-  url("../../static/images/gems_decoration_L.png") no-repeat left 110%,
-  url("../../static/images/gems_decoration_R.png") no-repeat right bottom,
+/*  url("../../static/images/gems_decoration_L.png") no-repeat left 110%,
+  url("../../static/images/gems_decoration_R.png") no-repeat right bottom,*/
   url("../../static/images/bg_dragon.png") no-repeat center bottom;
-  background-size: auto, auto, cover;
+  background-size: cover;
   color: #f8f8f9;
 }
 

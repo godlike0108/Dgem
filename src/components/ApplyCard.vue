@@ -70,7 +70,7 @@ export default {
         },
         {
           title: '建立時間',
-          key: 'timestamp',
+          key: 'updated_at',
         },
       ],
     }

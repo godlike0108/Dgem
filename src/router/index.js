@@ -99,6 +99,7 @@ var route = new Router({
 
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
+            await route.app.$store.dispatch('GetDragonPrice')
             await route.app.$store.dispatch('ListDragonSummary')
             next()
           },

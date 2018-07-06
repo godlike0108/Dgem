@@ -33,4 +33,8 @@ export default {
     const json = await dispatch('GET', `/api/dragons?user_id=${myId}&page=${nextIndex}`)
     commit('setActiveDragonList', json)
   },
+  async GetDragonPrice ({dispatch, commit}) {
+    const arr = await dispatch('GET', `/api/dragon-prices`)
+    commit('setDragonPrice', arr)
+  },
 }

@@ -18,10 +18,6 @@ export default {
         '0': '夢寶龍',
         '1': '小夢寶龍',
       },
-      dragonPrice: {
-        '0': '100',
-        '1': '',
-      },
       columns1: [
         {
           title: '夢寶龍種類',
@@ -110,12 +106,16 @@ export default {
   },
   computed: {
     dragon () {
+      console.log(this.dragonPrice)
       return this.$store.getters.dragon.map((item) => {
         item.dragon_type = this.dragonType[item.type]
         item.price = this.dragonPrice[item.type]
         item.operate = { id: '', name: '選一個對象' }
         return item
       })
+    },
+    dragonPrice () {
+      return this.$store.getters.dragonPrice
     },
     dropdownItems () {
       return this.$store.getters.allUsers

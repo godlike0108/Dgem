@@ -5,11 +5,13 @@ export default {
     allDragon: {},
     dragon: {},
     activeDragon: {},
+    dragonPrice: [],
   },
   getters: {
     allDragon: (state) => state.allDragon.data,
     dragon: (state) => state.dragon,
     activeDragon: (state) => state.activeDragon.data,
+    dragonPrice: (state) => state.dragonPrice,
   },
   mutations: {
     setAllDragonList (state, json) {
@@ -20,6 +22,9 @@ export default {
     },
     setActiveDragonList (state, json) {
       state.activeDragon = json
+    },
+    setDragonPrice (state, json) {
+      state.dragonPrice = json
     },
   },
   actions,

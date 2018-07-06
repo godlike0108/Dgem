@@ -68,4 +68,17 @@ export default {
     const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications?${searchParams.toString()}`)
     commit('setWalletTransferList', json)
   },
+
+  // apply card
+  async ApplyCard ({dispatch, commit}, data) {
+    await dispatch('POST', {
+      path: `/api/card-applications`,
+      data,
+    })
+  },
+  // get card application list
+  async GetCardApplyList ({dispatch, commit}, data) {
+    const json = await dispatch('GET', `/api/card-applications`)
+    commit('setApplyList', json)
+  },
 }

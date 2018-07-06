@@ -11,7 +11,7 @@
       <Input v-model="applyCard.address" placeholder="請輸入聯絡地址" style="width: 300px" clearable></Input>
     </FormItem>
     <FormItem label="收件人電話" prop="phone">
-      <Input type="password" v-model="applyCard.password" placeholder="請輸入聯絡電話"></Input>
+      <Input type="text" v-model="applyCard.phone" placeholder="請輸入聯絡電話"></Input>
     </FormItem>
     <FormItem>
       <Button type="error" @click="handleSubmit('ApplyCard')">提交申請單</Button>
@@ -53,7 +53,7 @@ export default {
         },
         {
           title: '暱稱',
-          key: 'name',
+          key: 'nickname',
         },
         {
           title: '收件人地址',
@@ -76,14 +76,35 @@ export default {
   },
   computed: {
     applyList () {
-      return []
+      return this.$store.getters.applyList
     },
   },
   methods: {
+    applyUserCard () {
+      const data = {
+        address: this.applyCard.address,
+        nickname: this.applyCard.name,
+        phone: this.applyCard.phone,
+      }
+      try {
+        this.$store.dispatch('ApplyCard', data)
+      } catch (e) {
+        console.log(e)
+        return 'fail'
+      }
+      return 'success'
+    },
     handleSubmit (name) {
-      this.$refs[name].validate((valid) => {
+      this.$refs[name].validate(async (valid) => {
         if (valid) {
+          let response = await this.applyUserCard()
+          if (response !== 'success') {
+            this.$Message.error('申請失敗')
+            return
+          }
           this.$Message.success('申請成功!')
+          this.handleReset('ApplyCard')
+          this.$store.dispatch('GetCardApplyList')
         } else {
           this.$Message.error('請確實填寫資料!')
         }

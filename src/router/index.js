@@ -141,6 +141,7 @@ var route = new Router({
             }
 
             await route.app.$store.dispatch(`WalletPage`)
+            await route.app.$store.dispatch(`GetCardApplyList`)
             next()
           },
         },

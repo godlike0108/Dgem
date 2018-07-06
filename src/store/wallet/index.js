@@ -11,6 +11,8 @@ export default {
     walletTransferRate: {},
     // wallet transfer application list
     walletTransferList: {},
+    // card apply list
+    applyList: {},
   },
   getters: {
     wallet: (state) => {
@@ -29,6 +31,7 @@ export default {
     walletTransferMap: (state) => state.walletTransferMap,
     walletTransferRate: (state) => state.walletTransferRate,
     walletTransferList: (state) => state.walletTransferList,
+    applyList: (state) => state.applyList,
   },
   mutations: {
     setWallet (state, json) {
@@ -39,6 +42,7 @@ export default {
     setWalletTransferMap: (state, json) => { state.walletTransferMap = json },
     setWalletTransferRate: (state, json) => { state.walletTransferRate = json },
     setWalletTransferList: (state, json) => { state.walletTransferList = json },
+    setApplyList: (state, json) => { state.applyList = json.data },
   },
   actions,
 }

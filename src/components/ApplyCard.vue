@@ -4,8 +4,8 @@
     <FormItem>
       <h4>申請卡片</h4>
     </FormItem>
-    <FormItem label="暱稱" prop="name">
-      <Input v-model="applyCard.name" placeholder="請輸入暱稱" style="width: 300px" clearable></Input>
+    <FormItem label="收件人姓名" prop="name">
+      <Input v-model="applyCard.name" placeholder="請輸入收件人姓名" style="width: 300px" clearable></Input>
     </FormItem>
     <FormItem label="收件人地址" prop="address">
       <Input v-model="applyCard.address" placeholder="請輸入聯絡地址" style="width: 300px" clearable></Input>
@@ -41,7 +41,7 @@ export default {
       },
       applyCardRule: {
         name: [
-          { required: true, message: '請填入暱稱', trigger: 'blur' },
+          { required: true, message: '請填入收件人姓名', trigger: 'blur' },
         ],
         address: [
           { required: true, message: '請填入聯絡地址', trigger: 'blur' },
@@ -57,7 +57,7 @@ export default {
           width: 120,
         },
         {
-          title: '暱稱',
+          title: '收件人姓名',
           key: 'nickname',
           width: 120,
         },

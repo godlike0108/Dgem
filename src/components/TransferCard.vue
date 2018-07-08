@@ -3,7 +3,7 @@
   <h4>我的七彩寶石</h4>
   <p><span class="wallet-value">{{currentGem}}</span>點</p>
   <Form ref="transferCard" :model="transferCard" :rules="transferCardRule" label-position="top" style="max-width:300px">
-    <FormItem label="錢包位置" prop="walletAddress">
+    <FormItem label="卡片號碼" prop="walletAddress">
       <Input type="text" readonly v-model="walletAddress"></Input>
     </FormItem>
     <FormItem :label="`兌換比例: ${transferRate}`">

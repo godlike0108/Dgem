@@ -19,11 +19,6 @@ export default {
         '1': '夢寶樹（中）',
         '2': '夢寶樹（大）',
       },
-      treePrice: {
-        '0': '1000',
-        '1': '2000',
-        '2': '3000',
-      },
       columns1: [
         {
           title: '夢寶樹種類',
@@ -117,6 +112,9 @@ export default {
         item.operate = { id: '', name: '選一個對象' }
         return item
       })
+    },
+    treePrice () {
+      return this.$store.getters.treePrice
     },
     dropdownItems () {
       let users = {}

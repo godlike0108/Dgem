@@ -33,4 +33,8 @@ export default {
     const json = await dispatch('GET', `/api/users/${myId}/trees?user_id=${myId}&page=${nextIndex}&remain_available=1`)
     commit('setActiveTreeList', json)
   },
+  async GetTreePrice ({dispatch, commit}) {
+    const arr = await dispatch('GET', `/api/tree-prices`)
+    commit('setTreePrice', arr)
+  },
 }

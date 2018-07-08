@@ -117,6 +117,7 @@ var route = new Router({
             route.app.$store.dispatch('setAvailTreeType')
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
+            await route.app.$store.dispatch('GetTreePrice')
             await route.app.$store.dispatch('ListTreeSummary')
             next()
           },

@@ -173,12 +173,16 @@ export default {
     },
     // get map list from wallet transfer map
     gemList () {
-      return this.$store.getters.walletTransferMap[this.mainGemValue].map(gem => {
+      let list = this.$store.getters.walletTransferMap[this.mainGemValue].map(gem => {
         return {
           name: this.listLookUp[gem],
           value: gem,
         }
       })
+      if (this.mainGemValue === '0') {
+        return list.filter(item => item.value !== 7)
+      }
+      return list
     },
     walletAddress () {
       return this.transferGems.waleltAddress

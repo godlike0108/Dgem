@@ -2,7 +2,7 @@
   <div>
     <h1>自己</h1>
     <Table stripe :columns="columnsUser" :data="self"></Table>
-    <h1>下線</h1>
+    <h1>家族</h1>
     <Table stripe :columns="columnsUser" :data="downlines"></Table>
   </div>
 </template>
@@ -23,22 +23,22 @@ export default {
           minWidth: 150,
         },
         {
-          title: '總開採數',
+          title: '總產出數',
           key: 'total_capacity',
           minWidth: 85,
         },
         {
-          title: '未開採',
+          title: '未產出',
           key: 'total_remain',
           minWidth: 75,
         },
         {
-          title: '已開採',
+          title: '已產出',
           key: 'total_processed',
           minWidth: 75,
         },
         {
-          title: '傘下帳號數量',
+          title: '家族帳號數量',
           key: 'total_user_count',
           minWidth: 110,
         },

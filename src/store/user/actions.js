@@ -91,4 +91,13 @@ export default {
     await dispatch('POST', { path })
     dispatch(`goToChildAccountPage`, { nextIndex: 1 })
   },
+  ResetPassword ({dispatch}, {data}) {
+    const path = `/api/password-resets`
+    try {
+      dispatch('POST', {data, path})
+    } catch (e) {
+      return 'fail'
+    }
+    return 'success'
+  },
 }

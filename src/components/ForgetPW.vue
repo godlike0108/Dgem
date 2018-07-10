@@ -35,7 +35,7 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
-          let data = this.getPW.email
+          let data = {email: this.getPW.email}
           let response = await this.$store.dispatch('ResetPassword', {data})
           if (response === 'success') {
             this.$Message.success('已發送新密碼至您的信箱，請前往確認')

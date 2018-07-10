@@ -60,9 +60,9 @@ export default {
     QRcodeLogin,
   },
   created () {
-    if (this.$route.query.hasOwnProperty('id')) {
+    if (this.$route.query.hasOwnProperty('upline_id')) {
       this.switchAreaType = false
-      this.SignUp.upline_id = this.$route.query.id
+      this.SignUp.upline_id = this.$route.query.upline_id
     }
   },
   data () {

@@ -2,8 +2,13 @@
   <div class="loginIn">
     <QRcodeLogin></QRcodeLogin>
     <h2>帳號登入</h2>
+    <div>
     <i-switch v-model="switchAreaType"></i-switch> <span>切換到 {{ areaType[switchAreaType] }}</span>
+    </div>
     <div v-show="!!switchAreaType" class="SignIn">
+      <div style="text-align: right;">
+        <router-link style="color: #FFF;" :to="{path: `/ForgetPW`}">忘記密碼？</router-link>
+      </div>
       <Form ref="SignIn" :model="SignIn" :rules="SignInRule" label-position="top">
         <FormItem label="請填入註冊信箱" prop="username">
           <Input type="text" v-model="SignIn.username"></Input>

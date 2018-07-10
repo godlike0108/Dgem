@@ -14,6 +14,7 @@ import TransferUSD from '@/components/TransferUSD'
 import TransferGems from '@/components/TransferGems'
 // import QRcodeLogin from '@/components/QRcodeLogin'
 import Login from '@/components/Login'
+import ForgetPW from '@/components/ForgetPW'
 import UserProfile from '@/components/UserProfile'
 import EventsLog from '@/components/EventsLog'
 import WalletLog from '@/components/WalletLog'
@@ -40,6 +41,11 @@ var route = new Router({
       path: '/Login',
       name: 'Login',
       component: Login,
+    },
+    {
+      path: '/ForgetPW',
+      name: 'ForgetPW',
+      component: ForgetPW,
     },
     {
       path: '/Main',
@@ -261,7 +267,7 @@ var route = new Router({
 })
 
 route.beforeEach(async (to, from, next) => {
-  if (to.name === 'Login') {
+  if (to.name === 'Login' || to.name === 'ForgetPW') {
     next()
     return
   }

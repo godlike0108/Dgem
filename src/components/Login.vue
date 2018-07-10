@@ -59,6 +59,12 @@ export default {
   components: {
     QRcodeLogin,
   },
+  created () {
+    if (this.$route.query.hasOwnProperty('id')) {
+      this.switchAreaType = false
+      this.SignUp.upline_id = this.$route.query.id
+    }
+  },
   data () {
     const validatePass = (rule, value, callback) => {
       if (value === '' || value.length < 6) {

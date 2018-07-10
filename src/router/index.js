@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import localStore from 'store'
+
+import utils from '@/router/utils'
+
 import Main from '@/components/Main'
 import Unverified from '@/components/Unverified'
 import notStart from '@/components/notStart'
@@ -76,19 +79,21 @@ var route = new Router({
           path: 'Unverified',
           name: 'Unverified',
           component: Unverified,
+          beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch('getOnlyMe')
+            next()
+          },
         },
         {
           path: 'UserProfile',
           name: 'UserProfile',
           component: UserProfile,
           beforeEnter: async (to, from, next) => {
-            if (from.name === 'Login') {
-              await route.app.$store.dispatch('whoAmI')
-              route.app.$store.dispatch(`allChildAccount`)
-              route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-              route.app.$store.dispatch(`WalletPage`)
-            }
-            await route.app.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
+            // await route.app.$store.dispatch('whoAmI')
+            // route.app.$store.dispatch(`allChildAccount`)
+            // route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+            await route.app.$store.dispatch(`WalletPage`)
+            route.app.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
             next()
           },
         },
@@ -98,14 +103,13 @@ var route = new Router({
           component: Dragon,
           beforeEnter: async (to, from, next) => {
             if (route.app.$store.getters.self.is_child_account) {
-              // redirect if directly enter url
               next({path: '/Main/ChildAccount'})
               return
             }
 
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
-            await route.app.$store.dispatch('GetDragonPrice')
+            route.app.$store.dispatch('GetDragonPrice')
             await route.app.$store.dispatch('ListDragonSummary')
             next()
           },
@@ -123,7 +127,7 @@ var route = new Router({
             route.app.$store.dispatch('setAvailTreeType')
             route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
-            await route.app.$store.dispatch('GetTreePrice')
+            route.app.$store.dispatch('GetTreePrice')
             await route.app.$store.dispatch('ListTreeSummary')
             next()
           },
@@ -148,7 +152,6 @@ var route = new Router({
               return
             }
 
-            await route.app.$store.dispatch(`WalletPage`)
             await route.app.$store.dispatch(`GetCardApplyList`)
             next()
           },
@@ -159,13 +162,13 @@ var route = new Router({
           component: ChildAccount,
           beforeEnter: async (to, from, next) => {
             if (!route.app.$store.getters.self.is_child_account) {
-              await route.app.$store.dispatch('whoAmI')
-              route.app.$store.dispatch(`allChildAccount`)
+              // await route.app.$store.dispatch('whoAmI')
+              // route.app.$store.dispatch(`allChildAccount`)
               await route.app.$store.dispatch('whoIsMom')
-              await route.app.$store.dispatch(`goTo${to.name}Page`, { nextIndex: 1 })
+              route.app.$store.dispatch(`goToChildAccountPage`, { nextIndex: 1 })
             }
-            route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-            route.app.$store.dispatch(`WalletPage`)
+            // route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+            // route.app.$store.dispatch(`WalletPage`)
             next()
           },
         },
@@ -219,8 +222,8 @@ var route = new Router({
               next({path: '/Main/ChildAccount'})
               return
             }
-            await route.app.$store.dispatch(`WalletPage`)
-            await route.app.$store.dispatch(`WalletTransferMap`)
+            route.app.$store.dispatch(`WalletPage`)
+            route.app.$store.dispatch(`WalletTransferMap`)
             await route.app.$store.dispatch(`WalletTransferRate`)
             next()
           },
@@ -252,6 +255,7 @@ var route = new Router({
           name: 'WalletLog',
           component: WalletLog,
           beforeEnter: async (to, from, next) => {
+            await route.app.$store.dispatch(`WalletPage`)
             let searchParams = new URLSearchParams()
             searchParams.append('operatable_type', `1`) // wallet
             searchParams.append('operatable_id', route.app.$store.getters.wallet.filter((item) => {
@@ -267,42 +271,61 @@ var route = new Router({
 })
 
 route.beforeEach(async (to, from, next) => {
-  if (to.name === 'Login' || to.name === 'ForgetPW') {
+  if (to.path.includes('/Main/') && to.name !== 'Unverified') {
+    if (utils.checkLogin()) {
+      if (!from.name || from.name === 'Login') {
+        await route.app.$store.dispatch('getOnlyMe')
+      }
+
+      if (utils.verifyEmail()) {
+        next()
+      } else if (!utils.checkChild()) {
+        next({path: '/Main/Unverified'})
+      } else {
+        next()
+      }
+    } else {
+      next({path: '/Login'})
+    }
+  } else {
     next()
-    return
   }
+  // if (to.name === 'Login' || to.name === 'ForgetPW') {
+  //   next()
+  //   return
+  // }
 
-  if (!from.name && to.name === 'Unverified') {
-    next({path: '/Login'})
-    return
-  } else if (to.name === 'Unverified') {
-    next()
-    return
-  }
+  // if (!from.name && to.name === 'Unverified') {
+  //   next({path: '/Login'})
+  //   return
+  // } else if (to.name === 'Unverified') {
+  //   next()
+  //   return
+  // }
 
-  if (!route.app.$store.getters.isLogin && !localStore.get('dgemToken')) {
-    next({path: '/Login'})
-    return
-  } else if (!route.app.$store.getters.isLogin) {
-    route.app.$store.commit('token', localStore.get('dgemToken'))
-  }
+  // if (!route.app.$store.getters.isLogin && !localStore.get('dgemToken')) {
+  //   next({path: '/Login'})
+  //   return
+  // } else if (!route.app.$store.getters.isLogin) {
+  //   route.app.$store.commit('token', localStore.get('dgemToken'))
+  // }
 
-  if (!from.name || from.name === 'Login') {
-    await route.app.$store.dispatch('getOnlyMe')
-  }
+  // if (!from.name || from.name === 'Login') {
+  //   await route.app.$store.dispatch('getOnlyMe')
+  // }
 
-  if (!route.app.$store.getters.emailVerified && !route.app.$store.getters.self.is_child_account) {
-    next({path: '/Main/Unverified'})
-    return
-  }
+  // if (!route.app.$store.getters.emailVerified && !route.app.$store.getters.self.is_child_account) {
+  //   next({path: '/Main/Unverified'})
+  //   return
+  // }
 
-  if (!from.name) {
-    await route.app.$store.dispatch('whoAmI')
-    await route.app.$store.dispatch(`allChildAccount`)
-    await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-    await route.app.$store.dispatch(`WalletPage`)
-  }
-  next()
+  // if (!from.name) {
+  //   await route.app.$store.dispatch('whoAmI')
+  //   //await route.app.$store.dispatch(`allChildAccount`)
+  //   //await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+  //   await route.app.$store.dispatch(`WalletPage`)
+  // }
+  // next()
 })
 
 export default route

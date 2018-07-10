@@ -138,7 +138,6 @@ export default {
       return this.toLimit / this.fromLimit
     },
     transferCardList () {
-      console.log(this.$store.getters.cardTransferList)
       let list = this.$store.getters.cardTransferList.data
       list.map(data => {
         data.status = this.statusLookUp[data.status]

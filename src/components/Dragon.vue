@@ -106,7 +106,6 @@ export default {
   },
   computed: {
     dragon () {
-      console.log(this.dragonPrice)
       return this.$store.getters.dragon.map((item) => {
         item.dragon_type = this.dragonType[item.type]
         item.price = this.dragonPrice[item.type]

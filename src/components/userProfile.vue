@@ -14,6 +14,28 @@
       </FormItem>
     </Form>
     <Form>
+      <FormItem label="修改密碼" inline>
+        <i-switch v-model="walletPassword.isOpen">
+          <span slot="open">開</span>
+          <span slot="close">關</span>
+        </i-switch>
+      </FormItem>
+    </Form>
+    <Form v-if="walletPasswordMode" ref="UpdateWalletPwd" :model="UpdateWalletPwd" :rules="UpdateWalletPwdRule" label-position="top" style="max-width: 300px;">
+      <FormItem label="請輸入密碼" prop="password">
+        <Input type="password" v-model="UpdateWalletPwd.password"></Input>
+      </FormItem>
+      <FormItem label="請輸入新密碼" prop="newPassword">
+        <Input type="password" v-model="UpdateWalletPwd.newPassword"></Input>
+      </FormItem>
+      <FormItem label="請再次確認新密碼" prop="newPasswordCheck">
+        <Input type="password" v-model="UpdateWalletPwd.newPasswordCheck"></Input>
+      </FormItem>
+      <FormItem class="sumitArea">
+        <Button type="primary" @click="updateWalletPwd()">修改密碼</Button>
+      </FormItem>
+    </Form>
+    <Form>
       <FormItem label="修改二級密碼" inline>
         <i-switch v-model="walletPassword.isOpen">
           <span slot="open">開</span>
@@ -32,7 +54,7 @@
         <Input type="password" v-model="UpdateWalletPwd.newPasswordCheck"></Input>
       </FormItem>
       <FormItem class="sumitArea">
-        <Button type="primary" @click="updateWalletPwd()">修改密碼</Button>
+        <Button type="primary" @click="updateWalletPwd()">修改二級密碼</Button>
       </FormItem>
     </Form>
 
@@ -92,6 +114,22 @@ export default {
       }
     }
     return {
+      UpdatePwd: {
+        password: '',
+        newPassword: '',
+        newPasswordCheck: '',
+      },
+      UpdatePwdRule: {
+        password: [
+          { required: true, validator: validatePass, trigger: 'blur' },
+        ],
+        newPassword: [
+          { required: true, validator: validatePass, trigger: 'blur' },
+        ],
+        newPasswordCheck: [
+          { required: true, validator: validatePassCheck, trigger: 'blur' },
+        ],
+      },
       UpdateWalletPwd: {
         password: '',
         newPassword: '',

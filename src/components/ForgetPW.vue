@@ -59,7 +59,7 @@ export default {
 .forgetPW {
   position: relative;
   max-width: 450px;
-  min-height: 1050px;
+  height: 100vh;
   margin: auto;
   padding: 0 10px;
 }

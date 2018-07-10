@@ -15,24 +15,24 @@
     </Form>
     <Form>
       <FormItem label="修改密碼" inline>
-        <i-switch v-model="walletPassword.isOpen">
+        <i-switch v-model="userPassword.isOpen">
           <span slot="open">開</span>
           <span slot="close">關</span>
         </i-switch>
       </FormItem>
     </Form>
-    <Form v-if="walletPasswordMode" ref="UpdateWalletPwd" :model="UpdateWalletPwd" :rules="UpdateWalletPwdRule" label-position="top" style="max-width: 300px;">
+    <Form v-if="userPasswordMode" ref="UpdatePwd" :model="UpdatePwd" :rules="UpdatePwdRule" label-position="top" style="max-width: 300px;">
       <FormItem label="請輸入密碼" prop="password">
-        <Input type="password" v-model="UpdateWalletPwd.password"></Input>
+        <Input type="password" v-model="UpdatePwd.password"></Input>
       </FormItem>
       <FormItem label="請輸入新密碼" prop="newPassword">
-        <Input type="password" v-model="UpdateWalletPwd.newPassword"></Input>
+        <Input type="password" v-model="UpdatePwd.newPassword"></Input>
       </FormItem>
       <FormItem label="請再次確認新密碼" prop="newPasswordCheck">
-        <Input type="password" v-model="UpdateWalletPwd.newPasswordCheck"></Input>
+        <Input type="password" v-model="UpdatePwd.newPasswordCheck"></Input>
       </FormItem>
       <FormItem class="sumitArea">
-        <Button type="primary" @click="updateWalletPwd()">修改密碼</Button>
+        <Button type="primary" @click="updatePwd()">修改密碼</Button>
       </FormItem>
     </Form>
     <Form>
@@ -98,13 +98,32 @@ export default {
       if (value === '' || value.length < 6) {
         callback(new Error('填入密碼，符合長度 6 個字元以上'))
       } else {
+        if (this.UpdatePwd.newPasswordCheck !== '') {
+          this.$refs.UpdatePwd.validateField('newPasswordCheck')
+        }
+        callback()
+      }
+    }
+    const validatePassCheck = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('請再次確認新二級密碼'))
+      } else if (value !== this.UpdatePwd.newPassword) {
+        callback(new Error('兩邊不一樣，請再確認'))
+      } else {
+        callback()
+      }
+    }
+    const validateWalletPass = (rule, value, callback) => {
+      if (value === '' || value.length < 6) {
+        callback(new Error('填入密碼，符合長度 6 個字元以上'))
+      } else {
         if (this.UpdateWalletPwd.newPasswordCheck !== '') {
           this.$refs.UpdateWalletPwd.validateField('newPasswordCheck')
         }
         callback()
       }
     }
-    const validatePassCheck = (rule, value, callback) => {
+    const validateWalletPassCheck = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('請再次確認新二級密碼'))
       } else if (value !== this.UpdateWalletPwd.newPassword) {
@@ -137,13 +156,13 @@ export default {
       },
       UpdateWalletPwdRule: {
         password: [
-          { required: true, validator: validatePass, trigger: 'blur' },
+          { required: true, validator: validateWalletPass, trigger: 'blur' },
         ],
         newPassword: [
-          { required: true, validator: validatePass, trigger: 'blur' },
+          { required: true, validator: validateWalletPass, trigger: 'blur' },
         ],
         newPasswordCheck: [
-          { required: true, validator: validatePassCheck, trigger: 'blur' },
+          { required: true, validator: validateWalletPassCheck, trigger: 'blur' },
         ],
       },
       wallet: [
@@ -191,6 +210,9 @@ export default {
       nickName: {
         canModify: false,
       },
+      userPassword: {
+        isOpen: false,
+      },
       walletPassword: {
         isOpen: false,
       },
@@ -237,6 +259,9 @@ export default {
         readOnly: !this.nickName.canModify,
       }
     },
+    userPasswordMode () {
+      return this.userPassword.isOpen
+    },
     walletPasswordMode () {
       return this.walletPassword.isOpen
     },
@@ -270,6 +295,26 @@ export default {
       await this.$store.dispatch('modifyMyName')
       this.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
       this.canModify = false
+    },
+    updatePwd () {
+      this.$refs['UpdatePwd'].validate(async (valid) => {
+        if (valid) {
+          const data = {
+            password: this.UpdatePwd.password,
+            new_password: this.UpdatePwd.newPassword,
+          }
+          let response = await this.$store.dispatch('UpdateUserPwd', {data})
+          if (response === 'success') {
+            this.$Message.success('密碼修改成功')
+            this.reset()
+            this.userPassword.isOpen = false
+          } else {
+            this.$Message.error('密碼錯誤')
+          }
+        } else {
+          this.$Message.error('修改密碼失敗')
+        }
+      })
     },
     updateWalletPwd () {
       this.$refs['UpdateWalletPwd'].validate(async (valid) => {

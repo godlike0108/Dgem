@@ -2,6 +2,7 @@
   <div>
     <h1>行動裝置刷 QR code 登入</h1>
     <div id="placeHolder"><img id="qrcodeImg" src="" alt=""></div>
+    <div class="download-apk"><a :href="apkUrl">點此下載行動裝置 App</a></div>
   </div>
 </template>
 
@@ -20,6 +21,11 @@ export default {
     setTimeout(() => {
       this.isLoginSuccess()
     }, 3500)
+  },
+  computed: {
+    apkUrl () {
+      return this.$store.getters.fullApkUrl
+    },
   },
   methods: {
     renderQRcode () {
@@ -48,6 +54,11 @@ export default {
 
 <style lang="css" scoped>
 h1 {
+  text-align: center;
+}
+
+.download-apk {
+  font-size: 2em;
   text-align: center;
 }
 

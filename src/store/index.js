@@ -15,6 +15,7 @@ export default new Vuex.Store({
     token_type: '', // Bearer
     qrCode: {},
     secret: SECRET, // eslint-disable-line
+    apkUrl: '/downloads/android-apk',
   },
   getters: {
     isExist: (state) => (module, collection) => !!state[module][collection].data && state[module][collection].data.constructor.name === 'Array',
@@ -45,6 +46,7 @@ export default new Vuex.Store({
     ],
     qrcode: (state) => state.qrCode.qrcode_url,
     qrcodeUser: (state) => state.qrCode,
+    fullApkUrl: (state) => `${state.host}${state.apkUrl}`,
   },
   mutations: {
     token (state, payload) {

@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="loginIn">
     <QRcodeLogin></QRcodeLogin>
-    <h2>帳號登入</h2>
+    <h1>帳號登入</h1>
     <div>
     <i-switch v-model="switchAreaType"></i-switch> <span>切換到 {{ areaType[switchAreaType] }}</span>
     </div>
@@ -209,7 +209,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-h2 {
+h1 {
   text-align: center;
 }
 

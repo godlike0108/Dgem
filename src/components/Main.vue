@@ -51,7 +51,7 @@
                       </template>
                       <router-link :to="{path: `/Main/userProfile`}"><MenuItem name="2-1">基本資料</MenuItem></router-link>
                       <router-link :to="{path: `/Main/ChildAccount`}"><MenuItem name="2-2">子母帳號</MenuItem></router-link>
-                       <router-link :to="{path: `/Main/QRCodes`}"><MenuItem name="2-2">QR Code</MenuItem></router-link>
+                       <router-link :to="{path: `/Main/QRCodes`}"><MenuItem name="2-3">QR Code</MenuItem></router-link>
                       <!-- <router-link to="notStart"><MenuItem v-show="isFunctionEnabel" name="2-3">更換手機</MenuItem></router-link> -->
                       <router-link :to="{path: `/Main/notStart`}"><MenuItem v-show="false" name="2-4">夢想卡解涷</MenuItem></router-link>
                   </Submenu>

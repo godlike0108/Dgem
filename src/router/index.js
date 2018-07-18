@@ -24,6 +24,7 @@ import WalletLog from '@/components/WalletLog'
 import Shopping from '@/components/Shopping'
 import ApplyCard from '@/components/ApplyCard'
 import TransferCard from '@/components/TransferCard'
+import QRCodes from '@/components/QRCodes'
 
 Vue.use(Router)
 
@@ -142,6 +143,18 @@ var route = new Router({
           },
         },
         {
+          path: 'QRCodes',
+          name: 'QRCodes',
+          component: QRCodes,
+          beforeEnter: async (to, from, next) => {
+            if (!route.app.$store.getters.self.is_child_account) {
+              await route.app.$store.dispatch('whoIsMom')
+              route.app.$store.dispatch(`goToChildAccountPage`, { nextIndex: 1 })
+            }
+            next()
+          },
+        },
+        {
           path: 'ApplyCard',
           name: 'ApplyCard',
           component: ApplyCard,
@@ -162,13 +175,9 @@ var route = new Router({
           component: ChildAccount,
           beforeEnter: async (to, from, next) => {
             if (!route.app.$store.getters.self.is_child_account) {
-              // await route.app.$store.dispatch('whoAmI')
-              // route.app.$store.dispatch(`allChildAccount`)
               await route.app.$store.dispatch('whoIsMom')
               route.app.$store.dispatch(`goToChildAccountPage`, { nextIndex: 1 })
             }
-            // route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-            // route.app.$store.dispatch(`WalletPage`)
             next()
           },
         },

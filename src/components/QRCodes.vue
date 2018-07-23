@@ -29,9 +29,9 @@ export default {
             url: `${this.$store.getters.host}/#/Login?upline_id=${item.id}`,
           }
         })
-        let momId = this.$store.getters.momId
-        let url = `${this.$store.getters.host}/#/Login?upline_id=${momId}`
-        child.unshift({id: momId, url: url})
+        let myId = this.$store.getters.myId
+        let url = `${this.$store.getters.host}/#/Login?upline_id=${myId}`
+        child.unshift({id: myId, url: url})
         return child
       } else {
         return []

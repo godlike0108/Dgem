@@ -12,6 +12,13 @@ export default {
     json.data = await dispatch('accountAndWallet', { array: json.data })
     commit('setChildAccount', json)
   },
+  async goToQRCodePage ({ dispatch, commit, getters }, { nextIndex }) {
+    nextIndex = nextIndex || 1
+    const myId = getters.myId
+    const json = await dispatch('GET', `/api/users/${myId}/child-accounts?page=${nextIndex}`)
+    json.data = await dispatch('accountAndWallet', { array: json.data })
+    commit('setChildAccount', json)
+  },
   async addChildAccount ({ dispatch, commit, getters }, { data }) {
     const myId = getters.myId
     const json = await dispatch('POST', {

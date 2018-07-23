@@ -148,10 +148,7 @@ var route = new Router({
           name: 'QRCodes',
           component: QRCodes,
           beforeEnter: async (to, from, next) => {
-            if (!route.app.$store.getters.self.is_child_account) {
-              await route.app.$store.dispatch('whoIsMom')
-              route.app.$store.dispatch(`goToChildAccountPage`, { nextIndex: 1 })
-            }
+            route.app.$store.dispatch(`goToQRCodePage`, { nextIndex: 1 })
             next()
           },
         },
@@ -175,10 +172,8 @@ var route = new Router({
           name: 'ChildAccount',
           component: ChildAccount,
           beforeEnter: async (to, from, next) => {
-            if (!route.app.$store.getters.self.is_child_account) {
-              await route.app.$store.dispatch('whoIsMom')
-              route.app.$store.dispatch(`goToChildAccountPage`, { nextIndex: 1 })
-            }
+            await route.app.$store.dispatch('whoIsMom')
+            route.app.$store.dispatch(`goToChildAccountPage`, { nextIndex: 1 })
             next()
           },
         },

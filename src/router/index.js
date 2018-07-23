@@ -13,7 +13,7 @@ import Activating from '@/components/Activating'
 import ChildAccount from '@/components/ChildAccount'
 import Wallet from '@/components/Wallet'
 import Group from '@/components/Group'
-import TransferUSD from '@/components/TransferUSD'
+import TransferPoint from '@/components/TransferPoint'
 import TransferGems from '@/components/TransferGems'
 // import QRcodeLogin from '@/components/QRcodeLogin'
 import Login from '@/components/Login'
@@ -191,9 +191,9 @@ var route = new Router({
           },
         },
         {
-          path: 'TransferUSD',
-          name: 'TransferUSD',
-          component: TransferUSD,
+          path: 'TransferPoint',
+          name: 'TransferPoint',
+          component: TransferPoint,
           beforeEnter: async (to, from, next) => {
             if (route.app.$store.getters.self.is_child_account) {
               // redirect if directly enter url

@@ -231,6 +231,7 @@ export default {
 .submit {
   position: absolute;
   right: 5%;
+  bottom: -25px;
 }
 
 .dg-btn {
@@ -238,6 +239,7 @@ export default {
   padding: 5px 20px;
   font-size: 1.6em;
   position: relative;
+  border-color: #000;
 }
 
 .dg-btn.login::after {

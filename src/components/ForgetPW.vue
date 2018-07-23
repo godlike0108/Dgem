@@ -1,8 +1,8 @@
 <template>
 <div class="forgetPW">
-  <Form ref="getPW" :model="getPW" :rules="getPWRule">
+  <Form class="green-panel" ref="getPW" :model="getPW" :rules="getPWRule">
     <FormItem>
-      <h4>忘記密碼</h4>
+      <h1>忘記密碼</h1>
     </FormItem>
     <FormItem label="Email" prop="email">
       <Input type="text" v-model="getPW.email"></Input>
@@ -56,11 +56,15 @@ export default {
 </script>
 
 <style lang="css">
+h1 {
+  text-align: center;
+}
+
 .forgetPW {
   position: relative;
   max-width: 450px;
   height: 100vh;
   margin: auto;
-  padding: 0 10px;
+  padding: 10px 10px;
 }
 </style>

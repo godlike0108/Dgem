@@ -17,6 +17,10 @@
   position: relative;
 }
 
+.green-panel .ivu-form-item-error-tip {
+  text-shadow: none;
+}
+
 .SignIn .ivu-form .ivu-form-item .ivu-form-item-label, .SignUp .ivu-form .ivu-form-item .ivu-form-item-label {
   color: #fff;
   font-size: 1.6em;
@@ -100,11 +104,11 @@ thead {
   background-color: rgba(148,54,54,0.90);
 }
 
-/*.ivu-btn-primary {
+.ivu-btn-primary {
   background-color: #d26e6d;
   border-color: #d26e6d;
   color: #fff;
-}*/
+}
 
 .ivu-btn-error {
   background-color: #fff;

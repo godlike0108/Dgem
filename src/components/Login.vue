@@ -179,7 +179,7 @@ export default {
             })
             this.$router.push('/Main')
           } catch (e) {
-            this.$Message.error('帳號密碼不匹配')
+            this.$Message.error(e.response.data.message)
           }
         } else {
           this.$Message.error('帳號密碼格式出錯')
@@ -196,8 +196,12 @@ export default {
             wallet_password: this.SignUp.walletPassword,
             upline_id: this.SignUp.upline_id,
           }
-          await this.$store.dispatch('CreateUser', data)
-          this.switchAreaType = true
+          try {
+            await this.$store.dispatch('CreateUser', data)
+            this.switchAreaType = true
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
+          }
         } else {
           this.$Message.error('註冊失敗')
         }

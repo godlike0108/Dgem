@@ -246,11 +246,15 @@ export default {
             amount: this.transferGems.fromValue,
             wallet_password: this.transferGems.password,
           }
-          await this.$store.dispatch('ApplyWalletTransfer', {mainGemValue, data})
-          await this.$store.dispatch(`WalletPage`)
-          await store.dispatch(`GetWalletTransferList`, {mainGemValue})
-          this.$Message.success('申請成功！請等待審核通知')
-          this.handleReset('transferGems')
+          try {
+            await this.$store.dispatch('ApplyWalletTransfer', {mainGemValue, data})
+            await this.$store.dispatch(`WalletPage`)
+            await store.dispatch(`GetWalletTransferList`, {mainGemValue})
+            this.$Message.success('申請成功！請等待審核通知')
+            this.handleReset('transferGems')
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
+          }
         } else {
           this.$Message.error('申請失敗，請確實填寫資料')
         }

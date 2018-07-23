@@ -97,31 +97,22 @@ export default {
     },
   },
   methods: {
-    applyUserCard () {
-      const data = {
-        address: this.applyCard.address,
-        nickname: this.applyCard.name,
-        phone: this.applyCard.phone,
-      }
-      try {
-        this.$store.dispatch('ApplyCard', data)
-      } catch (e) {
-        console.log(e)
-        return 'fail'
-      }
-      return 'success'
-    },
     handleSubmit (name) {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
-          let response = await this.applyUserCard()
-          if (response !== 'success') {
-            this.$Message.error('申請失敗')
-            return
+          const data = {
+            address: this.applyCard.address,
+            nickname: this.applyCard.name,
+            phone: this.applyCard.phone,
           }
-          this.$Message.success('申請成功!')
-          this.handleReset('ApplyCard')
-          this.$store.dispatch('GetCardApplyList')
+          try {
+            await this.$store.dispatch('ApplyCard', data)
+            this.handleReset('ApplyCard')
+            this.$store.dispatch('GetCardApplyList')
+            this.$Message.success('申請成功！請等待審核通知')
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
+          }
         } else {
           this.$Message.error('請確實填寫資料!')
         }

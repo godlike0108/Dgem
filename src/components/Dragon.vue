@@ -125,20 +125,26 @@ export default {
       const data = {
         'owner_id': this.$store.getters.myId,
       }
-      await this.$store.dispatch('buyDragon', { data })
-      await this.$store.dispatch(`WalletPage`)
-      this.$store.dispatch('ListDragonSummary')
+      try {
+        await this.$store.dispatch('buyDragon', { data })
+        await this.$store.dispatch(`WalletPage`)
+        this.$store.dispatch('ListDragonSummary')
+        this.$Message.success('購買成功！')
+      } catch (e) {
+        this.$Message.error(e.response.data.message)
+      }
     },
     async activate (payload) {
       try {
         await this.$store.dispatch('activateDragon', payload)
         this.$store.dispatch('ListDragonSummary')
+        this.$store.dispatch('userDownLines', { idUser: this.$store.getters.myId })
+        this.$store.dispatch(`allChildAccount`)
+        this.$store.dispatch('whoAmI')
+        this.$Message.success('激活成功！')
       } catch (e) {
-        console.log(e)
+        this.$Message.error(e.response.data.message)
       }
-      this.$store.dispatch('userDownLines', { idUser: this.$store.getters.myId })
-      this.$store.dispatch(`allChildAccount`)
-      this.$store.dispatch('whoAmI')
     },
   },
 }

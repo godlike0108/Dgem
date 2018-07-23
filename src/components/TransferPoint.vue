@@ -80,32 +80,23 @@ export default {
     },
   },
   methods: {
-    async transferTo () {
-      try {
-        this.busy = true
-        const data = {
-          'user_id': this.transferUSD.id,
-          'amount': this.transferUSD.amount,
-          'wallet_password': this.transferUSD.password,
-        }
-        await this.$store.dispatch('TransferUSD', { data })
-        await this.$store.dispatch(`WalletPage`)
-        this.busy = false
-        return 'success'
-      } catch (e) {
-        console.log(e)
-        this.busy = false
-        return 'fail'
-      }
-    },
     handleSubmit (name) {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
-          let response = await this.transferTo()
-          if (response === 'success') {
+          this.busy = true
+          const data = {
+            'user_id': this.transferUSD.id,
+            'amount': this.transferUSD.amount,
+            'wallet_password': this.transferUSD.password,
+          }
+          try {
+            await this.$store.dispatch('TransferUSD', { data })
+            await this.$store.dispatch(`WalletPage`)
+            this.busy = false
             this.$Message.success('轉出成功！')
-          } else {
-            this.$Message.error('轉出失敗，請確認資料是否確實填寫')
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
+            this.busy = false
           }
         } else {
           this.$Message.error('轉出失敗，請確認資料是否確實填寫')

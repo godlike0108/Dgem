@@ -129,14 +129,24 @@ export default {
         'user_id': this.$store.getters.myId,
         'type': type,
       }
-      await this.$store.dispatch('buyTree', { data })
-      await this.$store.dispatch(`setAvailTreeType`)
-      await this.$store.dispatch(`WalletPage`)
-      this.$store.dispatch('ListTreeSummary')
+      try {
+        await this.$store.dispatch('buyTree', { data })
+        await this.$store.dispatch(`setAvailTreeType`)
+        await this.$store.dispatch(`WalletPage`)
+        this.$store.dispatch('ListTreeSummary')
+        this.$Message.success('購買成功！')
+      } catch (e) {
+        this.$Message.error(e.response.data.message)
+      }
     },
     async activate (payload) {
-      await this.$store.dispatch('activateTree', payload)
-      this.$store.dispatch('ListTreeSummary')
+      try {
+        await this.$store.dispatch('activateTree', payload)
+        this.$store.dispatch('ListTreeSummary')
+        this.$Message.success('激活成功！')
+      } catch (e) {
+        this.$Message.error(e.response.data.message)
+      }
     },
   },
 }

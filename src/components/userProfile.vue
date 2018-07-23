@@ -292,9 +292,14 @@ export default {
       }
     },
     async modifyUserName () {
-      await this.$store.dispatch('modifyMyName')
-      this.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
-      this.canModify = false
+      try {
+        await this.$store.dispatch('modifyMyName')
+        this.$store.dispatch('goToActiveDragonPage', { nextIndex: 1 })
+      } catch (e) {
+        this.$Message.error(e.response.data.message)
+      }
+      this.nickName.canModify = false
+      this.$Message.success('暱稱修改成功')
     },
     updatePwd () {
       this.$refs['UpdatePwd'].validate(async (valid) => {
@@ -303,13 +308,13 @@ export default {
             password: this.UpdatePwd.password,
             new_password: this.UpdatePwd.newPassword,
           }
-          let response = await this.$store.dispatch('UpdateUserPwd', {data})
-          if (response === 'success') {
+          try {
+            await this.$store.dispatch('UpdateUserPwd', {data})
             this.$Message.success('密碼修改成功')
             this.reset()
             this.userPassword.isOpen = false
-          } else {
-            this.$Message.error('密碼錯誤')
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
           }
         } else {
           this.$Message.error('修改密碼失敗')
@@ -323,13 +328,13 @@ export default {
             wallet_password: this.UpdateWalletPwd.password,
             new_wallet_password: this.UpdateWalletPwd.newPassword,
           }
-          let response = await this.$store.dispatch('UpdateWalletPwd', {data})
-          if (response === 'success') {
+          try {
+            await this.$store.dispatch('UpdateWalletPwd', {data})
             this.$Message.success('密碼修改成功')
             this.reset()
             this.walletPassword.isOpen = false
-          } else {
-            this.$Message.error('密碼錯誤')
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
           }
         } else {
           this.$Message.error('修改二級密碼失敗')
@@ -342,11 +347,11 @@ export default {
           const data = {
             external_address: this.addrGroup[walletIndex].address,
           }
-          let response = await this.$store.dispatch('UpdateWalletAddr', {walletIndex, data})
-          if (response === 'success') {
+          try {
+            await this.$store.dispatch('UpdateWalletAddr', {walletIndex, data})
             this.$Message.success('設定錢包位址成功')
-          } else {
-            this.$Message.error('無此錢包位址')
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
           }
         } else {
           this.$Message.error('設定錢包位址失敗')

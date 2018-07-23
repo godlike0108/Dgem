@@ -159,10 +159,14 @@ export default {
             wallet_password: this.transferPoint.password,
           }
           const mainGemValue = this.fromGem
-          await this.$store.dispatch('ApplyPointTransfer', {mainGemValue, data})
-          this.$Message.success('轉出成功!')
-          this.$store.dispatch(`GetPointTransferList`, {mainGemValue})
-          this.handleReset('transferPoint')
+          try {
+            await this.$store.dispatch('ApplyPointTransfer', {mainGemValue, data})
+            this.$Message.success('轉出成功!')
+            this.$store.dispatch(`GetPointTransferList`, {mainGemValue})
+            this.handleReset('transferPoint')
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
+          }
         } else {
           this.$Message.error('請確實填寫資料!')
         }

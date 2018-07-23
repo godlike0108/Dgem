@@ -159,9 +159,13 @@ export default {
             wallet_password: this.transferCard.password,
           }
           const mainGemValue = 0
-          await this.$store.dispatch('ApplyCardTransfer', {mainGemValue, data})
-          this.$Message.success('轉出成功!')
-          this.$store.dispatch(`GetCardTransferList`, {mainGemValue})
+          try {
+            await this.$store.dispatch('ApplyCardTransfer', {mainGemValue, data})
+            this.$Message.success('轉出成功!')
+            this.$store.dispatch(`GetCardTransferList`, {mainGemValue})
+          } catch (e) {
+            this.$Message.error(e.response.data.message)
+          }
         } else {
           this.$Message.error('請確實填寫資料!')
         }

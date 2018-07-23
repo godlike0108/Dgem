@@ -91,7 +91,7 @@ export default {
     const json = await dispatch('GET', `/api/card-applications`)
     commit('setApplyList', json)
   },
-  // apply wallet transfer
+  // get card transfer list
   async GetCardTransferList ({dispatch, commit}, {mainGemValue, nextIndex, searchParams}) {
     nextIndex = nextIndex || 1
     searchParams = searchParams || new URLSearchParams()
@@ -99,5 +99,21 @@ export default {
     searchParams.append('to_gem[]', '7')
     const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications?${searchParams.toString()}`)
     commit('setCardTransferList', json)
+  },
+  // apply wallet transfer
+  async ApplyPointTransfer ({dispatch, commit}, {mainGemValue, data}) {
+    await dispatch('POST', {
+      path: `/api/gems/${mainGemValue}/wallet-transfer-applications`,
+      data,
+    })
+  },
+  // get point transfer list
+  async GetPointTransferList ({dispatch, commit}, {mainGemValue, nextIndex, searchParams}) {
+    nextIndex = nextIndex || 1
+    searchParams = searchParams || new URLSearchParams()
+    searchParams.append('page', `${nextIndex}`)
+    searchParams.append('to_gem[]', '5')
+    const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications?${searchParams.toString()}`)
+    commit('setPointTransferList', json)
   },
 }

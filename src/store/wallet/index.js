@@ -13,8 +13,10 @@ export default {
     walletTransferList: {},
     // card apply list
     applyList: {},
-    // wallet transfer application list
+    // card transfer application list
     cardTransferList: {},
+    // point transfer application list
+    pointTransferList: {},
   },
   getters: {
     wallet: (state) => {
@@ -35,6 +37,7 @@ export default {
     walletTransferList: (state) => state.walletTransferList,
     applyList: (state) => state.applyList,
     cardTransferList: (state) => state.cardTransferList,
+    pointTransferList: (state) => state.pointTransferList,
   },
   mutations: {
     setWallet (state, json) {
@@ -47,6 +50,7 @@ export default {
     setWalletTransferList: (state, json) => { state.walletTransferList = json },
     setApplyList: (state, json) => { state.applyList = json.data },
     setCardTransferList: (state, json) => { state.cardTransferList = json },
+    setPointTransferList: (state, json) => { state.pointTransferList = json },
   },
   actions,
 }

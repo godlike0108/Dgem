@@ -18,7 +18,7 @@ export default {
         {
           title: 'ID',
           key: 'id',
-          width: 100,
+          width: 120,
         },
         {
           title: '使用者名稱',

@@ -243,6 +243,7 @@ var route = new Router({
           component: Group,
           beforeEnter: async (to, from, next) => {
             await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+            route.app.$store.dispatch('whoAmI')
             next()
           },
         },

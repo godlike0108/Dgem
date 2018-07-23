@@ -95,10 +95,14 @@
                     <Icon type="person-stalker"></Icon>
                     家族開採狀況
                   </MenuItem></router-link>
-                  <router-link :to="{path: `/Main/TransferUSD`}"><MenuItem v-show="isFunctionEnabel" name="7-1">
-                    <Icon type="social-usd"></Icon>
-                    夢寶積分轉出
-                  </MenuItem></router-link>
+                  <Submenu name="7" v-show="isFunctionEnabel">
+                    <template slot="title">
+                      <Icon type="trophy"></Icon>
+                      夢寶積分管理
+                    </template>
+                    <router-link :to="{path: `/Main/TransferPoint`}"><MenuItem v-show="isFunctionEnabel" name="7-1">轉出</MenuItem></router-link>
+                    <router-link :to="{path: `/Main/PointToC`}"><MenuItem name="7-2">碳鏈轉換</MenuItem></router-link>
+                  </Submenu>
                 </Menu>
                 <div slot="trigger"></div>
             </Sider>

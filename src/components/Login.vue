@@ -1,54 +1,56 @@
 <template lang="html">
   <div class="loginIn">
     <QRcodeLogin></QRcodeLogin>
-    <h1>帳號登入</h1>
-    <div>
-    <i-switch v-model="switchAreaType"></i-switch> <span>切換到 {{ areaType[switchAreaType] }}</span>
-    </div>
-    <div v-show="!!switchAreaType" class="SignIn">
-      <div style="text-align: right;">
-        <router-link style="color: #FFF;" :to="{path: `/ForgetPW`}">忘記密碼？</router-link>
+    <div class="green-panel">
+      <h1 class="logo"><img src="/static/images/dg_logo.png"></h1>
+      <div>
+      <i-switch v-model="switchAreaType"></i-switch> <span>切換到 {{ areaType[switchAreaType] }}</span>
       </div>
-      <Form ref="SignIn" :model="SignIn" :rules="SignInRule" label-position="top">
-        <FormItem label="請填入註冊信箱" prop="username">
-          <Input type="text" v-model="SignIn.username"></Input>
-        </FormItem>
-        <FormItem label="請填入密碼" prop="password">
-          <Input type="password" v-model="SignIn.password"></Input>
-        </FormItem>
-        <FormItem class="sumitArea">
-          <Button @click="signIn()" type="primary">登入</Button>
-        </FormItem>
-      </Form>
-    </div>
-    <div v-show="!switchAreaType" class="SignUp">
-      <Form ref="SignUp" :model="SignUp" :rules="SignUpRule" label-position="top">
-        <FormItem label="請填入使用者䁥稱" prop="name">
-          <Input type="text" v-model="SignUp.name"></Input>
-        </FormItem>
-        <FormItem label="請填入 E-mail" prop="email">
-          <Input type="email" v-model="SignUp.email"></Input>
-        </FormItem>
-        <FormItem label="請填入密碼" prop="password">
-          <Input type="password" v-model="SignUp.password"></Input>
-        </FormItem>
-        <FormItem label="請再次填入密碼" prop="passwordCheck">
-          <Input type="password" v-model="SignUp.passwordCheck"></Input>
-        </FormItem>
-        <FormItem label="請填入二級密碼" prop="walletPassword">
-          <Input type="password" v-model="SignUp.walletPassword"></Input>
-        </FormItem>
-        <FormItem label="請再次填入二級密碼" prop="walletPasswordCheck">
-          <Input type="password" v-model="SignUp.walletPasswordCheck"></Input>
-        </FormItem>
-        <FormItem label="請填入上線 ID" prop="upline_id">
-          <Input v-model="SignUp.upline_id"></Input>
-        </FormItem>
-        <FormItem class="sumitArea">
-          <Button type="primary" @click="signUp()">確認</Button>
-          <Button type="ghost" @click="reset()">取消</Button>
-        </FormItem>
-      </Form>
+      <div v-show="!!switchAreaType" class="SignIn">
+        <div style="text-align: right;">
+          <router-link style="color: #FFF;" :to="{path: `/ForgetPW`}">忘記密碼？</router-link>
+        </div>
+        <Form ref="SignIn" :model="SignIn" :rules="SignInRule" label-position="top">
+          <FormItem label="請填入註冊信箱" prop="username">
+            <Input type="text" v-model="SignIn.username"></Input>
+          </FormItem>
+          <FormItem label="請填入密碼" prop="password">
+            <Input type="password" v-model="SignIn.password"></Input>
+          </FormItem>
+          <div class="submit">
+            <Button class="yellow-panel dg-btn login" @click="signIn()" type="primary">登入</Button>
+          </div>
+        </Form>
+      </div>
+      <div v-show="!switchAreaType" class="SignUp">
+        <Form ref="SignUp" :model="SignUp" :rules="SignUpRule" label-position="top">
+          <FormItem label="請填入使用者䁥稱" prop="name">
+            <Input type="text" v-model="SignUp.name"></Input>
+          </FormItem>
+          <FormItem label="請填入 E-mail" prop="email">
+            <Input type="email" v-model="SignUp.email"></Input>
+          </FormItem>
+          <FormItem label="請填入密碼" prop="password">
+            <Input type="password" v-model="SignUp.password"></Input>
+          </FormItem>
+          <FormItem label="請再次填入密碼" prop="passwordCheck">
+            <Input type="password" v-model="SignUp.passwordCheck"></Input>
+          </FormItem>
+          <FormItem label="請填入二級密碼" prop="walletPassword">
+            <Input type="password" v-model="SignUp.walletPassword"></Input>
+          </FormItem>
+          <FormItem label="請再次填入二級密碼" prop="walletPasswordCheck">
+            <Input type="password" v-model="SignUp.walletPasswordCheck"></Input>
+          </FormItem>
+          <FormItem label="請填入上線 ID" prop="upline_id">
+            <Input v-model="SignUp.upline_id"></Input>
+          </FormItem>
+          <div class="submit">
+            <Button class="yellow-panel dg-btn" type="primary" @click="signUp()">確認</Button>
+            <Button class="yellow-panel dg-btn" type="ghost" @click="reset()">取消</Button>
+          </div>
+        </Form>
+      </div>
     </div>
   </div>
 </template>
@@ -209,8 +211,13 @@ export default {
 </script>
 
 <style lang="css" scoped>
-h1 {
+.logo {
   text-align: center;
+}
+
+.logo > img {
+  width: 60%;
+  padding: 10px;
 }
 
 .loginIn {
@@ -218,19 +225,29 @@ h1 {
   max-width: 450px;
   min-height: 1050px;
   margin: auto;
-  padding: 0 10px;
+  padding: 40px 10px;
 }
 
-.loginIn > div{
-  padding: 20px 0;
+.submit {
+  position: absolute;
+  right: 5%;
 }
 
-.sumitArea {
-  text-align: right;
-}
-
-.ivu-btn {
+.dg-btn {
   color: #fff;
+  padding: 5px 20px;
+  font-size: 1.6em;
+  position: relative;
+}
+
+.dg-btn.login::after {
+  content: "";
+  background: 0 0/30px 30px no-repeat url('/static/images/login-arrow.png');
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  position: absolute;
+  right: -15px;
 }
 
 </style>

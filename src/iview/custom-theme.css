@@ -1,6 +1,31 @@
+.yellow-panel {
+  margin: auto;
+  padding: 5px 0px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background: linear-gradient(#fdf3d1, #dbb242);
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.green-panel {
+  margin: auto;
+  padding: 5px 0px;
+  box-shadow: 0 0 0 2px #65c47f, 0 0 0 4px #FFF, 0 0 0 6px #65c47f;
+  border-radius: 5px;
+  background: linear-gradient(#d0f3dd, #78dea3 10%, #55a366 90%);
+  text-shadow: -1px 0 #417e14, 0 1px #417e14, 1px 0 #417e14, 0 -1px #417e14;
+  position: relative;
+}
+
+.SignIn .ivu-form .ivu-form-item .ivu-form-item-label, .SignUp .ivu-form .ivu-form-item .ivu-form-item-label {
+  color: #fff;
+  font-size: 1.6em;
+  display: flex;
+  justify-content: center;
+}
 
 .ivu-form .ivu-form-item-label {
-  color: #f8f8f9;
+  color: #fff;
 }
 
 .ivu-layout-sider {
@@ -75,11 +100,11 @@ thead {
   background-color: rgba(148,54,54,0.90);
 }
 
-.ivu-btn-primary {
+/*.ivu-btn-primary {
   background-color: #d26e6d;
   border-color: #d26e6d;
   color: #fff;
-}
+}*/
 
 .ivu-btn-error {
   background-color: #fff;

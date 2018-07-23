@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <h1>行動裝置刷 QR code 登入</h1>
+    <h1 class="yellow-panel">行動裝置刷 QR code 登入</h1>
     <div id="placeHolder"><img id="qrcodeImg" src="" alt=""></div>
     <div class="download-apk"><a :href="apkUrl">點此下載行動裝置 App</a></div>
   </div>
@@ -53,6 +53,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
 h1 {
   text-align: center;
 }
@@ -60,13 +61,20 @@ h1 {
 .download-apk {
   font-size: 2em;
   text-align: center;
+  padding: 10px;
+}
+
+#placeHolder {
+  background: top left / 100% 100% url('/static/images/qrcode.png');
+  max-width: 100%;
+  max-height: 100vh;
+  display: flex;
 }
 
 #placeHolder > img {
   display: block;
-  max-width: 100%;
+  max-width: 70%;
   width: auto;
-  max-height: 100vh;
   margin: auto;
 }
 </style>

@@ -24,12 +24,7 @@ export default {
   async UpdateWalletPwd ({ dispatch, getters }, { data }) {
     const myId = getters.myId
     const path = `/api/users/${myId}`
-    try {
-      await dispatch('PUT', {path, data})
-      return 'success'
-    } catch (e) {
-      return 'fail'
-    }
+    await dispatch('PUT', {path, data})
   },
   // update wallet pwd
   async UpdateWalletAddr ({ dispatch, getters }, { walletIndex, data }) {

@@ -330,12 +330,13 @@ export default {
           }
           try {
             await this.$store.dispatch('UpdateWalletPwd', {data})
-            this.$Message.success('密碼修改成功')
-            this.reset()
-            this.walletPassword.isOpen = false
           } catch (e) {
             this.$Message.error(e.response.data.message)
+            return
           }
+          this.reset()
+          this.$Message.success('密碼修改成功')
+          this.walletPassword.isOpen = false
         } else {
           this.$Message.error('修改二級密碼失敗')
         }

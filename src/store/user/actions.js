@@ -110,11 +110,6 @@ export default {
   async UpdateUserPwd ({ dispatch, getters }, { data }) {
     const myId = getters.myId
     const path = `/api/users/${myId}`
-    try {
-      await dispatch('PUT', {path, data})
-      return 'success'
-    } catch (e) {
-      return 'fail'
-    }
+    await dispatch('PUT', {path, data})
   },
 }

@@ -310,12 +310,13 @@ export default {
           }
           try {
             await this.$store.dispatch('UpdateUserPwd', {data})
-            this.$Message.success('密碼修改成功')
-            this.reset()
-            this.userPassword.isOpen = false
           } catch (e) {
             this.$Message.error(e.response.data.message)
+            return
           }
+          this.$Message.success('密碼修改成功')
+          this.reset('UpdatePwd')
+          this.userPassword.isOpen = false
         } else {
           this.$Message.error('修改密碼失敗')
         }
@@ -334,7 +335,7 @@ export default {
             this.$Message.error(e.response.data.message)
             return
           }
-          this.reset()
+          this.reset('UpdateWalletPwd')
           this.$Message.success('密碼修改成功')
           this.walletPassword.isOpen = false
         } else {
@@ -359,8 +360,8 @@ export default {
         }
       })
     },
-    reset () {
-      this.$refs['UpdateWalletPwd'].resetFields()
+    reset (ref) {
+      this.$refs[ref].resetFields()
     },
   },
 }

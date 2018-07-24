@@ -32,6 +32,9 @@ const utils = {
     // await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
     // await route.app.$store.dispatch(`WalletPage`)
   },
+  removeToken () {
+    localStore.remove('dgemToken')
+  },
 }
 
 export default utils

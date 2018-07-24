@@ -297,7 +297,15 @@ route.beforeEach(async (to, from, next) => {
   if (to.path.includes('/Main/') && to.name !== 'Unverified') {
     if (utils.checkLogin()) {
       if (!from.name || from.name === 'Login') {
-        await route.app.$store.dispatch('getOnlyMe')
+        try {
+          await route.app.$store.dispatch('getOnlyMe')
+        } catch (e) {
+          if (e.response.status === 401) {
+            utils.removeToken()
+            route.app.$Message.error('認證過期，請重新登入')
+            next('/Login')
+          }
+        }
       }
 
       if (utils.verifyEmail()) {
@@ -313,42 +321,6 @@ route.beforeEach(async (to, from, next) => {
   } else {
     next()
   }
-  // if (to.name === 'Login' || to.name === 'ForgetPW') {
-  //   next()
-  //   return
-  // }
-
-  // if (!from.name && to.name === 'Unverified') {
-  //   next({path: '/Login'})
-  //   return
-  // } else if (to.name === 'Unverified') {
-  //   next()
-  //   return
-  // }
-
-  // if (!route.app.$store.getters.isLogin && !localStore.get('dgemToken')) {
-  //   next({path: '/Login'})
-  //   return
-  // } else if (!route.app.$store.getters.isLogin) {
-  //   route.app.$store.commit('token', localStore.get('dgemToken'))
-  // }
-
-  // if (!from.name || from.name === 'Login') {
-  //   await route.app.$store.dispatch('getOnlyMe')
-  // }
-
-  // if (!route.app.$store.getters.emailVerified && !route.app.$store.getters.self.is_child_account) {
-  //   next({path: '/Main/Unverified'})
-  //   return
-  // }
-
-  // if (!from.name) {
-  //   await route.app.$store.dispatch('whoAmI')
-  //   //await route.app.$store.dispatch(`allChildAccount`)
-  //   //await route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
-  //   await route.app.$store.dispatch(`WalletPage`)
-  // }
-  // next()
 })
 
 export default route

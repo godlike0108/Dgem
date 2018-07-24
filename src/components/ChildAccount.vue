@@ -116,8 +116,13 @@ export default {
     async addChildAccount () {
       const nextIndex = this.$store.getters.paging('user', 'childAccount').curr_page
       const data = { upline_id: this.motherId }
-      await this.$store.dispatch('addChildAccount', { data })
-      this.$store.dispatch('goToChildAccountPage', { nextIndex })
+      try {
+        await this.$store.dispatch('addChildAccount', { data })
+        this.$store.dispatch('goToChildAccountPage', { nextIndex })
+        this.$Message.success('子帳號建立成功')
+      } catch (e) {
+        this.$Message.error(e.response.data.message)
+      }
     },
     async recall () {
       await this.$store.dispatch('Recall')

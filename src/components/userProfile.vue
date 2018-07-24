@@ -351,10 +351,11 @@ export default {
           }
           try {
             await this.$store.dispatch('UpdateWalletAddr', {walletIndex, data})
-            this.$Message.success('設定錢包位址成功')
           } catch (e) {
             this.$Message.error(e.response.data.message)
+            return
           }
+          this.$Message.success('設定錢包位址成功')
         } else {
           this.$Message.error('設定錢包位址失敗')
         }

@@ -16,6 +16,10 @@ export default {
     const json = await dispatch('GET', `/api/dragons?page=${nextIndex}`)
     commit('setAllDragonList', json)
   },
+  async setDragonCandidate ({ dispatch, commit }) {
+    const json = await dispatch('GET', `/api/dragon-activation-candidates`)
+    commit('setDragonCandidate', json)
+  },
   // async goToDragonPage ({ dispatch, commit, getters }, { nextIndex }) {
   //   nextIndex = nextIndex || 1
   //   const myId = getters.myId

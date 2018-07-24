@@ -6,12 +6,14 @@ export default {
     treePrice: {},
     activeTree: {},
     availTreeType: [],
+    allTreeCandidate: [],
   },
   getters: {
     tree: (state) => state.tree,
     activeTree: (state) => state.activeTree.data,
     availTreeType: (state) => state.availTreeType,
     treePrice: (state) => state.treePrice,
+    allTreeCandidate: (state) => state.allTreeCandidate,
   },
   mutations: {
     setTreeList (state, json) {
@@ -25,6 +27,9 @@ export default {
     },
     setAvailTreeType (state, json) {
       state.availTreeType = json
+    },
+    setTreeCandidate (state, json) {
+      state.allTreeCandidate = json
     },
   },
   actions,

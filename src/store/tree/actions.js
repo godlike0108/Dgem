@@ -16,6 +16,10 @@ export default {
     const json = await dispatch('GET', `/api/users/${myId}/available-tree-types`)
     commit('setAvailTreeType', json)
   },
+  async setTreeCandidate ({ dispatch, commit }) {
+    const json = await dispatch('GET', `/api/tree-activation-candidates`)
+    commit('setTreeCandidate', json)
+  },
   // async goToTreePage ({ dispatch, commit, getters }, { nextIndex }) {
   //   nextIndex = nextIndex || 1
   //   const myId = getters.myId

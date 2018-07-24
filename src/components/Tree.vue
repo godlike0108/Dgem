@@ -49,7 +49,7 @@ export default {
                 class: 'defaultStyle',
                 on: {
                   'on-click': (value) => {
-                    params.row.operate = this.dropdownItems.filter(item => item.id === value).shift()
+                    params.row.operate = this.dropdownItems(params.index).filter(item => item.id === value).shift()
                   },
                 },
               }, [
@@ -61,8 +61,7 @@ export default {
                 ]),
                 h('DropdownMenu', {
                   slot: 'list',
-                }, this.dropdownItems
-                  .sort((a, b) => a.id - b.id)
+                }, this.dropdownItems(params.index)
                   .map(item => {
                     return h('DropdownItem', {
                       props: {
@@ -116,12 +115,6 @@ export default {
     treePrice () {
       return this.$store.getters.treePrice
     },
-    dropdownItems () {
-      let users = {}
-      users[`${this.$store.getters.self.id}`] = this.$store.getters.self
-      this.$store.getters.allChildAccount.forEach(item => { users[item.id] = item })
-      return Object.values(users).filter(item => item.activated)
-    },
   },
   methods: {
     async buy (type) {
@@ -131,8 +124,8 @@ export default {
       }
       try {
         await this.$store.dispatch('buyTree', { data })
-        await this.$store.dispatch(`setAvailTreeType`)
-        await this.$store.dispatch(`WalletPage`)
+        this.$store.dispatch(`setAvailTreeType`)
+        this.$store.dispatch(`WalletPage`)
         this.$store.dispatch('ListTreeSummary')
         this.$Message.success('購買成功！')
       } catch (e) {
@@ -142,11 +135,15 @@ export default {
     async activate (payload) {
       try {
         await this.$store.dispatch('activateTree', payload)
+        this.$store.dispatch('setTreeCandidate')
         this.$store.dispatch('ListTreeSummary')
         this.$Message.success('激活成功！')
       } catch (e) {
         this.$Message.error(e.response.data.message)
       }
+    },
+    dropdownItems (type) {
+      return this.$store.getters.allTreeCandidate[type]
     },
   },
 }

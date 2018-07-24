@@ -108,11 +108,10 @@ var route = new Router({
               next({path: '/Main/ChildAccount'})
               return
             }
-
-            route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
+            await route.app.$store.dispatch('setDragonCandidate')
+            await route.app.$store.dispatch('ListDragonSummary')
             route.app.$store.dispatch(`WalletPage`)
             route.app.$store.dispatch('GetDragonPrice')
-            await route.app.$store.dispatch('ListDragonSummary')
             next()
           },
         },
@@ -126,11 +125,11 @@ var route = new Router({
               next({path: '/Main/ChildAccount'})
               return
             }
+            await route.app.$store.dispatch('setTreeCandidate')
+            await route.app.$store.dispatch('ListTreeSummary')
             route.app.$store.dispatch('setAvailTreeType')
-            route.app.$store.dispatch('userDownLines', { idUser: route.app.$store.getters.myId })
             route.app.$store.dispatch(`WalletPage`)
             route.app.$store.dispatch('GetTreePrice')
-            await route.app.$store.dispatch('ListTreeSummary')
             next()
           },
         },

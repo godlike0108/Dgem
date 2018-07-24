@@ -50,6 +50,7 @@ export default {
                   class: 'defaultStyle',
                   on: {
                     'on-click': (value) => {
+                      console.log(params.index)
                       params.row.operate = this.dropdownItems.filter(item => item.id === value).shift()
                     },
                   },
@@ -64,7 +65,7 @@ export default {
                   })]),
                   h('DropdownMenu', {
                     slot: 'list',
-                  }, this.dropdownItems.sort((a, b) => a.id - b.id)
+                  }, this.dropdownItems
                     .map(item => {
                       return h('DropdownItem', {
                         props: {
@@ -117,7 +118,7 @@ export default {
       return this.$store.getters.dragonPrice
     },
     dropdownItems () {
-      return this.$store.getters.allUsers
+      return this.$store.getters.allDragonCandidate
     },
   },
   methods: {
@@ -138,7 +139,7 @@ export default {
       try {
         await this.$store.dispatch('activateDragon', payload)
         this.$store.dispatch('ListDragonSummary')
-        this.$store.dispatch('userDownLines', { idUser: this.$store.getters.myId })
+        this.$store.dispatch('setDragonCandidate')
         this.$store.dispatch(`allChildAccount`)
         this.$store.dispatch('whoAmI')
         this.$Message.success('激活成功！')

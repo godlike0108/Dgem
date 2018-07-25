@@ -128,32 +128,32 @@ export default {
         {
           title: '來源寶石',
           key: `from_gem`,
-          width: 120,
+          minWidth: 120,
         },
         {
           title: '轉換寶石',
           key: 'to_gem',
-          width: 120,
+          minWidth: 120,
         },
         {
           title: '匯率',
           key: 'rate',
-          width: 120,
+          minWidth: 120,
         },
         {
           title: '數量',
           key: 'amount',
-          width: 120,
+          minWidth: 120,
         },
         {
           title: '目前狀態',
           key: 'status',
-          width: 120,
+          minWidth: 120,
         },
         {
           title: '建立時間',
           key: 'updated_at',
-          width: 120,
+          minWidth: 120,
         },
       ],
     }

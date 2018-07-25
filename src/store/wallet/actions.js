@@ -111,4 +111,8 @@ export default {
     const json = await dispatch('GET', `/api/gems/${mainGemValue}/wallet-transfer-applications?${searchParams.toString()}`)
     commit('setPointTransferList', json)
   },
+  async GetTransferLimit ({dispatch, commit}, {mainGemValue, toValue}) {
+    const json = await dispatch('GET', `/api/wallet-transfer-limits?from_gem=${mainGemValue}&to_gem=${toValue}`)
+    commit('setWalletTransferLimit', json)
+  },
 }

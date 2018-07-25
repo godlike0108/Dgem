@@ -24,7 +24,7 @@ import WalletLog from '@/components/WalletLog'
 import Shopping from '@/components/Shopping'
 import ApplyCard from '@/components/ApplyCard'
 import TransferCard from '@/components/TransferCard'
-// import PointToC from '@/components/PointToC'
+import PointToC from '@/components/PointToC'
 import QRCodes from '@/components/QRCodes'
 
 Vue.use(Router)
@@ -200,23 +200,25 @@ var route = new Router({
             next()
           },
         },
-        // {
-        //   path: 'PointToC',
-        //   name: 'PointToC',
-        //   component: PointToC,
-        //   beforeEnter: async (to, from, next) => {
-        //     if (route.app.$store.getters.self.is_child_account) {
-        //       // redirect if directly enter url
-        //       next({path: '/Main/ChildAccount'})
-        //       return
-        //     }
-        //     let mainGemValue = 4
-        //     await route.app.$store.dispatch(`GetPointTransferList`, {mainGemValue})
-        //     await route.app.$store.dispatch(`WalletPage`)
-        //     route.app.$store.dispatch(`WalletTransferRate`)
-        //     next()
-        //   },
-        // },
+        {
+          path: 'PointToC',
+          name: 'PointToC',
+          component: PointToC,
+          beforeEnter: async (to, from, next) => {
+            if (route.app.$store.getters.self.is_child_account) {
+              // redirect if directly enter url
+              next({path: '/Main/ChildAccount'})
+              return
+            }
+            let mainGemValue = 4
+            let toValue = 5
+            route.app.$store.dispatch(`WalletTransferRate`)
+            route.app.$store.dispatch(`GetTransferLimit`, {mainGemValue, toValue})
+            await route.app.$store.dispatch(`GetPointTransferList`, {mainGemValue})
+            await route.app.$store.dispatch(`WalletPage`)
+            next()
+          },
+        },
         {
           path: 'TransferCard',
           name: 'TransferCard',

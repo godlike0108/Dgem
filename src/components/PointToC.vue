@@ -6,7 +6,12 @@
     <FormItem label="碳鏈錢包地址" prop="walletAddress">
       <Input type="text" readonly v-model="walletAddress"></Input>
     </FormItem>
+    <FormItem label="已申購數量 / 可申購總量" prop="transferrRatio" v-if="hasTransferLimit">
+      <span>{{`${transferredC} / ${totalC}`}}</span>
+      <Progress :percent="ratioC"></Progress>
+    </FormItem>
     <FormItem :label="`兌換比例: ${transferRate}`">
+      <span>剩餘可申購數量：{{remainedC}}</span>
       <Row>
         <Col span="11">
           <FormItem prop="fromValue">
@@ -30,7 +35,7 @@
       <Button type="primary" @click="handleSubmit('transferPoint')">申請轉換</Button>
     </FormItem>
   </Form>
-  <h4>夢寶積分轉碳鏈申請狀態</h4>
+  <h4>碳鏈申購狀態</h4>
 <!--   <Page :total="paging.total" :page-size="paging.pre_page" simple size="small" @on-change="changePage($event)"></Page> -->
    <Table :columns="transferApplyCols" :data="transferPointList"></Table>
 </div>
@@ -105,7 +110,22 @@ export default {
     },
     transferRate () {
       let trans = `${this.fromGem}:${this.toGem}`
-      return this.$store.getters.walletTransferRate[trans]
+      return this.$store.getters.walletTransferRate[trans].split('').join(' ')
+    },
+    totalC () {
+      return this.$store.getters.walletTransferLimit.max
+    },
+    transferredC () {
+      return this.$store.getters.walletTransferLimit.used
+    },
+    remainedC () {
+      return this.$store.getters.walletTransferLimit.remain
+    },
+    hasTransferLimit () {
+      return this.$store.getters.walletTransferLimit.has_limit
+    },
+    ratioC () {
+      return Number((this.transferredC / this.totalC).toFixed(2))
     },
     fromValue: {
       get () {

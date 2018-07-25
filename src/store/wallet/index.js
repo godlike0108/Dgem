@@ -17,6 +17,8 @@ export default {
     cardTransferList: {},
     // point transfer application list
     pointTransferList: {},
+    // transfer limit
+    transferLimit: {},
   },
   getters: {
     wallet: (state) => {
@@ -34,6 +36,7 @@ export default {
     },
     walletTransferMap: (state) => state.walletTransferMap,
     walletTransferRate: (state) => state.walletTransferRate,
+    walletTransferLimit: (state) => state.walletTransferLimit,
     walletTransferList: (state) => state.walletTransferList,
     applyList: (state) => state.applyList,
     cardTransferList: (state) => state.cardTransferList,
@@ -47,6 +50,7 @@ export default {
     walletLog: (state, json) => { state.walletLog = json },
     setWalletTransferMap: (state, json) => { state.walletTransferMap = json },
     setWalletTransferRate: (state, json) => { state.walletTransferRate = json },
+    setWalletTransferLimit: (state, json) => { state.walletTransferLimit = json },
     setWalletTransferList: (state, json) => { state.walletTransferList = json },
     setApplyList: (state, json) => { state.applyList = json.data },
     setCardTransferList: (state, json) => { state.cardTransferList = json },

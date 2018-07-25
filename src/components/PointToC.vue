@@ -3,7 +3,7 @@
   <h4>我的夢寶積分</h4>
   <p><span class="wallet-value">{{currentGem}}</span>點</p>
   <Form ref="transferPoint" :model="transferPoint" :rules="transferPointRule" label-position="top" style="max-width:300px">
-    <FormItem label="卡片號碼" prop="walletAddress">
+    <FormItem label="碳鏈錢包地址" prop="walletAddress">
       <Input type="text" readonly v-model="walletAddress"></Input>
     </FormItem>
     <FormItem :label="`兌換比例: ${transferRate}`">

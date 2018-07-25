@@ -32,7 +32,7 @@
       <Input type="password" v-model="transferPoint.password"></Input>
     </FormItem>
     <FormItem>
-      <Button type="primary" @click="handleSubmit('transferPoint')">申請轉換</Button>
+      <Button type="primary" @click="handleSubmit('transferPoint')">申購碳鏈</Button>
     </FormItem>
   </Form>
   <h4>碳鏈申購狀態</h4>
@@ -54,10 +54,19 @@ export default {
     }
     const validateFromValue = (rule, value, callback) => {
       if (value <= 0) {
-        callback(new Error('轉換數量必須大於 0'))
+        callback(new Error('申購數量必須大於 0'))
       }
       if (value % this.fromLimit !== 0) {
-        callback(new Error(`轉換數量必須是 ${this.fromLimit} 的倍數`))
+        callback(new Error(`申購數量必須是 ${this.fromLimit} 的倍數`))
+      }
+      callback()
+    }
+    const validateToValue = (rule, value, callback) => {
+      if (value <= 0) {
+        callback(new Error('申購數量必須大於 0'))
+      }
+      if (value > this.remainedC) {
+        callback(new Error(`申購數量不得超過剩餘可申購量`))
       }
       callback()
     }
@@ -72,6 +81,9 @@ export default {
       transferPointRule: {
         fromValue: [
           { required: true, type: 'number', validator: validateFromValue, trigger: 'blur' },
+        ],
+        toValue: [
+          { required: true, type: 'number', validator: validateToValue, trigger: 'blur' },
         ],
         password: [
           { required: true, validator: validatePass, trigger: 'blur' },

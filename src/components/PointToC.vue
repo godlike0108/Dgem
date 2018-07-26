@@ -6,12 +6,12 @@
     <FormItem label="碳鏈錢包地址" prop="walletAddress">
       <Input type="text" readonly v-model="walletAddress"></Input>
     </FormItem>
-    <FormItem label="已申購數量 / 可申購總量" prop="transferrRatio" v-if="hasTransferLimit">
-      <span>{{`${transferredC} / ${totalC}`}}</span>
-      <Progress :percent="ratioC"></Progress>
+    <FormItem label="已申購數量 / 可申購總量" prop="transferrRatio" v-if="limit.has_limit">
+      <span>{{`${limit.used} / ${limit.max}`}}</span>
+      <Progress :percent="limitRatio"></Progress>
     </FormItem>
     <FormItem :label="`兌換比例: ${transferRate}`">
-      <span>剩餘可申購數量：{{remainedC}}</span>
+      <span>剩餘可申購數量：{{limit.remain}}</span>
       <Row>
         <Col span="11">
           <FormItem prop="fromValue">
@@ -65,7 +65,7 @@ export default {
       if (value <= 0) {
         callback(new Error('申購數量必須大於 0'))
       }
-      if (value > this.remainedC) {
+      if (value > this.limit.remain) {
         callback(new Error(`申購數量不得超過剩餘可申購量`))
       }
       callback()
@@ -122,22 +122,13 @@ export default {
     },
     transferRate () {
       let trans = `${this.fromGem}:${this.toGem}`
-      return this.$store.getters.walletTransferRate[trans].split('').join(' ')
+      return this.$store.getters.walletTransferRate[trans].split(':').join(' : ')
     },
-    totalC () {
-      return this.$store.getters.walletTransferLimit.max
+    limit () {
+      return this.$store.getters.walletTransferLimit
     },
-    transferredC () {
-      return this.$store.getters.walletTransferLimit.used
-    },
-    remainedC () {
-      return this.$store.getters.walletTransferLimit.remain
-    },
-    hasTransferLimit () {
-      return this.$store.getters.walletTransferLimit.has_limit
-    },
-    ratioC () {
-      return Number((this.transferredC / this.totalC).toFixed(2))
+    limitRatio () {
+      return Number((this.limit.used / this.limit.max).toFixed(2)) * 100
     },
     fromValue: {
       get () {
@@ -191,14 +182,17 @@ export default {
             wallet_password: this.transferPoint.password,
           }
           const mainGemValue = this.fromGem
+          const toValue = this.toGem
           try {
             await this.$store.dispatch('ApplyPointTransfer', {mainGemValue, data})
-            this.$Message.success('轉出成功!')
-            this.$store.dispatch(`GetPointTransferList`, {mainGemValue})
-            this.handleReset('transferPoint')
           } catch (e) {
             this.$Message.error(e.response.data.message)
+            return
           }
+          this.$Message.success('轉出成功!')
+          this.$store.dispatch(`GetPointTransferList`, {mainGemValue})
+          this.$store.dispatch(`GetTransferLimit`, {mainGemValue, toValue})
+          this.handleReset('transferPoint')
         } else {
           this.$Message.error('請確實填寫資料!')
         }

@@ -249,7 +249,7 @@ export default {
           try {
             await this.$store.dispatch('ApplyWalletTransfer', {mainGemValue, data})
             await this.$store.dispatch(`WalletPage`)
-            await store.dispatch(`GetWalletTransferList`, {mainGemValue})
+            await this.$store.dispatch(`GetWalletTransferList`, {mainGemValue})
             this.$Message.success('申請成功！請等待審核通知')
             this.handleReset('transferGems')
           } catch (e) {

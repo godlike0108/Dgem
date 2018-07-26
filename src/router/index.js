@@ -212,8 +212,8 @@ var route = new Router({
             }
             let mainGemValue = 4
             let toValue = 5
-            route.app.$store.dispatch(`WalletTransferRate`)
             route.app.$store.dispatch(`GetTransferLimit`, {mainGemValue, toValue})
+            await route.app.$store.dispatch(`WalletTransferRate`)
             await route.app.$store.dispatch(`GetPointTransferList`, {mainGemValue})
             await route.app.$store.dispatch(`WalletPage`)
             next()

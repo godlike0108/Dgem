@@ -18,7 +18,7 @@ export default {
     // point transfer application list
     pointTransferList: {},
     // transfer limit
-    transferLimit: {},
+    walletTransferLimit: {},
   },
   getters: {
     wallet: (state) => {
